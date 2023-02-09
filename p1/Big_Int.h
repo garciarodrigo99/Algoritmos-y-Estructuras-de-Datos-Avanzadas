@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <list>
 
 #pragma once
 
@@ -17,6 +18,7 @@ template <std::size_t Base>
 BigInt<Base> operator+(const BigInt<Base>&, const BigInt<Base>&);
 
 int convertToNumber(char);
+char convertToCharacter(int toConvert);
 
 template <std::size_t Base> 
 class BigInt {
@@ -40,7 +42,8 @@ class BigInt {
 
 		// Inserción y extracción en flujo:
 		friend std::ostream& operator<< <Base>(std::ostream&, const BigInt<Base>&);
-		//friend std::istream& operator>> <Base>(std::istream&, BigInt<Base>&);
+		// friend std::istream& operator>> <Base>(std::istream&, BigInt<Base>&);
+		// friend BigInt<Base>& operator>>(BigInt<Base>&, char &x);
 
 		// Accesor:
 		int sign() const; // Signo: 1 o -1
@@ -70,6 +73,8 @@ class BigInt {
 
 		// Potencia a^b
 		friend BigInt<Base> pow(const BigInt<Base>&, const BigInt<Base>&);
+
+		void insert(char);
 };
 
 template <size_t Base>
@@ -123,13 +128,23 @@ std::ostream& operator<<(std::ostream& os, const BigInt<Base>& bigInt) {
 	return os;
 }
 
-// Falta implementacion
+// template <size_t Base>
+// void BigInt<Base>::insert(char toInsert) {
+// 	if (vector_ == 1) {
+
+// 	}
+// 	vector_.push_back();
+// }
+
+// //Falta implementacion
 // template <size_t Base>
 // std::istream& operator>>(std::istream& is, BigInt<Base>& bigInt) {
 
-// 	// for(int i=bigInt.vector_.size()-1; i>=0; i--){
-// 	// 	os << bigInt.vector_[i];
-// 	// }
+// 	std::string str;
+// 	is >> str;
+// 	for(int i=bigInt.vector_.size()-1; i>=0; i--){
+// 		bigInt.vector_.push_back();
+// 	}
 // 	return is;
 // }
 
@@ -164,18 +179,25 @@ char BigInt<Base>::operator[](int index) const
 template <size_t Base>
 BigInt<Base> operator+(const BigInt<Base>& first, const BigInt<Base>& second) {
 
-	BigInt<Base> toReturn("0");
 	if (first.vector_.size() != second.vector_.size())
 		throw std::domain_error("Todavia no implementado diferentes tamaños");
 
 	int carry = 0;
 	int element = 0;
+	std::list<char> list;
 	for(int i=0; i<first.vector_.size(); i++){
 		element = carry + convertToNumber(first.vector_[i])
 		+ convertToNumber(second.vector_[i]);
 		carry = element / Base;
 		element = element % Base;
+		list.push_front(convertToCharacter(element));
 	}
+
+	std::string strParam;
+	for(auto i : list)
+		strParam.push_back(i);
+
+	BigInt<Base> toReturn(strParam);
 	return toReturn;
 }
 
@@ -263,4 +285,11 @@ int convertToNumber(char toConvert) {
 		return (int)(toConvert - '0');
 	}
 	return (int)(toConvert - 'A') + 10;
+}
+
+char convertToCharacter(int toConvert) {
+	if (toConvert >= 0 && toConvert <= 9) {
+		return (char)(toConvert + '0');
+	}
+	return (char)(toConvert - 10 + 'A');
 }

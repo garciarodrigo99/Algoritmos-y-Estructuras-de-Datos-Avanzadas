@@ -18,8 +18,9 @@ std::ostream& operator<< (std::ostream&, const Board<Base>&);
 template <std::size_t Base>
 class Board {
 	private:
-		std::map<std::string, BigInt<Base>> number;
-		std::map<std::string, std::vector<std::string>> expression;
+		std::map<std::string, BigInt<Base>> number_;
+		std::map<std::string, std::vector<std::string>> expression_;
+		std::string fileName_;
 	public:
 		Board(std::string);
 		~Board();
@@ -39,13 +40,13 @@ Board<Base>::Board(std::string fileName)
 	std::vector<std::string> splittedChain;
   while(getline(archivo_entrada, linea)) {
 		splittedChain = SplitChain(linea);
-		//std::cout << linea << ": " << splittedChain.size() << "\n";
+
 		if (splittedChain.size() == 3){
-			number[splittedChain.at(0)] = BigInt<Base>(splittedChain.at(2));
+			number_[splittedChain.at(0)] = BigInt<Base>(splittedChain.at(2));
 		} else {
 			std::vector<std::string> expressionString(splittedChain.begin()+2,
 				splittedChain.end());
-			expression[splittedChain.at(0)] = expressionString;
+			expression_[splittedChain.at(0)] = expressionString;
 		}
   }
   archivo_entrada.close();
@@ -60,12 +61,12 @@ template <size_t Base>
 std::ostream& operator<<(std::ostream& os, const Board<Base>& paramBoard) {
 
 	os << "Numeros:\n";
-	for(auto i : paramBoard.number){
+	for(auto i : paramBoard.number_){
 		os << '\t' << i.first << ": " << i.second << "\n";
 	}
 
 	os << "Expresiones:\n";
-	for(auto i : paramBoard.expression){
+	for(auto i : paramBoard.expression_){
 		os << "\t" << i.first << ": ";
 		for (auto j : i.second) {
 			os << j << " ";

@@ -13,6 +13,13 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
+  BigInt<10> dec1(123);
+  BigInt<10> dec2(456);
+  BigInt<10> dec3(dec1+dec2);
+  std::cout << dec1 << std::endl;
+  std::cout << dec2 << std::endl;
+  std::cout << dec3 << std::endl;
+
   std::string fileName = argv[1];
   // --------------------------------------------------------------------------
   std::ifstream archivo_entrada(fileName);;
