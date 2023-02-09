@@ -4,31 +4,30 @@
 #include <map>
 #include <fstream>
 
-#include "Big_Int.h"
 #include "splitChain.h"
 
 #pragma once
 
-template <std::size_t Base> 
+template <class T> 
 class Board;
 
-template <std::size_t Base> 
-std::ostream& operator<< (std::ostream&, const Board<Base>&);
+template <class T> 
+std::ostream& operator<< (std::ostream&, const Board<T>&);
 
-template <std::size_t Base>
+template <class T>
 class Board {
 	private:
-		std::map<std::string, BigInt<Base>> number_;
+		std::map<std::string, T> number_;
 		std::map<std::string, std::vector<std::string>> expression_;
 		std::string fileName_;
 	public:
 		Board(std::string);
 		~Board();
-		friend std::ostream& operator<< <Base>(std::ostream&, const Board<Base>&);
+		friend std::ostream& operator<< <T>(std::ostream&, const Board<T>&);
 };
 
-template <std::size_t Base>
-Board<Base>::Board(std::string fileName)
+template <class T>
+Board<T>::Board(std::string fileName)
 {
 	std::ifstream archivo_entrada(fileName);
   std::string linea;
@@ -42,7 +41,7 @@ Board<Base>::Board(std::string fileName)
 		splittedChain = SplitChain(linea);
 
 		if (splittedChain.size() == 3){
-			number_[splittedChain.at(0)] = BigInt<Base>(splittedChain.at(2));
+			number_[splittedChain.at(0)] = T(splittedChain.at(2));
 		} else {
 			std::vector<std::string> expressionString(splittedChain.begin()+2,
 				splittedChain.end());
@@ -52,13 +51,13 @@ Board<Base>::Board(std::string fileName)
   archivo_entrada.close();
 }
 
-template <std::size_t Base>
-Board<Base>::~Board()
+template <class T>
+Board<T>::~Board()
 {
 }
 
-template <size_t Base>
-std::ostream& operator<<(std::ostream& os, const Board<Base>& paramBoard) {
+template <class T>
+std::ostream& operator<<(std::ostream& os, const Board<T>& paramBoard) {
 
 	os << "Numeros:\n";
 	for(auto i : paramBoard.number_){

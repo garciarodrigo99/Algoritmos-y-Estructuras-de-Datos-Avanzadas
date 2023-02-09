@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <cassert>
 #include "Big_Int.h"
 #include "splitChain.h"
 
@@ -30,45 +31,46 @@ enum Operators {
   power = '^',
 };
 
-template <std::size_t Base> 
+template <class T> 
 class Calculator {
 
 public:
   // Constructores y destructor
   Calculator();
-  Calculator(std::map<std::string, BigInt<Base>>);
+  Calculator(std::map<std::string, T>);
   ~Calculator();
 
   // Getter
-  BigInt<Base> GetResult(std::vector<std::string>);
+  T GetResult(std::vector<std::string>);
+  void insertNum(std::string, T);
 
 private:
   bool isNumber(std::string);
-  void Operations(char, int);
+  void Operations(char, int = 1);
 
 private:
-  std::stack<BigInt<Base>> stack_;
-  std::map<std::string, BigInt<Base>> numbers_;
+  std::stack<T> stack_;
+  std::map<std::string, T> numbers_;
 };
 
 // // Funcion para separar cada linea en cadenas según espacios
 // std::vector<std::string> SplitChain(std::string str, char pattern);
 
-template <std::size_t Base>
-Calculator<Base>::Calculator() {}
+template <class T>
+Calculator<T>::Calculator() {}
 
-template <std::size_t Base>
-Calculator<Base>::Calculator(std::map<std::string, BigInt<Base>> mapNum) : 
+template <class T>
+Calculator<T>::Calculator(std::map<std::string, T> mapNum) : 
 numbers_(mapNum){}
 
-template <std::size_t Base>
-Calculator<Base>::~Calculator(){}
+template <class T>
+Calculator<T>::~Calculator(){}
 
 // Metodo que dada una sentencia (conjunto de operaciones) y delimitador
 // (para separar la secuencia), devuelve el lenguaje resultante de todas las
 // operaciones previas
-template <std::size_t Base>
-BigInt<Base> Calculator<Base>::GetResult(std::vector<std::string> operations) {
+template <class T>
+T Calculator<T>::GetResult(std::vector<std::string> operations) {
 
   if (numbers_.size() == 0)
     throw std::domain_error("La pila no dispone de números almacenados");
@@ -78,10 +80,10 @@ BigInt<Base> Calculator<Base>::GetResult(std::vector<std::string> operations) {
     // Lenguaje declarado
     if (isNumber(operations.at(i))) {
       stack_.push(numbers_[operations.at(i)]);
-    } else if (std::all_of(operations.at(i).begin(),
-                           operations.at(i).end(), ::isdigit)) {
-      // Exponente opercion potencia
-      power = std::stoi(operations.at(i));
+    // } else if (std::all_of(operations.at(i).begin(),
+    //                        operations.at(i).end(), ::isdigit)) {
+    //   // Exponente opercion potencia
+    //   power = std::stoi(operations.at(i));
     } else {
       // Signo operación o fallo
       Operations(operations.at(i).at(0), power);
@@ -89,16 +91,16 @@ BigInt<Base> Calculator<Base>::GetResult(std::vector<std::string> operations) {
   }
   assert(stack_.size() == 1);
 
-  Language lang_aux(stack_.top(), "L_result");
-  return lang_aux;
+  T toRetun(stack_.top());
+  return toRetun;
 }
 
 // Metodo para saber si existe un lenguaje con un identificador de lenguaje
 // recibido por parametro (modularidad)
-template <std::size_t Base>
-bool Calculator<Base>::isNumber(std::string paramName) {
+template <class T>
+bool Calculator<T>::isNumber(std::string paramName) {
   auto it = numbers_.find(paramName);
-  if (it != my_map.end()) {
+  if (it != numbers_.end()) {
     return true;
   } 
   return false;
@@ -107,35 +109,40 @@ bool Calculator<Base>::isNumber(std::string paramName) {
 // Metodo que ejecuta las operaciones soportadas por la calculadora, que recibe
 // el supuesto operador, y un entero, para usar en el caso de la potencia, y
 // si no se indica el parametro, se pasará uno por defecto (modularidad)
-template <std::size_t Base>
-void Calculator<Base>::Operations(char _operator, int power = 1) {
+template <class T>
+void Calculator<T>::Operations(char _operator, int power) {
   // Pila no vacia
   assert(!(stack_.empty()));
-  BigInt<Base> secondNumber(stack_.top());
+  T secondNumber(stack_.top());
   stack_.pop();
 
-  if (_operator == Operators::power) {
-    stack_.push(l2.Power(power));
-  } else {
+  // if (_operator == Operators::power) {
+  //   stack_.push(secondNumber ^ power);
+  // } else {
     assert(!(stack_.empty()));
-    BigInt<Base> firstNumber(stack_.top());
+    T firstNumber(stack_.top());
     stack_.pop();
     switch (_operator) {
       case Operators::plus:
         stack_.push(firstNumber + secondNumber);
         break;
-      case Operators::minus:
-        stack_.push(firstNumber - secondNumber);
-        break;
-      case Operators::multiply:
-        stack_.push(firstNumber * secondNumber);
-        break;
-      case Operators::split:
-        stack_.push(firstNumber / secondNumber);
+      // case Operators::minus:
+      //   stack_.push(firstNumber - secondNumber);
+      //   break;
+      // case Operators::multiply:
+      //   stack_.push(firstNumber * secondNumber);
+      //   break;
+      // case Operators::split:
+      //   stack_.push(firstNumber / secondNumber);
         break;
       default:
         throw std::domain_error("Simbolo no soportado");
         break;
     }
-  }
+  //}
+}
+
+template <class T>
+void Calculator<T>::insertNum(std::string tag, T value) {
+  numbers_[tag] = value;
 }

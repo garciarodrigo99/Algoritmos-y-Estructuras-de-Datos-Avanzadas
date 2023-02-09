@@ -3,22 +3,21 @@
 #include "Big_Int.h"
 #include "Board.h"
 #include "splitChain.h"
+#include "calculator.h"
 
-template <std::size_t Base>
+template <class T>
 void auxFunction(std::string fileName) {
-  BigInt<Base> test(10101);
-  Board<Base> myBoard(fileName);
+  T test(10101);
+  T myBoard(fileName);
   std::cout << myBoard;
 }
 
 int main(int argc, char *argv[]) {
 
-  BigInt<10> dec1(123);
-  BigInt<10> dec2(456);
-  BigInt<10> dec3(dec1+dec2);
-  std::cout << dec1 << std::endl;
-  std::cout << dec2 << std::endl;
-  std::cout << dec3 << std::endl;
+  BigInt<10> i(1);
+  BigInt<10> j(++i);
+  std::cout << j << " " << i << std::endl;
+  return 0;
 
   std::string fileName = argv[1];
   // --------------------------------------------------------------------------
@@ -44,19 +43,19 @@ int main(int argc, char *argv[]) {
 
   switch (option) {
     case 2:
-      auxFunction<2>(fileName);
+      auxFunction<BigInt<2>>(fileName);
       break;
 
     case 8:
-      auxFunction<8>(fileName);      
+      auxFunction<BigInt<8>>(fileName);      
       break;
 
     case 10:
-      auxFunction<10>(fileName);
+      auxFunction<BigInt<10>>(fileName);
       break;
 
     case 16:
-      auxFunction<16>(fileName);
+      auxFunction<BigInt<16>>(fileName);
       break;
     
     default:

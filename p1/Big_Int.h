@@ -14,6 +14,15 @@ std::ostream& operator<< (std::ostream&, const BigInt<Base>&);
 // template <std::size_t Base> 
 // std::ostream& operator>> (std::ostream&, const BigInt<Base>&);
 
+template <std::size_t Base> 
+bool operator==(const BigInt<Base>&, const BigInt<Base> &);
+
+template <std::size_t Base> 
+bool operator>(const BigInt<Base>&, const BigInt<Base> &);
+
+template <std::size_t Base> 
+bool operator<(const BigInt<Base>&, const BigInt<Base> &);
+
 template <std::size_t Base>
 BigInt<Base> operator+(const BigInt<Base>&, const BigInt<Base>&);
 
@@ -27,6 +36,7 @@ class BigInt {
 		void build(std::string&);
 		void checkCharFromBase(char);
 		void print();
+		void insertnZero(int);
 
 	public:
 		// Constructores
@@ -50,15 +60,15 @@ class BigInt {
 		char operator[](int) const; // Acceso al i-ésimo dígito
 
 		// Comparación:
-		friend bool operator==(const BigInt<Base>&, const BigInt<Base> &);
+		friend bool operator==<Base>(const BigInt<Base>&, const BigInt<Base> &);
 		bool operator!=(const BigInt<Base>&) const;
-		friend bool operator>(const BigInt<Base>&, const BigInt<Base> &);
+		friend bool operator><Base>(const BigInt<Base>&, const BigInt<Base> &);
 		bool operator>=(const BigInt<Base> &) const;
-		friend bool operator<(const BigInt<Base>&, const BigInt<Base>&);
+		friend bool operator< <Base>(const BigInt<Base>&, const BigInt<Base>&);
 		bool operator<=(const BigInt<Base>&) const;
 
 		// Incremento/decremento:
-		BigInt<Base>& operator++(); // Pre-incremento
+		BigInt<Base>& operator++(); // Pre-incremento(++i)
 		BigInt<Base> operator++(int); // Post-incremento
 		BigInt<Base>& operator--(); // Pre-decremento
 		BigInt<Base> operator--(int); // Post-decremento
@@ -156,19 +166,83 @@ char BigInt<Base>::operator[](int index) const
   return vector_[index];
 }
 
-// (!!!) friend bool operator==(const BigInt<Base>&, const BigInt<Base> &);
+// OK
+template <std::size_t Base>
+bool operator==(const BigInt<Base>& first, const BigInt<Base> & second) {
+	if(first.vector_.size() != second.vector_.size()){
+		return false;
+	}
+	for(int i=first.vector_.size()-1; i>=0; i++){
+		if (first.vector_[i] != second.vector_[i]) {
+			return false;
+		}
+	}
+	return true;
+}
 
-// (!!!) bool operator!=(const BigInt<Base>&) const;
+template <std::size_t Base>
+bool BigInt<Base>::operator!=(const BigInt<Base>& param) const {
+	return !(*this == param);
+}
 
-// (!!!) friend bool operator>(const BigInt<Base>&, const BigInt<Base> &);
+template <std::size_t Base>
+bool operator>(const BigInt<Base>& first, const BigInt<Base> & second) {
+	if(first.vector_.size() != second.vector_.size()){
+		return (first.vector_.size() > second.vector_.size());
+	}
+	for(int i=first.vector_.size()-1; i>=0; --i){
+		if (first.vector_[i] != second.vector_[i]) {
+			return (first.vector_[i] > second.vector_[i]);
+		}
+	}
+	return false;
+}
 
-// (!!!) bool operator>=(const BigInt<Base> &) const;
+template <std::size_t Base>
+bool BigInt<Base>::operator>=(const BigInt<Base> & param) const {
+	return !(*this < param);
+}
 
-// (!!!) friend bool operator<(const BigInt<Base>&, const BigInt<Base>&);
+template <std::size_t Base>
+bool operator<(const BigInt<Base>& first, const BigInt<Base> & second) {
+	if(first.vector_.size() != second.vector_.size()){
+		return (first.vector_.size() < second.vector_.size());
+	}
+	for(int i=first.vector_.size()-1; i>=0; --i){
+		if (first.vector_[i] != second.vector_[i]) {
+			return (first.vector_[i] < second.vector_[i]);
+		}
+	}
+	return false;
+}
 
-// (!!!) bool operator<=(const BigInt<Base>&) const;
+template <std::size_t Base>
+bool BigInt<Base>::operator<=(const BigInt<Base> & param) const {
+	return !(*this > param);
+}
 
-// (!!!) BigInt<Base>& operator++(); // Pre-incremento
+template <std::size_t Base>
+BigInt<Base>& BigInt<Base>::operator++() {
+	int carry = 1;
+	for(int i=0; i<vector_.size();i++) {
+		int element = convertToNumber(vector_[i]) + carry;
+		carry = element / Base;
+		element = element % Base;
+		vector_[i] = convertToCharacter(element);
+	}
+	if (carry != 0) {
+		vector_.push_back('1');
+	}
+	return *this;
+}
+
+template <std::size_t Base>
+BigInt<Base> BigInt<Base>::operator++(int) {
+	BigInt<Base> copy(*this);
+	int carry = 1;
+	operator++();
+	return copy;
+}
 
 // (!!!) BigInt<Base> operator++(int); // Post-incremento
 
@@ -177,10 +251,20 @@ char BigInt<Base>::operator[](int index) const
 // (!!!) BigInt<Base> operator--(int); // Post-decremento
 
 template <size_t Base>
-BigInt<Base> operator+(const BigInt<Base>& first, const BigInt<Base>& second) {
+BigInt<Base> operator+(const BigInt<Base>& b1, const BigInt<Base>& b2) {
 
-	if (first.vector_.size() != second.vector_.size())
+	BigInt<Base> first(b1);
+	BigInt<Base> second(b2);
+
+	if (first.vector_.size() != second.vector_.size()) {
+		if (first.vector_.size() > second.vector_.size()) {
+			second.insertnZero(first.vector_.size() - second.vector_.size());
+		} else {
+			first.insertnZero(second.vector_.size() - first.vector_.size());
+		}
+		
 		throw std::domain_error("Todavia no implementado diferentes tamaños");
+	}
 
 	int carry = 0;
 	int element = 0;
@@ -192,7 +276,13 @@ BigInt<Base> operator+(const BigInt<Base>& first, const BigInt<Base>& second) {
 		element = element % Base;
 		list.push_front(convertToCharacter(element));
 	}
-
+	element = 0;
+	while (carry != 0) {
+		element = carry;
+		carry = element / Base;
+		element = element % Base;
+		list.push_front(convertToCharacter(element));
+	}
 	std::string strParam;
 	for(auto i : list)
 		strParam.push_back(i);
@@ -200,8 +290,6 @@ BigInt<Base> operator+(const BigInt<Base>& first, const BigInt<Base>& second) {
 	BigInt<Base> toReturn(strParam);
 	return toReturn;
 }
-
-// (!!!) BigInt<Base> operator--(int); // Post-decremento
 
 // (!!!) BigInt<Base> operator-(const BigInt<Base> &) const;
 
@@ -276,6 +364,16 @@ inline void BigInt<Base>::print()
 		std::cout << i << " | ";
 
 	std::endl(std::cout);
+}
+
+template <std::size_t Base>
+void BigInt<Base>::insertnZero(int nZeros) {
+	int counter = 0;
+	while (counter < nZeros) {
+		vector_.push_back('0');
+		counter++;
+	}
+	
 }
 
 
