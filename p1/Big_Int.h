@@ -190,10 +190,14 @@ char BigInt<Base>::operator[](int index) const
 // OK
 template <std::size_t Base>
 bool operator==(const BigInt<Base>& first, const BigInt<Base> & second) {
+	if(first.sign_ != second.sign_){
+		return false;
+	}
+	
 	if(first.vector_.size() != second.vector_.size()){
 		return false;
 	}
-	for(int i=first.vector_.size()-1; i>=0; i++){
+	for(int i=first.vector_.size()-1; i>=0; i--){
 		if (first.vector_[i] != second.vector_[i]) {
 			return false;
 		}
@@ -208,6 +212,9 @@ bool BigInt<Base>::operator!=(const BigInt<Base>& param) const {
 
 template <std::size_t Base>
 bool operator>(const BigInt<Base>& first, const BigInt<Base> & second) {
+	if(first.sign_ != second.sign_){
+		return false;
+	}
 	if(first.vector_.size() != second.vector_.size()){
 		return (first.vector_.size() > second.vector_.size());
 	}
@@ -226,6 +233,9 @@ bool BigInt<Base>::operator>=(const BigInt<Base> & param) const {
 
 template <std::size_t Base>
 bool operator<(const BigInt<Base>& first, const BigInt<Base> & second) {
+	if(first.sign_ != second.sign_){
+		return false;
+	}
 	if(first.vector_.size() != second.vector_.size()){
 		return (first.vector_.size() < second.vector_.size());
 	}
@@ -241,15 +251,19 @@ template <std::size_t Base>
 bool BigInt<Base>::operator<=(const BigInt<Base> & param) const {
 	return !(*this > param);
 }
-// CUIDADO 0, -1
+
 template <std::size_t Base>
 BigInt<Base>& BigInt<Base>::operator++() {
 	if (sign_ == -1) {
-		BigInt<Base> copy(*this);
-		copy.sign_ = 1;
-		--copy;
-		*this = copy;
-		sign_ = -1;
+		if (*this == BigInt<Base>(-1)){	// Problema 0 negativo
+			*this = BigInt<Base>("0");
+		} else {
+			BigInt<Base> copy(*this);
+			copy.sign_ = 1;
+			--copy;
+			*this = copy;
+			sign_ = -1;
+		}
 	} else {
 		int carry = 1;
 		for(size_t i=0; i<vector_.size();i++) {
@@ -277,7 +291,7 @@ BigInt<Base> BigInt<Base>::operator++(int) {
 	return copy;
 }
 
-// CUIDADO 0, 1
+// CUIDADO 0, -1
 template <std::size_t Base>
 BigInt<Base>& BigInt<Base>::operator--() {
 	if (sign_ == -1) {
@@ -286,6 +300,8 @@ BigInt<Base>& BigInt<Base>::operator--() {
 		++copy;
 		*this = copy;
 		sign_ = -1;
+	} else if (*this == BigInt<Base>("0")){
+		*this = BigInt<Base>(-1);
 	} else {
 		bool carry = true;
 		for(size_t i=0; i<vector_.size();i++) {
