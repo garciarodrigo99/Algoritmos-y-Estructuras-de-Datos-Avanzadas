@@ -15,8 +15,8 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
-  BigInt<10> i(17);
-  BigInt<10> j(15);
+  BigInt<10> i(999);
+  BigInt<10> j(1);
   std::cout << (i+j) << std::endl;
   return 0;
 

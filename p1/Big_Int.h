@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <list>
+#include <algorithm>
 
 #pragma once
 
@@ -255,14 +256,15 @@ BigInt<Base> operator+(const BigInt<Base>& b1, const BigInt<Base>& b2) {
 	BigInt<Base> first(b1);
 	BigInt<Base> second(b2);
 
-	if (first.vector_.size() != second.vector_.size()) {
-		throw std::domain_error("Todavia no implementado diferentes tamaños");
-	}
+	// if (first.vector_.size() != second.vector_.size()) {
+	// 	throw std::domain_error("Todavia no implementado diferentes tamaños");
+	// }
+	int loopIterations = std::min(first.vector_.size(),second.vector_.size());
 
 	int carry = 0;
 	int element = 0;
 	std::list<char> list;
-	for(int i=0; i<first.vector_.size(); i++){
+	for(int i=0; i<loopIterations; i++){
 		element = carry + convertToNumber(first.vector_[i])
 		+ convertToNumber(second.vector_[i]);
 		carry = element / Base;
@@ -270,9 +272,22 @@ BigInt<Base> operator+(const BigInt<Base>& b1, const BigInt<Base>& b2) {
 		list.push_front(convertToCharacter(element));
 	}
 	element = 0;
-	if (carry != 0) {
-		list.push_front(convertToCharacter(carry));
+	if (first.vector_.size() != second.vector_.size()) {
+		BigInt<Base> bigger;
+		if (first.vector_.size() > second.vector_.size()) {
+			bigger = first;
+		} else {
+			bigger = second;
+		}
+		for (int i=loopIterations; i<bigger.vector_.size();i++) {
+			element = carry + convertToNumber(bigger.vector_[i]);
+			carry = element / Base;
+			element = element % Base;
+			list.push_front(convertToCharacter(element));
+		}
 	}
+	if (carry != 0) 
+		list.push_front(convertToCharacter(carry));
 	std::string strParam;
 	for(auto i : list)
 		strParam.push_back(i);
