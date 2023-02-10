@@ -216,15 +216,14 @@ bool BigInt<Base>::operator!=(const BigInt<Base>& param) const {
 template <std::size_t Base>
 bool operator>(const BigInt<Base>& first, const BigInt<Base> & second) {
 	if(first.sign_ != second.sign_){
-		return false;
+		return (first.sign_ > second.sign_);
 	}
 	if(first.vector_.size() != second.vector_.size()){
 		return (first.vector_.size() > second.vector_.size());
 	}
 	for(int i=first.vector_.size()-1; i>=0; --i){
 		if (first.vector_[i] != second.vector_[i]) {
-			return ((convertToNumber(first.vector_[i])*first.sign_) > 
-				(convertToNumber(second.vector_[i])*second.sign_));
+			return (first.vector_[i] > second.vector_[i]);
 		}
 	}
 	return false;
@@ -237,16 +236,15 @@ bool BigInt<Base>::operator>=(const BigInt<Base> & param) const {
 
 template <std::size_t Base>
 bool operator<(const BigInt<Base>& first, const BigInt<Base> & second) {
-	// if(first.sign_ != second.sign_){
-	// 	return false;
-	// }
+	if(first.sign_ != second.sign_){
+		return (first.sign_ < second.sign_);
+	}
 	if(first.vector_.size() != second.vector_.size()){
 		return (first.vector_.size() < second.vector_.size());
 	}
 	for(int i=first.vector_.size()-1; i>=0; --i){
 		if (first.vector_[i] != second.vector_[i]) {
-			return ((convertToNumber(first.vector_[i])*first.sign_) < 
-				(convertToNumber(second.vector_[i])*second.sign_));
+			return (first.vector_[i] < second.vector_[i]);
 		}
 	}
 	return false;
