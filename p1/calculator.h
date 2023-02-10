@@ -20,7 +20,6 @@
 #include <vector>
 #include <map>
 #include <cassert>
-#include "Big_Int.h"
 #include "splitChain.h"
 
 enum Operators {

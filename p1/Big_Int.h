@@ -36,7 +36,6 @@ class BigInt {
 		void build(std::string&);
 		void checkCharFromBase(char);
 		void print();
-		void insertnZero(int);
 
 	public:
 		// Constructores
@@ -257,12 +256,6 @@ BigInt<Base> operator+(const BigInt<Base>& b1, const BigInt<Base>& b2) {
 	BigInt<Base> second(b2);
 
 	if (first.vector_.size() != second.vector_.size()) {
-		if (first.vector_.size() > second.vector_.size()) {
-			second.insertnZero(first.vector_.size() - second.vector_.size());
-		} else {
-			first.insertnZero(second.vector_.size() - first.vector_.size());
-		}
-		
 		throw std::domain_error("Todavia no implementado diferentes tamaños");
 	}
 
@@ -277,11 +270,8 @@ BigInt<Base> operator+(const BigInt<Base>& b1, const BigInt<Base>& b2) {
 		list.push_front(convertToCharacter(element));
 	}
 	element = 0;
-	while (carry != 0) {
-		element = carry;
-		carry = element / Base;
-		element = element % Base;
-		list.push_front(convertToCharacter(element));
+	if (carry != 0) {
+		list.push_front(convertToCharacter(carry));
 	}
 	std::string strParam;
 	for(auto i : list)
@@ -365,17 +355,6 @@ inline void BigInt<Base>::print()
 
 	std::endl(std::cout);
 }
-
-template <std::size_t Base>
-void BigInt<Base>::insertnZero(int nZeros) {
-	int counter = 0;
-	while (counter < nZeros) {
-		vector_.push_back('0');
-		counter++;
-	}
-	
-}
-
 
 // Función externa
 int convertToNumber(char toConvert) {

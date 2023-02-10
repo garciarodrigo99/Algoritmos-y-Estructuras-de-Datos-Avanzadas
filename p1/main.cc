@@ -7,16 +7,17 @@
 
 template <class T>
 void auxFunction(std::string fileName) {
+  T aux(1010101);
   T test(10101);
   T myBoard(fileName);
-  std::cout << myBoard;
+  Calculator<T> calc;
 }
 
 int main(int argc, char *argv[]) {
 
-  BigInt<10> i(1);
-  BigInt<10> j(++i);
-  std::cout << j << " " << i << std::endl;
+  BigInt<10> i(17);
+  BigInt<10> j(15);
+  std::cout << (i+j) << std::endl;
   return 0;
 
   std::string fileName = argv[1];
