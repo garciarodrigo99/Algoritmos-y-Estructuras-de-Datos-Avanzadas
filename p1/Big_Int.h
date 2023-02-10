@@ -244,11 +244,27 @@ BigInt<Base> BigInt<Base>::operator++(int) {
 	return copy;
 }
 
-// (!!!) BigInt<Base> operator++(int); // Post-incremento
+template <std::size_t Base>
+BigInt<Base>& BigInt<Base>::operator--() {
+	bool carry = true;
+	for(int i=0; i<vector_.size();i++) {
+		int element = convertToNumber(vector_[i]) - carry;
+		carry = (element < 0);
+		vector_[i] = convertToCharacter(element);
+	}
+	if (carry != 0) {
+		vector_.push_back('1');
+	}
+	return *this;
+}// Pre-decremento
 
-// (!!!) BigInt<Base>& operator--(); // Pre-decremento
-
-// (!!!) BigInt<Base> operator--(int); // Post-decremento
+template <std::size_t Base>
+BigInt<Base> BigInt<Base>::operator--(int) {
+	BigInt<Base> copy(*this);
+	int carry = 1;
+	operator--();
+	return copy;
+} // Post-decremento
 
 template <size_t Base>
 BigInt<Base> operator+(const BigInt<Base>& b1, const BigInt<Base>& b2) {
@@ -300,7 +316,22 @@ BigInt<Base> operator+(const BigInt<Base>& b1, const BigInt<Base>& b2) {
 
 // (!!!) BigInt<Base> operator-() const;
 
-// (!!!) BigInt<Base> operator*(const BigInt<Base>&) const;
+template <size_t Base>
+BigInt<Base> BigInt<Base>::operator*(const BigInt<Base>& multiplier) const {
+	BigInt<Base> zero;
+	if (multiplier == zero){
+		return zero;
+	}
+
+	BigInt<Base> iterator;	// Zero by default
+	BigInt<Base> copy(*this);
+	BigInt<Base> result;
+	while (iterator < (multiplier)) {
+		result = result + copy;
+		iterator++;
+	}
+	return result;
+}
 
 // (!!!) friend BigInt<Base> operator/(const BigInt<Base>&, const BigInt<Base>&);
 
@@ -380,6 +411,7 @@ int convertToNumber(char toConvert) {
 }
 
 char convertToCharacter(int toConvert) {
+	toConvert = std::abs(toConvert);
 	if (toConvert >= 0 && toConvert <= 9) {
 		return (char)(toConvert + '0');
 	}
