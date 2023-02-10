@@ -27,6 +27,9 @@ bool operator<(const BigInt<Base>&, const BigInt<Base> &);
 template <std::size_t Base>
 BigInt<Base> operator+(const BigInt<Base>&, const BigInt<Base>&);
 
+template <std::size_t Base>
+BigInt<Base> pow(const BigInt<Base>&, const BigInt<Base>&);
+
 int convertToNumber(char);
 char convertToCharacter(int toConvert);
 
@@ -84,7 +87,7 @@ class BigInt {
 		BigInt<Base> operator%(const BigInt<Base>&) const;
 
 		// Potencia a^b
-		friend BigInt<Base> pow(const BigInt<Base>&, const BigInt<Base>&);
+		friend BigInt<Base> pow<Base>(const BigInt<Base>&, const BigInt<Base>&);
 
 		std::string cvToStr(void);
 };
@@ -220,7 +223,8 @@ bool operator>(const BigInt<Base>& first, const BigInt<Base> & second) {
 	}
 	for(int i=first.vector_.size()-1; i>=0; --i){
 		if (first.vector_[i] != second.vector_[i]) {
-			return (first.vector_[i] > second.vector_[i]);
+			return ((convertToNumber(first.vector_[i])*first.sign_) > 
+				(convertToNumber(second.vector_[i])*second.sign_));
 		}
 	}
 	return false;
@@ -233,15 +237,16 @@ bool BigInt<Base>::operator>=(const BigInt<Base> & param) const {
 
 template <std::size_t Base>
 bool operator<(const BigInt<Base>& first, const BigInt<Base> & second) {
-	if(first.sign_ != second.sign_){
-		return false;
-	}
+	// if(first.sign_ != second.sign_){
+	// 	return false;
+	// }
 	if(first.vector_.size() != second.vector_.size()){
 		return (first.vector_.size() < second.vector_.size());
 	}
 	for(int i=first.vector_.size()-1; i>=0; --i){
 		if (first.vector_[i] != second.vector_[i]) {
-			return (first.vector_[i] < second.vector_[i]);
+			return ((convertToNumber(first.vector_[i])*first.sign_) < 
+				(convertToNumber(second.vector_[i])*second.sign_));
 		}
 	}
 	return false;
@@ -388,12 +393,12 @@ BigInt<Base> BigInt<Base>::operator*(const BigInt<Base>& multiplier) const {
 	// 	iterator++;
 	// }
 	// return result;
-
+	bool negative = ((sign_ == -1) ^ (multiplier.sign_ == -1));	// ^ xor
 	std::vector<BigInt<Base>> vectorsum;
-	for(int j=0;j<multiplier.vector_.size();j++){
+	for(std::size_t j=0;j<multiplier.vector_.size();j++){
 		int carry = 0;
 		std::list<char> result2;
-		for(int i=0;i<vector_.size();i++){
+		for(std::size_t i=0;i<vector_.size();i++){
 			int result = (convertToNumber(vector_[i]) * 
 				convertToNumber(multiplier[j])) + carry;
 			carry = result / Base;
@@ -412,9 +417,13 @@ BigInt<Base> BigInt<Base>::operator*(const BigInt<Base>& multiplier) const {
 		vectorsum.push_back(BigInt<Base>(strParam));
 	}
 	BigInt<Base> toReturn;
-	for (int i=0; i<vectorsum.size();i++) {
+	for (std::size_t i=0; i<vectorsum.size();i++) {
 		toReturn = toReturn + vectorsum[i];
 	}
+	if (negative) {
+		toReturn.sign_ = -1;
+	}
+	
 	return toReturn;
 }
 
@@ -422,7 +431,26 @@ BigInt<Base> BigInt<Base>::operator*(const BigInt<Base>& multiplier) const {
 
 // (!!!) BigInt<Base> operator%(const BigInt<Base>&) const;
 
-// (!!!) friend BigInt<Base> pow(const BigInt<Base>&, const BigInt<Base>&);
+template <size_t Base>
+BigInt<Base> pow(const BigInt<Base>& base, const BigInt<Base>& exponent) {
+	
+	if (exponent == BigInt<Base>("0")) {
+		return BigInt<Base>(1);
+	}
+	if (exponent < BigInt<Base>("0")){
+		throw std::domain_error("Operacion no soportada");
+	}
+
+	BigInt<Base> counter;
+	BigInt<Base> result(base);
+	BigInt<Base> operations(exponent);
+	--operations;
+	while (counter < (operations)) {
+		result = result * base;
+		counter++;
+	}
+	return result;
+}
 
 
 // Metodos privados
