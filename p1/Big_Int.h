@@ -344,14 +344,14 @@ BigInt<Base> operator+(const BigInt<Base>& first, const BigInt<Base>& second) {
 	}
 	element = 0;
 	if (first.vector_.size() != second.vector_.size()) {
-		BigInt<Base>* bigger;	// BigInt<Base>* bigger
+		BigInt<Base> bigger;	// BigInt<Base>* bigger
 		if (first.vector_.size() > second.vector_.size()) {
-			bigger = &first;		// bigger = first
+			bigger = first;		// bigger = first
 		} else {
-			bigger = &second;		// bigger = second
+			bigger = second;		// bigger = second
 		}
-		for (int i=loopIterations; i<bigger->vector_.size();i++) { // bigger.vector_.size()
-			element = carry + convertToNumber(bigger->vector_[i]);	// bigger.vector_[i]
+		for (size_t i=loopIterations; i<bigger.vector_.size();i++) { // bigger.vector_.size()
+			element = carry + convertToNumber(bigger.vector_[i]);	// bigger.vector_[i]
 			carry = element / Base;
 			element = element % Base;
 			list.push_front(convertToCharacter(element));
@@ -374,18 +374,47 @@ BigInt<Base> operator+(const BigInt<Base>& first, const BigInt<Base>& second) {
 template <size_t Base>
 BigInt<Base> BigInt<Base>::operator*(const BigInt<Base>& multiplier) const {
 	BigInt<Base> zero;
-	if (multiplier == zero){
+	if ((multiplier == zero) || (*this == zero))
 		return zero;
-	}
+	if (multiplier == BigInt<Base>(1))
+		return *this;
+	
 
-	BigInt<Base> iterator;	// Zero by default
-	BigInt<Base> copy(*this);
-	BigInt<Base> result;
-	while (iterator < (multiplier)) {
-		result = result + copy;
-		iterator++;
+	// BigInt<Base> iterator;	// Zero by default
+	// BigInt<Base> copy(*this);
+	// BigInt<Base> result;
+	// while (iterator < (multiplier)) {
+	// 	result = result + copy;
+	// 	iterator++;
+	// }
+	// return result;
+
+	std::vector<BigInt<Base>> vectorsum;
+	for(int j=0;j<multiplier.vector_.size();j++){
+		int carry = 0;
+		std::list<char> result2;
+		for(int i=0;i<vector_.size();i++){
+			std::cout << "vector_[i]: " << vector_[i] << std::endl;
+			std::cout << "multiplier[j]: " << multiplier[j] << std::endl;
+			
+			int result = (vector_[i] * multiplier[j]) + carry;
+			carry = result / Base;
+			result = result % Base;
+			result2.push_front(convertToCharacter(result));
+		}
+		for (size_t i = 0; i < j; i++){
+			result2.push_back('0');
+		}
+		std::string strParam;
+		for(auto i : result2)
+			strParam.push_back(i);
+		vectorsum.push_back(BigInt<Base>(strParam));
 	}
-	return result;
+	BigInt<Base> toReturn;
+	for (int i=0; i<vectorsum.size();i++) {
+		toReturn = toReturn + vectorsum[i];
+	}
+	return toReturn;
 }
 
 // (!!!) friend BigInt<Base> operator/(const BigInt<Base>&, const BigInt<Base>&);

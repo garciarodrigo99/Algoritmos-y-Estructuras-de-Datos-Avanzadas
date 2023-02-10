@@ -46,6 +46,8 @@
         "typeinfo": "cpp",
         "list": "cpp",
         "map": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "chrono": "cpp",
+        "ratio": "cpp"
     }
 }

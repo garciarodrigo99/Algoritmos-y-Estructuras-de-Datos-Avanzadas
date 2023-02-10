@@ -1,4 +1,5 @@
 #include <fstream>
+#include <chrono>
 
 #include "Big_Int.h"
 #include "Board.h"
@@ -15,13 +16,16 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
-  BigInt<10> i(-4);
-  std::cout << (++i) << std::endl;
-  std::cout << (++i) << std::endl;
-  std::cout << (++i) << std::endl;
-  std::cout << (++i) << std::endl;
-  std::cout << (++i) << std::endl;
-  std::cout << (++i) << std::endl;
+  BigInt<10> b1("123");
+  BigInt<10> b2("123");
+  // BigInt<10> b1("442142117615672");
+  // BigInt<10> b2("46651367647546");
+  auto start = std::chrono::system_clock::now();
+  BigInt<10> b5(b1*b2);
+  auto end = std::chrono::system_clock::now();
+  std::cout << b5 << std::endl;
+  std::chrono::duration<float> duration = end - start;
+  std::cout << duration.count() << "s" << std::endl;
   return 0;
 
   std::string fileName = argv[1];
