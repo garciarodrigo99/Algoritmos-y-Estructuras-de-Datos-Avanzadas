@@ -273,14 +273,14 @@ BigInt<Base> operator+(const BigInt<Base>& b1, const BigInt<Base>& b2) {
 	}
 	element = 0;
 	if (first.vector_.size() != second.vector_.size()) {
-		BigInt<Base> bigger;
+		BigInt<Base>* bigger;	// BigInt<Base>* bigger
 		if (first.vector_.size() > second.vector_.size()) {
-			bigger = first;
+			bigger = &first;		// bigger = first
 		} else {
-			bigger = second;
+			bigger = &second;		// bigger = second
 		}
-		for (int i=loopIterations; i<bigger.vector_.size();i++) {
-			element = carry + convertToNumber(bigger.vector_[i]);
+		for (int i=loopIterations; i<bigger->vector_.size();i++) { // bigger.vector_.size()
+			element = carry + convertToNumber(bigger->vector_[i]);	// bigger.vector_[i]
 			carry = element / Base;
 			element = element % Base;
 			list.push_front(convertToCharacter(element));
