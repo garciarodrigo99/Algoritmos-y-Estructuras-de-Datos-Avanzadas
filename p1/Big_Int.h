@@ -34,6 +34,7 @@ template <std::size_t Base>
 class BigInt {
 	private:
 		std::vector<char> vector_;
+		int sign_ = 1;
 		void build(std::string&);
 		void checkCharFromBase(char);
 		void print();
@@ -90,13 +91,21 @@ class BigInt {
 template <size_t Base>
 BigInt<Base>::BigInt(long n)
 {
-	std::string str = std::to_string(n);
+	std::string str(std::to_string(n));
+	if (n < 0) {
+		sign_ = -1;
+		str.erase(0,1);
+	}
 	build(str);
 }
 
 template <size_t Base>
 BigInt<Base>::BigInt(std::string& str)
 {
+	if (str.front() == '-') {
+		sign_ = -1;
+		str.erase(0,1);
+	}
 	build(str);
 }
 
@@ -104,6 +113,10 @@ template <size_t Base>
 BigInt<Base>::BigInt(const char* cchar)
 {
 	std::string str = cchar;
+		if (str.front() == '-') {
+		sign_ = -1;
+		str.erase(0,1);
+	}
 	build(str);
 }
 
@@ -132,6 +145,8 @@ inline BigInt<Base> &BigInt<Base>::operator=(const BigInt<Base> & bigIntParam)
 template <size_t Base>
 std::ostream& operator<<(std::ostream& os, const BigInt<Base>& bigInt) {
 
+	if (bigInt.sign_ == -1)
+		os << '-';
 	for(int i=bigInt.vector_.size()-1; i>=0; i--){
 		os << bigInt.vector_[i];
 	}
@@ -158,7 +173,11 @@ std::ostream& operator<<(std::ostream& os, const BigInt<Base>& bigInt) {
 // 	return is;
 // }
 
-// (!!!) int sign() const; // Signo: 1 o -1
+template <std::size_t Base>
+int BigInt<Base>::sign() const
+{
+	return sign_;
+}
 
 template <std::size_t Base>
 char BigInt<Base>::operator[](int index) const
