@@ -394,13 +394,14 @@ BigInt<Base> BigInt<Base>::operator*(const BigInt<Base>& multiplier) const {
 		int carry = 0;
 		std::list<char> result2;
 		for(int i=0;i<vector_.size();i++){
-			std::cout << "vector_[i]: " << vector_[i] << std::endl;
-			std::cout << "multiplier[j]: " << multiplier[j] << std::endl;
-			
-			int result = (vector_[i] * multiplier[j]) + carry;
+			int result = (convertToNumber(vector_[i]) * 
+				convertToNumber(multiplier[j])) + carry;
 			carry = result / Base;
 			result = result % Base;
 			result2.push_front(convertToCharacter(result));
+		}
+		if(carry != 0){
+			result2.push_front(convertToCharacter(carry));
 		}
 		for (size_t i = 0; i < j; i++){
 			result2.push_back('0');

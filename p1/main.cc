@@ -16,12 +16,12 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
-  BigInt<10> b1("123");
-  BigInt<10> b2("123");
+  BigInt<16> b1("FF");
+  BigInt<16> b2("FF");
   // BigInt<10> b1("442142117615672");
   // BigInt<10> b2("46651367647546");
   auto start = std::chrono::system_clock::now();
-  BigInt<10> b5(b1*b2);
+  BigInt<16> b5(b1*b2);
   auto end = std::chrono::system_clock::now();
   std::cout << b5 << std::endl;
   std::chrono::duration<float> duration = end - start;
