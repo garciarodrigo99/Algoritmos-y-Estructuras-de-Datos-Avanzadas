@@ -38,6 +38,7 @@ class BigInt {
 		void build(std::string&);
 		void checkCharFromBase(char);
 		void print();
+		//std::string cvToStr(void);
 
 	public:
 		// Constructores
@@ -85,7 +86,7 @@ class BigInt {
 		// Potencia a^b
 		friend BigInt<Base> pow(const BigInt<Base>&, const BigInt<Base>&);
 
-		void insert(char);
+		std::string cvToStr(void);
 };
 
 template <size_t Base>
@@ -123,7 +124,7 @@ BigInt<Base>::BigInt(const char* cchar)
 // OK
 template <size_t Base>
 BigInt<Base>::BigInt(const BigInt<Base>& copy)
-{
+{	
 	*this = copy;	
 }
 
@@ -136,6 +137,7 @@ BigInt<Base>::~BigInt()
 template <std::size_t Base>
 inline BigInt<Base> &BigInt<Base>::operator=(const BigInt<Base> & bigIntParam)
 {
+	sign_ = bigIntParam.sign_;
 	vector_.clear();
 	for (auto i : bigIntParam.vector_)
 		vector_.push_back(i);
@@ -239,18 +241,26 @@ template <std::size_t Base>
 bool BigInt<Base>::operator<=(const BigInt<Base> & param) const {
 	return !(*this > param);
 }
-
+// CUIDADO 0, -1
 template <std::size_t Base>
 BigInt<Base>& BigInt<Base>::operator++() {
-	int carry = 1;
-	for(int i=0; i<vector_.size();i++) {
-		int element = convertToNumber(vector_[i]) + carry;
-		carry = element / Base;
-		element = element % Base;
-		vector_[i] = convertToCharacter(element);
-	}
-	if (carry != 0) {
-		vector_.push_back('1');
+	if (sign_ == -1) {
+		BigInt<Base> copy(*this);
+		copy.sign_ = 1;
+		--copy;
+		*this = copy;
+		sign_ = -1;
+	} else {
+		int carry = 1;
+		for(size_t i=0; i<vector_.size();i++) {
+			int element = convertToNumber(vector_[i]) + carry;
+			carry = element / Base;
+			element = element % Base;
+			vector_[i] = convertToCharacter(element);
+		}
+		if (carry != 0) {
+			vector_.push_back('1');
+		}
 	}
 	return *this;
 }
@@ -258,21 +268,34 @@ BigInt<Base>& BigInt<Base>::operator++() {
 template <std::size_t Base>
 BigInt<Base> BigInt<Base>::operator++(int) {
 	BigInt<Base> copy(*this);
-	int carry = 1;
-	operator++();
+	//int carry = 1;
+	if (sign_ == -1) {
+		operator--();
+	} else {
+		operator++();
+	}
 	return copy;
 }
 
+// CUIDADO 0, 1
 template <std::size_t Base>
 BigInt<Base>& BigInt<Base>::operator--() {
-	bool carry = true;
-	for(int i=0; i<vector_.size();i++) {
-		int element = convertToNumber(vector_[i]) - carry;
-		carry = (element < 0);
-		vector_[i] = convertToCharacter(element);
-	}
-	if (carry != 0) {
-		vector_.push_back('1');
+	if (sign_ == -1) {
+		BigInt<Base> copy(*this);
+		copy.sign_ = 1;
+		++copy;
+		*this = copy;
+		sign_ = -1;
+	} else {
+		bool carry = true;
+		for(size_t i=0; i<vector_.size();i++) {
+			int element = convertToNumber(vector_[i]) - carry;
+			carry = (element < 0);
+			vector_[i] = convertToCharacter(element);
+		}
+		if (carry != 0) {
+			vector_.push_back('1');
+		}
 	}
 	return *this;
 }// Pre-decremento
@@ -280,20 +303,17 @@ BigInt<Base>& BigInt<Base>::operator--() {
 template <std::size_t Base>
 BigInt<Base> BigInt<Base>::operator--(int) {
 	BigInt<Base> copy(*this);
-	int carry = 1;
-	operator--();
+	if (sign_ == -1) {
+		operator++();
+	} else {
+		operator--();
+	}
 	return copy;
 } // Post-decremento
 
 template <size_t Base>
-BigInt<Base> operator+(const BigInt<Base>& b1, const BigInt<Base>& b2) {
+BigInt<Base> operator+(const BigInt<Base>& first, const BigInt<Base>& second) {
 
-	BigInt<Base> first(b1);
-	BigInt<Base> second(b2);
-
-	// if (first.vector_.size() != second.vector_.size()) {
-	// 	throw std::domain_error("Todavia no implementado diferentes tamaños");
-	// }
 	int loopIterations = std::min(first.vector_.size(),second.vector_.size());
 
 	int carry = 0;
@@ -419,6 +439,15 @@ inline void BigInt<Base>::print()
 		std::cout << i << " | ";
 
 	std::endl(std::cout);
+}
+
+template <std::size_t Base>
+std::string BigInt<Base>::cvToStr(void) {
+	std::string str;
+	for(int i=vector_.size()-1; i>=0; i--){
+		str.push_back(vector_[i]);
+	}
+	return str;
 }
 
 // Función externa
