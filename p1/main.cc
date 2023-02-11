@@ -18,14 +18,22 @@ int main(int argc, char *argv[]) {
 
   // BigInt<10> b1(3);
   // BigInt<10> b2(-3);
-  BigInt<10> b1("442142117615672442142117615672442142117615672");
-  BigInt<10> b2("466513676475464665136764754646651367647546");
+  BigInt<10> n1("442142117615672");
+  BigInt<10> n2("46651367647546");
+  BigInt<10> e1(n1+n2);
+  BigInt<10> e2(e1+(n1-n2));
   auto start = std::chrono::system_clock::now();
-  std::cout << (b1*b1*b1*b1*b1*b1*b1*b1) << std::endl;
+  std::cout << e2 << std::endl;
   auto end = std::chrono::system_clock::now();
   std::chrono::duration<float> duration = end - start;
   std::cout << duration.count() << "s" << std::endl;
-  std::cout << pow(BigInt<10>(2),BigInt<10>(-1)) << std::endl;
+  std::map<std::string, BigInt<10>> numeros;
+  numeros["n1"] = n1;
+  numeros["n2"] = n2;
+  numeros["e1"] = e1;
+  Calculator<BigInt<10>> calc;
+  std::cout << calc.GetResult(SplitChain("e2 = e1 n1 n2 - +"),numeros) << std::endl;
+
   return 0;
 
   std::string fileName = argv[1];

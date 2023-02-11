@@ -6,29 +6,24 @@
 
 #pragma once
 
-template <std::size_t Base> 
-class BigInt;
+template <std::size_t Base> class BigInt;
 
-template <std::size_t Base> 
-std::ostream& operator<< (std::ostream&, const BigInt<Base>&);
+template <std::size_t Base> std::ostream& operator<< (std::ostream&, const BigInt<Base>&);
 
 // template <std::size_t Base> 
 // std::ostream& operator>> (std::ostream&, const BigInt<Base>&);
 
-template <std::size_t Base> 
-bool operator==(const BigInt<Base>&, const BigInt<Base> &);
+template <std::size_t Base> bool operator==(const BigInt<Base>&, const BigInt<Base> &);
 
-template <std::size_t Base> 
-bool operator>(const BigInt<Base>&, const BigInt<Base> &);
+template <std::size_t Base> bool operator>(const BigInt<Base>&, const BigInt<Base> &);
 
-template <std::size_t Base> 
-bool operator<(const BigInt<Base>&, const BigInt<Base> &);
+template <std::size_t Base> bool operator<(const BigInt<Base>&, const BigInt<Base> &);
 
-template <std::size_t Base>
-BigInt<Base> operator+(const BigInt<Base>&, const BigInt<Base>&);
+template <std::size_t Base> BigInt<Base> operator+(const BigInt<Base>&, const BigInt<Base>&);
 
-template <std::size_t Base>
-BigInt<Base> pow(const BigInt<Base>&, const BigInt<Base>&);
+template <std::size_t Base> BigInt<Base> operator/(const BigInt<Base>&, const BigInt<Base>&);
+
+template <std::size_t Base> BigInt<Base> pow(const BigInt<Base>&, const BigInt<Base>&);
 
 int convertToNumber(char);
 char convertToCharacter(int toConvert);
@@ -83,7 +78,7 @@ class BigInt {
 		BigInt<Base> operator-(const BigInt<Base> &) const;
 		BigInt<Base> operator-() const;
 		BigInt<Base> operator*(const BigInt<Base>&) const;
-		friend BigInt<Base> operator/(const BigInt<Base>&, const BigInt<Base>&);
+		friend BigInt<Base> operator/ <Base>(const BigInt<Base>&, const BigInt<Base>&);
 		BigInt<Base> operator%(const BigInt<Base>&) const;
 
 		// Potencia a^b
@@ -333,35 +328,77 @@ BigInt<Base> BigInt<Base>::operator--(int) {
 template <size_t Base>
 BigInt<Base> operator+(const BigInt<Base>& first, const BigInt<Base>& second) {
 
-	int loopIterations = std::min(first.vector_.size(),second.vector_.size());
+	if (first.vector_.size() < second.vector_.size())
+		return BigInt<Base>(second+first);
+	
+	if ((first.sign_ == -1) ^ (second.sign_ == -1)){
+		// (-) + (+)
+		if (first.sign_ == -1){
+			BigInt<Base> lower(first);
+			lower.sign_ = 1;
+			lower = lower - second;
+			lower.sign_ = -1;
+			return lower;
+		}
+		// (+) + (-)
+		BigInt<Base> lower(second);
+		lower.sign_ = 1;
+		return BigInt<Base>(first - lower);
+	}
+	
+	int carry = 0;
+	int element = 0;
+	std::list<char> list;
+
+	for(size_t i=0; i<first.vector_.size(); i++){
+		element = carry + convertToNumber(first.vector_[i]);
+		if (i<second.vector_.size()){
+			element = element + convertToNumber(second.vector_[i]);
+		}
+		carry = element / Base;
+		list.push_front(convertToCharacter(element % Base));
+	}
+
+	if (carry != 0) 
+		list.push_front(convertToCharacter(carry));
+	std::string strParam;
+	for(auto i : list)
+		strParam.push_back(i);
+
+	BigInt<Base> toReturn(strParam);
+	if (first.sign_ == -1)	// (-) + (-)
+		toReturn.sign_ = -1; 
+	return toReturn;
+}
+
+template <std::size_t Base>
+BigInt<Base> BigInt<Base>::operator-(const BigInt<Base> & param) const {
 
 	int carry = 0;
 	int element = 0;
 	std::list<char> list;
-	for(int i=0; i<loopIterations; i++){
-		element = carry + convertToNumber(first.vector_[i])
-		+ convertToNumber(second.vector_[i]);
-		carry = element / Base;
-		element = element % Base;
+	for(size_t i=0; i<vector_.size(); i++){
+		element = convertToNumber(vector_[i]) - carry;
+		if (i<param.vector_.size()) // Tamaño comun
+			element = element - convertToNumber(param.vector_[i]);
+		if (element < 0){
+			element = Base + element;
+			carry = 1;
+		} else{
+			carry = 0;
+		}
 		list.push_front(convertToCharacter(element));
 	}
-	element = 0;
-	if (first.vector_.size() != second.vector_.size()) {
-		BigInt<Base> bigger;	// BigInt<Base>* bigger
-		if (first.vector_.size() > second.vector_.size()) {
-			bigger = first;		// bigger = first
-		} else {
-			bigger = second;		// bigger = second
-		}
-		for (size_t i=loopIterations; i<bigger.vector_.size();i++) { // bigger.vector_.size()
-			element = carry + convertToNumber(bigger.vector_[i]);	// bigger.vector_[i]
-			carry = element / Base;
-			element = element % Base;
-			list.push_front(convertToCharacter(element));
+	// Borrar 0
+	for (size_t i = list.size()-1; i > 0; i++){
+		if (convertToNumber(list.front()) == 0){
+			list.pop_front();
+		} else{
+			break;
 		}
 	}
-	if (carry != 0) 
-		list.push_front(convertToCharacter(carry));
+	
+	// List<char> -> string
 	std::string strParam;
 	for(auto i : list)
 		strParam.push_back(i);
@@ -370,16 +407,18 @@ BigInt<Base> operator+(const BigInt<Base>& first, const BigInt<Base>& second) {
 	return toReturn;
 }
 
-// (!!!) BigInt<Base> operator-(const BigInt<Base> &) const;
-
 // (!!!) BigInt<Base> operator-() const;
+template <std::size_t Base>
+BigInt<Base> BigInt<Base>::operator-() const {
+throw std::domain_error("??????????????");
+}
 
 template <size_t Base>
 BigInt<Base> BigInt<Base>::operator*(const BigInt<Base>& multiplier) const {
 	BigInt<Base> zero;
 	if ((multiplier == zero) || (*this == zero))
 		return zero;
-	if (multiplier == BigInt<Base>(1))
+	if ((multiplier == BigInt<Base>(1)) || (*this == BigInt<Base>(1)))
 		return *this;
 	
 
@@ -425,7 +464,10 @@ BigInt<Base> BigInt<Base>::operator*(const BigInt<Base>& multiplier) const {
 	return toReturn;
 }
 
-// (!!!) friend BigInt<Base> operator/(const BigInt<Base>&, const BigInt<Base>&);
+template <size_t Base>
+BigInt<Base> operator/(const BigInt<Base>& first, const BigInt<Base>& second) {
+
+}
 
 // (!!!) BigInt<Base> operator%(const BigInt<Base>&) const;
 

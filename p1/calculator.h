@@ -40,7 +40,7 @@ public:
   ~Calculator();
 
   // Getter
-  T GetResult(std::vector<std::string>);
+  T GetResult(std::vector<std::string>,std::map<std::string, T>);
   void insertNum(std::string, T);
 
 private:
@@ -69,13 +69,14 @@ Calculator<T>::~Calculator(){}
 // (para separar la secuencia), devuelve el lenguaje resultante de todas las
 // operaciones previas
 template <class T>
-T Calculator<T>::GetResult(std::vector<std::string> operations) {
-
+T Calculator<T>::GetResult(std::vector<std::string> operations,
+  std::map<std::string, T> numeros) {
+  numbers_ = numeros;
   if (numbers_.size() == 0)
     throw std::domain_error("La pila no dispone de números almacenados");
 
   int power = 1;
-  for (size_t i = 0; i < operations.size(); i++) {
+  for (size_t i = 2; i < operations.size(); i++) {
     // Lenguaje declarado
     if (isNumber(operations.at(i))) {
       stack_.push(numbers_[operations.at(i)]);
@@ -125,14 +126,17 @@ void Calculator<T>::Operations(char _operator, int power) {
       case Operators::plus:
         stack_.push(firstNumber + secondNumber);
         break;
-      // case Operators::minus:
-      //   stack_.push(firstNumber - secondNumber);
-      //   break;
-      // case Operators::multiply:
-      //   stack_.push(firstNumber * secondNumber);
-      //   break;
+      case Operators::minus:
+        stack_.push(firstNumber - secondNumber);
+        break;
+      case Operators::multiply:
+        stack_.push(firstNumber * secondNumber);
+        break;
       // case Operators::split:
       //   stack_.push(firstNumber / secondNumber);
+        break;
+      case Operators::power:
+        stack_.push(pow(firstNumber,secondNumber));
         break;
       default:
         throw std::domain_error("Simbolo no soportado");
