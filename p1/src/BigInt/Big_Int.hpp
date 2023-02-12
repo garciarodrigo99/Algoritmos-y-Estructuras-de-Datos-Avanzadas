@@ -3,6 +3,7 @@
 #include <string>
 #include <list>
 #include <algorithm>
+#include <cmath>
 
 #pragma once
 
@@ -475,7 +476,39 @@ BigInt<Base> BigInt<Base>::operator*(const BigInt<Base>& multiplier) const {
 
 template <size_t Base>
 BigInt<Base> operator/(const BigInt<Base>& first, const BigInt<Base>& second) {
-
+	if (second == BigInt<Base>("0")){
+		throw std::domain_error("Divisor es 0");
+	}
+	if (first == BigInt<Base>("0")){
+		return BigInt<Base>("0");
+	}
+	if (first < second){
+		return BigInt<Base>("0");
+	}
+	int minuendo = convertToNumber(first.vector_.back());		// Va a ser el resto
+	int sustraendo = 0;
+	int stepCociente = 1;
+	std::string cociente;
+	for (int i = first.vector_.size() - 1; i >= 0; i--) {
+		if(BigInt<Base>(minuendo) < second) {
+			if (i != 0) {
+				minuendo = (minuendo * Base) + convertToNumber(first.vector_[i-1]);
+				continue;
+			}
+			minuendo = (minuendo * Base) + convertToNumber(first.vector_[i]);
+		}
+		for (size_t j = 1; j < Base; j++){ // Cambiar primera vez
+			if((j+1)*54 < minuendo){
+				stepCociente = j+1;
+			} else {
+				break;
+			}
+		}
+		sustraendo = 54 * stepCociente;
+		cociente.push_back(convertToCharacter(stepCociente));
+		minuendo = minuendo - sustraendo;
+	}
+	return (BigInt<Base>(cociente));
 }
 
 // (!!!) BigInt<Base> operator%(const BigInt<Base>&) const;
