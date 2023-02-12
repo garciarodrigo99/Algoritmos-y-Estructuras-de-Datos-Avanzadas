@@ -46,7 +46,6 @@ class BigInt {
 		BigInt(const char* );
 		BigInt(const BigInt<Base>&); // Constructor de copia
 		~BigInt();
-		//void print();
 
 		// Asignación:
 		BigInt<Base>& operator=(const BigInt<Base>&);
@@ -369,6 +368,12 @@ BigInt<Base> operator+(const BigInt<Base>& first, const BigInt<Base>& second) {
 
 template <std::size_t Base>
 BigInt<Base> BigInt<Base>::operator-(const BigInt<Base> & param) const {
+
+	if(param.sign_ == -1){
+		BigInt<Base> aux(param);
+		aux.sign_ = 1;
+		return BigInt<Base>(aux + *this);
+	}
 
 	int carry = 0;
 	int element = 0;

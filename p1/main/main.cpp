@@ -42,14 +42,17 @@ void auxFunction(std::string fileName) {
 		}
   }
   archivo_entrada.close();
-  std::cout << T::totalInstances();
+  //std::cout << T::totalInstances();
   writeToFile(Board);
 }
 
 int main(int argc, char *argv[]) {
 
-  int i = -5;
-  std::string aux(std::to_string(i));
+  std::cout << (BigInt<10>(3) + BigInt<10>(2)) << std::endl;
+  std::cout << (BigInt<10>(3) + BigInt<10>(-2)) << std::endl;
+  std::cout << (BigInt<10>(-3) + BigInt<10>(2)) << std::endl;
+  std::cout << (BigInt<10>(-3) + BigInt<10>(-2)) << std::endl;
+  return 0;
 
   std::string fileName = argv[1];
   // --------------------------------------------------------------------------
