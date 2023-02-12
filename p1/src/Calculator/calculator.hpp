@@ -20,7 +20,7 @@
 #include <vector>
 #include <map>
 #include <cassert>
-#include "splitChain.h"
+#include "../../lib/splitChain.hpp"
 
 enum Operators {
   plus = '+',
@@ -40,7 +40,7 @@ public:
   ~Calculator();
 
   // Getter
-  T GetResult(std::vector<std::string>,std::map<std::string, T>);
+  T GetResult(std::string,std::map<std::string, T>);
   void insertNum(std::string, T);
 
 private:
@@ -69,29 +69,31 @@ Calculator<T>::~Calculator(){}
 // (para separar la secuencia), devuelve el lenguaje resultante de todas las
 // operaciones previas
 template <class T>
-T Calculator<T>::GetResult(std::vector<std::string> operations,
+T Calculator<T>::GetResult(std::string line,
   std::map<std::string, T> numeros) {
+  std::vector<std::string> sequence(SplitChain(line));
   numbers_ = numeros;
   if (numbers_.size() == 0)
     throw std::domain_error("La pila no dispone de números almacenados");
 
   int power = 1;
-  for (size_t i = 2; i < operations.size(); i++) {
+  for (size_t i = 2; i < sequence.size(); i++) {
     // Lenguaje declarado
-    if (isNumber(operations.at(i))) {
-      stack_.push(numbers_[operations.at(i)]);
-    // } else if (std::all_of(operations.at(i).begin(),
-    //                        operations.at(i).end(), ::isdigit)) {
+    if (isNumber(sequence.at(i))) {
+      stack_.push(numbers_[sequence.at(i)]);
+    // } else if (std::all_of(sequence.at(i).begin(),
+    //                        sequence.at(i).end(), ::isdigit)) {
     //   // Exponente opercion potencia
-    //   power = std::stoi(operations.at(i));
+    //   power = std::stoi(sequence.at(i));
     } else {
       // Signo operación o fallo
-      Operations(operations.at(i).at(0), power);
+      Operations(sequence.at(i).at(0), power);
     }
   }
   assert(stack_.size() == 1);
 
   T toRetun(stack_.top());
+  stack_.pop();
   return toRetun;
 }
 

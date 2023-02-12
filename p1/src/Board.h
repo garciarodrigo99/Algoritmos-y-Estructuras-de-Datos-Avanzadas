@@ -4,7 +4,7 @@
 #include <map>
 #include <fstream>
 
-#include "splitChain.h"
+#include "lib/splitChain.hpp"
 
 #pragma once
 
@@ -24,6 +24,7 @@ class Board {
 		Board(std::string);
 		~Board();
 		friend std::ostream& operator<< <T>(std::ostream&, const Board<T>&);
+		void writeToFile(std::string s = "");
 };
 
 template <class T>
