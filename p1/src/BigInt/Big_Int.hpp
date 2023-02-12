@@ -323,7 +323,7 @@ BigInt<Base> BigInt<Base>::operator--(int) {
 template <size_t Base>
 BigInt<Base> operator+(const BigInt<Base>& first, const BigInt<Base>& second) {
 
-	if (first.vector_.size() < second.vector_.size())
+	if (first.vector_ < second.vector_)
 		return BigInt<Base>(second+first);
 	
 	if ((first.sign_ == -1) ^ (second.sign_ == -1)){
@@ -368,6 +368,12 @@ BigInt<Base> operator+(const BigInt<Base>& first, const BigInt<Base>& second) {
 
 template <std::size_t Base>
 BigInt<Base> BigInt<Base>::operator-(const BigInt<Base> & param) const {
+
+	if (param > *this){
+		BigInt<Base> aux(param - *this);
+		aux = aux * BigInt<Base>(-1);
+		return aux;
+	}
 
 	if(param.sign_ == -1){
 		BigInt<Base> aux(param);
@@ -419,9 +425,11 @@ BigInt<Base> BigInt<Base>::operator*(const BigInt<Base>& multiplier) const {
 	BigInt<Base> zero;
 	if ((multiplier == zero) || (*this == zero))
 		return zero;
-	if ((multiplier == BigInt<Base>(1)) || (*this == BigInt<Base>(1)))
+	if (multiplier == BigInt<Base>(1))
 		return *this;
 	
+	if (*this == BigInt<Base>(1))
+		return multiplier;
 
 	// BigInt<Base> iterator;	// Zero by default
 	// BigInt<Base> copy(*this);

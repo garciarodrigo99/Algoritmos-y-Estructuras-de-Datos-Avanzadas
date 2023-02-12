@@ -48,10 +48,32 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
-  std::cout << (BigInt<10>(3) + BigInt<10>(2)) << std::endl;
-  std::cout << (BigInt<10>(3) + BigInt<10>(-2)) << std::endl;
-  std::cout << (BigInt<10>(-3) + BigInt<10>(2)) << std::endl;
+  std::cout << (BigInt<10>(-2) - BigInt<10>(-3)) << std::endl;
+  std::cout << (BigInt<10>(3) - BigInt<10>(2)) << std::endl;
+
+  std::cout << (BigInt<10>(-2) - BigInt<10>(3)) << std::endl;
+  std::cout << (BigInt<10>(-3) - BigInt<10>(2)) << std::endl;
+
+  std::cout << (BigInt<10>(2) - BigInt<10>(3)) << std::endl;
+  std::cout << (BigInt<10>(-3) - BigInt<10>(-2)) << std::endl;
+
+  std::cout << (BigInt<10>(2) - BigInt<10>(-3)) << std::endl;
+  std::cout << (BigInt<10>(3) - BigInt<10>(-2)) << std::endl;
+
+  std::cout << "------------------------------------------------" << std::endl;
+  
+  std::cout << (BigInt<10>(-2) + BigInt<10>(-3)) << std::endl;
   std::cout << (BigInt<10>(-3) + BigInt<10>(-2)) << std::endl;
+
+  std::cout << (BigInt<10>(-2) + BigInt<10>(3)) << std::endl;
+  std::cout << (BigInt<10>(3) + BigInt<10>(-2)) << std::endl;
+
+  std::cout << (BigInt<10>(2) + BigInt<10>(-3)) << std::endl;
+  std::cout << (BigInt<10>(-3) + BigInt<10>(2)) << std::endl;
+
+  std::cout << (BigInt<10>(2) + BigInt<10>(3)) << std::endl;
+  std::cout << (BigInt<10>(3) + BigInt<10>(2)) << std::endl;
+
   return 0;
 
   std::string fileName = argv[1];
