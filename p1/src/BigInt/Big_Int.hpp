@@ -36,6 +36,7 @@ class BigInt {
 		void build(std::string&);
 		void checkCharFromBase(char);
 		void print();
+		static unsigned instanceCount;
 		//std::string cvToStr(void);
 
 	public:
@@ -85,26 +86,23 @@ class BigInt {
 		friend BigInt<Base> pow<Base>(const BigInt<Base>&, const BigInt<Base>&);
 
 		std::string cvToStr(void);
+
+		static unsigned totalInstances();
 };
+
+template <size_t Base> 
+unsigned BigInt<Base>::instanceCount = 0;
 
 template <size_t Base>
 BigInt<Base>::BigInt(long n)
 {
 	std::string str(std::to_string(n));
-	if (n < 0) {
-		sign_ = -1;
-		str.erase(0,1);
-	}
 	build(str);
 }
 
 template <size_t Base>
 BigInt<Base>::BigInt(std::string& str)
 {
-	if (str.front() == '-') {
-		sign_ = -1;
-		str.erase(0,1);
-	}
 	build(str);
 }
 
@@ -112,10 +110,6 @@ template <size_t Base>
 BigInt<Base>::BigInt(const char* cchar)
 {
 	std::string str = cchar;
-		if (str.front() == '-') {
-		sign_ = -1;
-		str.erase(0,1);
-	}
 	build(str);
 }
 
@@ -129,6 +123,7 @@ BigInt<Base>::BigInt(const BigInt<Base>& copy)
 template <size_t Base>
 BigInt<Base>::~BigInt()
 {
+	//--BigInt<Base>::instanceCount;
 }
 
 // OK
@@ -136,9 +131,10 @@ template <std::size_t Base>
 inline BigInt<Base> &BigInt<Base>::operator=(const BigInt<Base> & bigIntParam)
 {
 	sign_ = bigIntParam.sign_;
-	vector_.clear();
-	for (auto i : bigIntParam.vector_)
-		vector_.push_back(i);
+	vector_ = bigIntParam.vector_;
+	// vector_.clear();
+	// for (auto i : bigIntParam.vector_)
+	// 	vector_.push_back(i);
 	return *this;
 }
 
@@ -505,11 +501,17 @@ BigInt<Base> pow(const BigInt<Base>& base, const BigInt<Base>& exponent) {
  */
 template <size_t Base>
 void BigInt<Base>::build(std::string& str){
-	//std::cout << str << ", tamaño: " << str.size() << std::endl;
+
+	if (str.front() == '-') {
+		sign_ = -1;
+		str.erase(0,1);
+	}
+
 	for(int i=str.size()-1; i>=0; i--){
 		checkCharFromBase(str[i]);
 		vector_.push_back(str[i]);
 	}
+	++BigInt<Base>::instanceCount;
 }
 
 /**
@@ -562,6 +564,11 @@ std::string BigInt<Base>::cvToStr(void) {
 		str.push_back(vector_[i]);
 	}
 	return str;
+}
+
+template <std::size_t Base>
+inline unsigned BigInt<Base>::totalInstances(){
+  return BigInt<Base>::instanceCount;
 }
 
 // Función externa

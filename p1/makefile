@@ -22,7 +22,7 @@ file:
 	$(EXE_FILE) $(IN_FILE)
 
 run: 
-	$(EXE_FILE)
+	file
 
 run-file: 
 	default file

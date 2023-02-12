@@ -39,6 +39,8 @@ public:
   Calculator(std::map<std::string, T>);
   ~Calculator();
 
+  static unsigned totalInstances();
+
   // Getter
   T GetResult(std::string,std::map<std::string, T>);
   void insertNum(std::string, T);
@@ -50,20 +52,34 @@ private:
 private:
   std::stack<T> stack_;
   std::map<std::string, T> numbers_;
+  static unsigned instanceCount;
 };
+
+template <class T> 
+unsigned Calculator<T>::instanceCount = 0;
 
 // // Funcion para separar cada linea en cadenas según espacios
 // std::vector<std::string> SplitChain(std::string str, char pattern);
 
 template <class T>
-Calculator<T>::Calculator() {}
+Calculator<T>::Calculator() {
+  ++Calculator<T>::instanceCount;
+}
 
 template <class T>
 Calculator<T>::Calculator(std::map<std::string, T> mapNum) : 
 numbers_(mapNum){}
 
 template <class T>
-Calculator<T>::~Calculator(){}
+Calculator<T>::~Calculator(){
+  --Calculator<T>::instanceCount;
+}
+
+template <class T>
+inline unsigned Calculator<T>::totalInstances(){
+  return Calculator<T>::instanceCount;
+}
+
 
 // Metodo que dada una sentencia (conjunto de operaciones) y delimitador
 // (para separar la secuencia), devuelve el lenguaje resultante de todas las

@@ -42,30 +42,14 @@ void auxFunction(std::string fileName) {
 		}
   }
   archivo_entrada.close();
+  std::cout << T::totalInstances();
   writeToFile(Board);
 }
 
 int main(int argc, char *argv[]) {
 
-  // // BigInt<10> b1(3);
-  // // BigInt<10> b2(-3);
-  // BigInt<10> n1("442142117615672");
-  // BigInt<10> n2("46651367647546");
-  // BigInt<10> e1(n1+n2);
-  // BigInt<10> e2(e1+(n1-n2));
-  // auto start = std::chrono::system_clock::now();
-  // std::cout << e2 << std::endl;
-  // auto end = std::chrono::system_clock::now();
-  // std::chrono::duration<float> duration = end - start;
-  // std::cout << duration.count() << "s" << std::endl;
-  // std::map<std::string, BigInt<10>> numeros;
-  // numeros["n1"] = n1;
-  // numeros["n2"] = n2;
-  // numeros["e1"] = e1;
-  // Calculator<BigInt<10>> calc;
-  // std::cout << calc.GetResult("e2 = e1 n1 n2 - +",numeros) << std::endl;
-
-  // return 0;
+  int i = -5;
+  std::string aux(std::to_string(i));
 
   std::string fileName = argv[1];
   // --------------------------------------------------------------------------
