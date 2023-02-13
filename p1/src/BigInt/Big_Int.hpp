@@ -324,7 +324,7 @@ BigInt<Base> BigInt<Base>::operator--(int) {
 template <size_t Base>
 BigInt<Base> operator+(const BigInt<Base>& first, const BigInt<Base>& second) {
 
-	if (first.vector_ < second.vector_)
+	if (first < second)
 		return BigInt<Base>(second+first);
 	
 	if ((first.sign_ == -1) ^ (second.sign_ == -1)){
@@ -485,27 +485,32 @@ BigInt<Base> operator/(const BigInt<Base>& first, const BigInt<Base>& second) {
 	if (first < second){
 		return BigInt<Base>("0");
 	}
-	int minuendo = convertToNumber(first.vector_.back());		// Va a ser el resto
-	int sustraendo = 0;
-	int stepCociente = 1;
+	BigInt<Base> base(Base);
+	BigInt<Base> minuendo(convertToNumber(first.vector_.back()));		// Va a ser el resto
+	BigInt<Base> sustraendo;	
+	BigInt<Base> indexCociente(1); // Minimo ya que sabemos first > second
 	std::string cociente;
 	for (int i = first.vector_.size() - 1; i >= 0; i--) {
-		if(BigInt<Base>(minuendo) < second) {
+		if(minuendo < second) {
+			minuendo = (minuendo * base);
 			if (i != 0) {
-				minuendo = (minuendo * Base) + convertToNumber(first.vector_[i-1]);
+				BigInt<Base> aux(convertToNumber(first.vector_[i-1]));	// Si no se crea el objeto la sobrecarga del operador recibe valor 0
+				minuendo = aux + minuendo;
 				continue;
 			}
-			minuendo = (minuendo * Base) + convertToNumber(first.vector_[i]);
+			BigInt<Base> lastAux(convertToNumber(first.vector_[i]));	
+			minuendo = minuendo + lastAux;
 		}
 		for (size_t j = 1; j < Base; j++){ // Cambiar primera vez
-			if((j+1)*54 < minuendo){
-				stepCociente = j+1;
+			BigInt<Base> nextElement(j+1);
+			if((nextElement*second) < minuendo){
+				indexCociente = nextElement;
 			} else {
 				break;
 			}
 		}
-		sustraendo = 54 * stepCociente;
-		cociente.push_back(convertToCharacter(stepCociente));
+		sustraendo = second * indexCociente;
+		cociente.push_back(indexCociente.vector_[0]);
 		minuendo = minuendo - sustraendo;
 	}
 	return (BigInt<Base>(cociente));
