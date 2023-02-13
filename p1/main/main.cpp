@@ -48,8 +48,9 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
+  // std::cout << (BigInt<10>(623) / BigInt<10>(54)) << std::endl;
   std::cout << (BigInt<10>(623) / BigInt<10>(54)) << std::endl;
-  std::cout << (BigInt<10>(623) % BigInt<10>(54)) << std::endl;
+  //std::cout << (BigInt<10>(623) % BigInt<10>(54)) << std::endl;
 
   return 0;
 

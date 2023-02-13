@@ -485,29 +485,48 @@ BigInt<Base> operator/(const BigInt<Base>& first, const BigInt<Base>& second) {
 	if (first < second){
 		return BigInt<Base>("0");
 	}
-	BigInt<Base> base(Base);
+	BigInt<Base> base(Base-1);
+	base = base + (BigInt<Base>(1));
 	BigInt<Base> minuendo(convertToNumber(first.vector_.back()));		// Va a ser el resto
 	BigInt<Base> sustraendo;	
-	BigInt<Base> indexCociente(1); // Minimo ya que sabemos first > second
 	std::string cociente;
-	for (int i = first.vector_.size() - 1; i >= 0; i--) {
-		if(minuendo < second) {
+	bool firstElementSet = false;
+	int firstElemPos = first.vector_.size() - 1;
+	while (minuendo < second){
+		minuendo = (minuendo * base);
+		BigInt<Base> aux(convertToNumber(first.vector_[firstElemPos-1]));	// Si no se crea el objeto la sobrecarga del operador recibe valor 0
+		minuendo = aux + minuendo;
+		--firstElemPos;
+	}
+	++firstElemPos;
+	for (int i = firstElemPos; i > 0; i--) {
+		if(firstElementSet) {
 			minuendo = (minuendo * base);
 			if (i != 0) {
 				BigInt<Base> aux(convertToNumber(first.vector_[i-1]));	// Si no se crea el objeto la sobrecarga del operador recibe valor 0
 				minuendo = aux + minuendo;
-				continue;
+			} else {
+				BigInt<Base> lastAux(convertToNumber(first.vector_[i]));	
+				minuendo = minuendo + lastAux;
 			}
-			BigInt<Base> lastAux(convertToNumber(first.vector_[i]));	
-			minuendo = minuendo + lastAux;
 		}
-		for (size_t j = 1; j < Base; j++){ // Cambiar primera vez
-			BigInt<Base> nextElement(j+1);
-			if((nextElement*second) < minuendo){
-				indexCociente = nextElement;
+		int secondLoop = 0;
+		BigInt<Base> indexCociente;
+		BigInt<Base> tmp;	// Elemento i del while pero en base(Base)
+		if (!firstElementSet){
+			secondLoop = 1;
+			tmp++;
+			indexCociente++; // Minimo ya que sabemos first > second
+			firstElementSet = true;
+		}
+		while (secondLoop < (int)Base){ // Cambiar primera vez
+			if((tmp*second) <= minuendo){
+				indexCociente = tmp;
 			} else {
 				break;
 			}
+			secondLoop++;
+			tmp++;
 		}
 		sustraendo = second * indexCociente;
 		cociente.push_back(indexCociente.vector_[0]);

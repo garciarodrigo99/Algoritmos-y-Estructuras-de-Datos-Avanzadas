@@ -28,6 +28,7 @@ enum Operators {
   multiply = '*',
   split = '/',
   power = '^',
+  modulo = '%'
 };
 
 template <class T> 
@@ -150,11 +151,14 @@ void Calculator<T>::Operations(char _operator, int power) {
       case Operators::multiply:
         stack_.push(firstNumber * secondNumber);
         break;
-      // case Operators::split:
-      //   stack_.push(firstNumber / secondNumber);
+      case Operators::split:
+        stack_.push(firstNumber / secondNumber);
         break;
       case Operators::power:
         stack_.push(pow(firstNumber,secondNumber));
+        break;
+      case Operators::modulo:
+        stack_.push(firstNumber % secondNumber);
         break;
       default:
         throw std::domain_error("Simbolo no soportado");
