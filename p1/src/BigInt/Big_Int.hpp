@@ -516,7 +516,10 @@ BigInt<Base> operator/(const BigInt<Base>& first, const BigInt<Base>& second) {
 	return (BigInt<Base>(cociente));
 }
 
-// (!!!) BigInt<Base> operator%(const BigInt<Base>&) const;
+template <size_t Base>
+BigInt<Base> BigInt<Base>::operator%(const BigInt<Base>& param) const {
+	return BigInt<Base>(*this - (param * (*this / param)));
+}
 
 template <size_t Base>
 BigInt<Base> pow(const BigInt<Base>& base, const BigInt<Base>& exponent) {
