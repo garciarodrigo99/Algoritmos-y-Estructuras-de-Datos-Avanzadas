@@ -62,10 +62,25 @@ void auxFunction(std::string fileName) {
   writeToFile(Board);
 }
 
+void hola() {
+  static int counter = 0;
+  counter++;
+  std::cout << counter << std::endl;
+}
+
 int main(int argc, char *argv[]) {
 
-  BigInt<10> aux(150);
-  std::cout << aux / BigInt<10>(7) << std::endl;
+  BigInt<10> a("1255");
+  BigInt<10> b("203");
+  auto start = std::chrono::high_resolution_clock::now();
+  std::cout << a / b << std::endl;
+  auto stop = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+  std::cout << "Tiempo transcurrido: " << duration.count() << " milisegundos" << std::endl;
+  std::cout << "Conversiones a número: " << toNumCounter << std::endl;
+  std::cout << "Conversiones a char: " << toCharCounter << std::endl;
+    std::cout << "Conversiones totales: " << toNumCounter + toCharCounter  << std::endl;
+
   return 0;
 
   std::string fileName = argv[1];

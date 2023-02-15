@@ -112,6 +112,9 @@ class BigInt {
 template <size_t Base> 
 unsigned BigInt<Base>::instanceCount = 0;
 
+static int toCharCounter = 0;
+static int toNumCounter = 0;
+
 template <size_t Base>
 BigInt<Base>::BigInt(long n)
 {
@@ -655,6 +658,7 @@ inline unsigned BigInt<Base>::totalInstances(){
 
 // Para pasar de caracter a numero: 48 -> 0
 char convertToNumber(char toConvert) {
+	toNumCounter++;
 	if ((toConvert>='0') && (toConvert<='9')) {
 		return (toConvert - '0');
 	}
@@ -663,6 +667,7 @@ char convertToNumber(char toConvert) {
 
 // Para pasar de numero a caracter: 0 -> 48
 char convertToCharacter(char toConvert) {
+	toCharCounter++;
 	if (toConvert >= 0 && toConvert <= 9) {
 		return (toConvert + '0');
 	}

@@ -112,6 +112,9 @@ class BigInt {
 template <size_t Base> 
 unsigned BigInt<Base>::instanceCount = 0;
 
+static int toCharCounter = 0;
+static int toNumCounter = 0;
+
 template <size_t Base>
 BigInt<Base>::BigInt(long n)
 {
@@ -661,6 +664,7 @@ inline unsigned BigInt<Base>::totalInstances(){
 
 // Función externa
 int convertToNumber(char toConvert) {
+		toNumCounter++;
 	if ((toConvert>='0') && (toConvert<='9')) {
 		return (int)(toConvert - '0');
 	}
@@ -668,6 +672,7 @@ int convertToNumber(char toConvert) {
 }
 
 char convertToCharacter(int toConvert) {
+		toCharCounter++;
 	toConvert = std::abs(toConvert);
 	if (toConvert >= 0 && toConvert <= 9) {
 		return (char)(toConvert + '0');

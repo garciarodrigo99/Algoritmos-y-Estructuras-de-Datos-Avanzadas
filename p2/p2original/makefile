@@ -24,10 +24,10 @@ file:
 #	@cat $(OUT)$(RECENT_FILE)
 
 run: 
-	file
+	make file
 
 run-file: 
-	default file
+	make default file
 
 clean:
 	rm $(BIN)*
