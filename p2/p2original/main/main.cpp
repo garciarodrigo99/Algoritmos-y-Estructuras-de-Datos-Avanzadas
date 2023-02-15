@@ -1,3 +1,19 @@
+// Universidad de La Laguna
+// Escuela Superior de Ingeniería y Tecnología
+// Grado en Ingeniería Informática
+// Asignatura: ALGORITMOS Y ESTRUCTURAS DE DATOS AVANZADAS
+// Curso: 2º
+// Práctica 1: Representación de números grandes en notación posicional
+// Autor: Rodrigo Garcia Jimenez
+// Correo: alu0101154473@ull.edu.es
+// Fecha: 13/02/2023
+// Archivo main.cpp: Programa principal
+// Referencias:
+// Enlaces de interéss
+// https://stackoverflow.com/questions/2209224/vector-vs-list-in-stl
+// Historial de revisiones
+// 13/10/2022 - Creaci´on (primera versi´on) del c´odigo
+
 #include <fstream>
 #include <chrono>
 
@@ -48,12 +64,8 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
-
-  BigInt<16> a("18446744073709551687");
-  BigInt<16> b(pow(a,BigInt<16>(623)));
-  std::cout << b << std::endl;
-  std::cout << (b*BigInt<16>(2))/BigInt<16>(2) << std::endl;
-
+  BigInt<10> aux(150);
+  std::cout << aux / BigInt<10>(7) << std::endl;
   return 0;
 
   std::string fileName = argv[1];
@@ -81,6 +93,10 @@ int main(int argc, char *argv[]) {
   switch (option) {
     case 2:
       auxFunction<BigInt<2>>(fileName);
+      break;
+
+    case 7:
+      auxFunction<BigInt<7>>(fileName);      
       break;
 
     case 8:

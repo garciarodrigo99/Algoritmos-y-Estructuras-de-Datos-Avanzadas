@@ -64,8 +64,11 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
-  BigInt<10> aux(4);
-  std::cout << aux.factorial() << std::endl;
+  // BigInt<10> aux(4);
+  // std::cout << aux.factorial() << std::endl;
+  BigInt<10> aux(150);
+  std::cout << aux / BigInt<10>(7) << std::endl;
+  return 0;
 
   std::string fileName = argv[1];
   // --------------------------------------------------------------------------
