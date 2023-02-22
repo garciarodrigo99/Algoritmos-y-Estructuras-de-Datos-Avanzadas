@@ -673,7 +673,7 @@ class BigInt<2> {
 		std::vector<bool> c2_;
 		void build(std::string&);
 		void checkBinary(char);
-		void print();
+		//BigInt<2> complementNumber(BigInt<2>);
 
 	public:
 		// Constructores
@@ -685,6 +685,8 @@ class BigInt<2> {
 
 		// Asignación:
 		BigInt<2>& operator=(const BigInt<2>&);
+
+		BigInt<2> complementNumber(BigInt<2>);
 
 		// Inserción y extracción en flujo:
 		friend std::ostream& operator<< (std::ostream&, const BigInt<2>&);
@@ -900,4 +902,22 @@ void BigInt<2>::checkBinary(char pCharacter) {
 		message.append(" no es 0 ó 1");
 		throw std::domain_error(message);
 	}
+}
+
+/**
+ * @brief Realiza el complemento a 2 de un número pasado por referencia.
+ * No altera el estado del parametro. Util sobretodo para la resta.
+ * 
+ * @param param Binario en complemento a 2
+ * @return BigInt<2> Binario en complemento a 2
+ */
+BigInt<2> BigInt<2>::complementNumber(BigInt<2> param) {
+	if (param == BigInt<2>("0")) {
+		return param;
+	}
+	
+	BigInt<2> toReturn(*this);
+	toReturn.c2_.flip();
+	++toReturn;
+	return toReturn;
 }
