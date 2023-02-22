@@ -673,7 +673,7 @@ class BigInt<2> {
 		std::vector<bool> c2_;
 		void build(std::string&);
 		void checkBinary(char);
-		//BigInt<2> complementNumber(BigInt<2>);
+		BigInt<2> complementNumber();
 
 	public:
 		// Constructores
@@ -685,8 +685,6 @@ class BigInt<2> {
 
 		// Asignación:
 		BigInt<2>& operator=(const BigInt<2>&);
-
-		BigInt<2> complementNumber(BigInt<2>);
 
 		// Inserción y extracción en flujo:
 		friend std::ostream& operator<< (std::ostream&, const BigInt<2>&);
@@ -874,7 +872,13 @@ BigInt<2> BigInt<2>::operator++(int) {
 	return copy;
 }
 
-
+BigInt<2>& BigInt<2>::operator--() {
+	BigInt<2> result(complementNumber());
+	++result;
+	result = result.complementNumber();
+	*this = result;
+	return *this;
+}// Pre-decremento
 
 
 
@@ -911,9 +915,9 @@ void BigInt<2>::checkBinary(char pCharacter) {
  * @param param Binario en complemento a 2
  * @return BigInt<2> Binario en complemento a 2
  */
-BigInt<2> BigInt<2>::complementNumber(BigInt<2> param) {
-	if (param == BigInt<2>("0")) {
-		return param;
+BigInt<2> BigInt<2>::complementNumber() {
+	if (*this == BigInt<2>("0")) {
+		return *this;
 	}
 	
 	BigInt<2> toReturn(*this);

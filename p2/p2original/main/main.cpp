@@ -64,29 +64,9 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
-  BigInt<2> test("0000");
-  std::cout << test << " " << test.complementNumber(test) << std::endl;
-
-    BigInt<2> test1("0001");
-  std::cout << test1 << " " << test1.complementNumber(test) << std::endl;
-
-    BigInt<2> test2("0010");
-  std::cout << test2 << " " << test2.complementNumber(test) << std::endl;
-
-    BigInt<2> test3("0011");
-  std::cout << test3 << " " << test3.complementNumber(test) << std::endl;
-
-    BigInt<2> test4("0100");
-  std::cout << test4 << " " << test4.complementNumber(test) << std::endl;
-
-    BigInt<2> test5("0101");
-  std::cout << test5 << " " << test5.complementNumber(test) << std::endl;
-
-    BigInt<2> test6("0110");
-  std::cout << test6 << " " << test6.complementNumber(test) << std::endl;
-
-    BigInt<2> test7("0111");
-  std::cout << test7 << " " << test7.complementNumber(test) << std::endl;
+  BigInt<2> test("0111");
+  --test;
+  std::cout << test << std::endl;
 
 
   return 0;
