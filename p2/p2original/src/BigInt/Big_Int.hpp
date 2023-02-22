@@ -98,6 +98,7 @@ class BigInt {
 		BigInt<Base> operator*(const BigInt<Base>&) const;
 		friend BigInt<Base> operator/ <Base>(const BigInt<Base>&, const BigInt<Base>&);
 		BigInt<Base> operator%(const BigInt<Base>&) const;
+		operator BigInt<2> ();
 
 		// Potencia a^b
 		friend BigInt<Base> pow<Base>(const BigInt<Base>&, const BigInt<Base>&);
@@ -148,15 +149,11 @@ BigInt<Base>::~BigInt()
 	//--BigInt<Base>::instanceCount;
 }
 
-// OK
 template <std::size_t Base>
 inline BigInt<Base> &BigInt<Base>::operator=(const BigInt<Base> & bigIntParam)
 {
 	sign_ = bigIntParam.sign_;
 	digits_ = bigIntParam.digits_;
-	// digits_.clear();
-	// for (auto i : bigIntParam.digits_)
-	// 	digits_.push_back(i);
 	return *this;
 }
 
@@ -170,12 +167,6 @@ std::ostream& operator<<(std::ostream& os, const BigInt<Base>& bigInt) {
 	}
 	return os;
 }
-
-// //Falta implementacion
-// template <size_t Base>
-// std::istream& operator>>(std::istream& is, BigInt<Base>& bigInt) {
-
-// }
 
 template <std::size_t Base>
 int BigInt<Base>::sign() const
@@ -672,4 +663,174 @@ char convertToCharacter(char toConvert) {
 		return (toConvert + '0');
 	}
 	return (toConvert - 10 + 'A');
+}
+
+// ----------------------------------------------------------------------------
+
+template <>
+class BigInt<2> {
+	private:
+		std::vector<bool> c2_;
+		void build(std::string&);
+		void checkBinary(char);
+		void print();
+
+	public:
+		// Constructores
+		BigInt(long n = 0);
+		BigInt(std::string&);
+		BigInt(const char* );
+		BigInt(const BigInt<2>&); // Constructor de copia
+		~BigInt();
+
+		// Asignación:
+		BigInt<2>& operator=(const BigInt<2>&);
+
+		// Inserción y extracción en flujo:
+		friend std::ostream& operator<< (std::ostream&, const BigInt<2>&);
+		// friend std::istream& operator>> <Base>(std::istream&, BigInt<Base>&);
+		// friend BigInt<Base>& operator>>(BigInt<Base>&, char &x);
+
+		// Accesor:
+		int sign() const; // Signo: 1 o -1
+		char operator[](int) const; // Acceso al i-ésimo dígito
+
+		// Comparación:
+		friend bool operator==(const BigInt<2>&, const BigInt<2> &);
+		bool operator!=(const BigInt<2>&) const;
+		friend bool operator>(const BigInt<2>&, const BigInt<2> &);
+		bool operator>=(const BigInt<2> &) const;
+		friend bool operator< (const BigInt<2>&, const BigInt<2>&);
+		bool operator<=(const BigInt<2>&) const;
+
+		// Incremento/decremento:
+		BigInt<2>& operator++(); // Pre-incremento(++i)
+		BigInt<2> operator++(int); // Post-incremento
+		BigInt<2>& operator--(); // Pre-decremento
+		BigInt<2> operator--(int); // Post-decremento
+
+		// Operadores aritméticos:
+		friend BigInt<2> operator+(const BigInt<2>&, const BigInt<2>&);
+		BigInt<2> operator-(const BigInt<2> &) const;
+		BigInt<2> operator-() const;
+		BigInt<2> operator*(const BigInt<2>&) const;
+		friend BigInt<2> operator/(const BigInt<2>&, const BigInt<2>&);
+		BigInt<2> operator%(const BigInt<2>&) const;
+
+		// Operadores de conversión
+		operator BigInt<8> ();
+		operator BigInt<10> ();
+		operator BigInt<16> ();
+
+		// Potencia a^b
+		friend BigInt<2> pow(const BigInt<2>&, const BigInt<2>&);
+
+		BigInt<2> factorial() const;
+
+		std::string cvToStr(void);
+
+		static unsigned totalInstances();
+};
+
+BigInt<2>::BigInt(long n)
+{
+	std::cout << "Binario\n";
+	std::string str(std::to_string(n));
+	build(str);
+}
+
+/**
+ * @brief Constructor de binario en complemento a 2
+ * 
+ * @param str 
+ */
+BigInt<2>::BigInt(std::string& str)
+{
+	build(str);
+}
+
+BigInt<2>::BigInt(const char* cchar)
+{
+	std::string str = cchar;
+	build(str);
+}
+
+BigInt<2>::~BigInt() {}
+
+std::ostream& operator<<(std::ostream& os, const BigInt<2>& binary) {
+
+	for(int i=binary.c2_.size()-1; i>=0; i--){
+		os << convertToCharacter(binary.c2_[i]);
+	}
+	return os;
+}
+
+int BigInt<2>::sign() const
+{
+	return c2_.back();
+}
+
+char BigInt<2>::operator[](int index) const
+{
+  return c2_[index];
+}
+
+bool operator==(const BigInt<2>& first, const BigInt<2> & second) {
+	if(first.sign() != second.sign()){
+		return false;
+	}
+	
+	if(first.c2_.size() != second.c2_.size()){
+		return false;
+	}
+	for(int i=first.c2_.size()-2; i>=0; i--){
+		if (first.c2_[i] != second.c2_[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool BigInt<2>::operator!=(const BigInt<2>& param) const {
+	return !(*this == param);
+}
+
+bool operator>(const BigInt<2>& first, const BigInt<2> & second) {
+	if(first.sign() != second.sign()){
+		return (first.sign() > second.sign());
+	}
+	if(first.c2_.size() != second.c2_.size()){
+		return (first.c2_.size() > second.c2_.size());
+	}
+	for(int i=first.c2_.size()-2; i>=0; --i){
+		if (first.c2_[i] != second.c2_[i]) {
+			return (first.c2_[i] > second.c2_[i]);
+		}
+	}
+	return false;
+}
+
+
+void BigInt<2>::build(std::string& str){
+
+	for(int i=str.size()-1; i>=0; i--){
+		checkBinary(str[i]);
+		if (str[i] == '0'){
+			c2_.push_back(false);
+			continue;
+		}
+		c2_.push_back(true);
+	}
+}
+
+void BigInt<2>::checkBinary(char pCharacter) {
+
+	bool isBinary = ((pCharacter == '0') || (pCharacter == '1'));
+
+	if(!isBinary){
+		std::string message;
+		message.push_back(pCharacter);
+		message.append(" no es 0 ó 1");
+		throw std::domain_error(message);
+	}
 }

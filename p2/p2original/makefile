@@ -24,7 +24,7 @@ file:
 #	@cat $(OUT)$(RECENT_FILE)
 
 run: 
-	make file
+	$(EXE_FILE) $(IN_FILE)
 
 run-file: 
 	make default file

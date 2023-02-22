@@ -64,16 +64,8 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
-  BigInt<10> a("1255");
-  BigInt<10> b("203");
-  auto start = std::chrono::high_resolution_clock::now();
-  std::cout << a / b << std::endl;
-  auto end = std::chrono::high_resolution_clock::now();
-  std::chrono::duration<float,std::milli> duration = end - start;
-  std::cout << "Tiempo transcurrido: " << duration.count() << " milisegundos" << std::endl;
-  std::cout << "Conversiones a número: " << toNumCounter << std::endl;
-  std::cout << "Conversiones a char: " << toCharCounter << std::endl;
-  std::cout << "Conversiones totales: " << toNumCounter + toCharCounter  << std::endl;
+  BigInt<2> test("0001");
+  std::cout << (test > BigInt<2>("0100")) << std::endl;
 
   return 0;
 
