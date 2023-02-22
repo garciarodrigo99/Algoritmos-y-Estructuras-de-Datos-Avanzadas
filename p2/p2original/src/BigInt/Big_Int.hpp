@@ -755,6 +755,12 @@ BigInt<2>::BigInt(const char* cchar)
 	build(str);
 }
 
+// OK
+BigInt<2>::BigInt(const BigInt<2>& copy)
+{	
+	*this = copy;	
+}
+
 BigInt<2>::~BigInt() {}
 
 inline BigInt<2> &BigInt<2>::operator=(const BigInt<2> & binary)
@@ -840,37 +846,31 @@ bool BigInt<2>::operator<=(const BigInt<2> & param) const {
 }
 
 BigInt<2>& BigInt<2>::operator++() {
-	if (sign() == true) {
-		if (*this == BigInt<2>(-1)){	// Problema 0 negativo
-			*this = BigInt<2>("0");
-		}/* else {
-			BigInt<2> copy(*this);
-			copy.sign_ = 1;
-			--copy;
-			*this = copy;
-			sign_ = -1;
-		}*/
-	} else {
-		bool carry = true;
-		for(size_t i=0; i<c2_.size() - 1;i++) {
-			bool element = c2_[i] + carry;
-			if ((c2_[i] == true) && (carry == true)){
-				carry = true;
-				element = false;
-			}else
-				carry = false;
-			
-			c2_[i] = element;
-		}
-		if (carry == true) {
-			c2_.push_back(sign());
-			c2_[c2_.size()-2] = true;
-		}
+
+	bool originalSign = sign();
+	bool carry = true;
+	for(size_t i=0; i<c2_.size();i++) {
+		bool element = c2_[i] + carry;
+		if ((c2_[i] == true) && (carry == true)){
+			carry = true;
+			element = false;
+		}else
+			carry = false;
+		
+		c2_[i] = element;
+	}
+	if ((sign() == true) && (originalSign == false)) {
+		c2_.push_back(originalSign);
+		c2_[c2_.size()-2] = true;
 	}
 	return *this;
 }
 
-
+BigInt<2> BigInt<2>::operator++(int) {
+	BigInt<2> copy(*this);
+	operator++();
+	return copy;
+}
 
 
 
