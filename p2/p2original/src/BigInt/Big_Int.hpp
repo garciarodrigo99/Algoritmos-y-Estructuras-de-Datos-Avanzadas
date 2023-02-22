@@ -692,7 +692,7 @@ class BigInt<2> {
 		// friend BigInt<Base>& operator>>(BigInt<Base>&, char &x);
 
 		// Accesor:
-		int sign() const; // Signo: 1 o -1
+		bool sign() const; // Signo: 0 ó 1
 		char operator[](int) const; // Acceso al i-ésimo dígito
 
 		// Comparación:
@@ -757,6 +757,12 @@ BigInt<2>::BigInt(const char* cchar)
 
 BigInt<2>::~BigInt() {}
 
+inline BigInt<2> &BigInt<2>::operator=(const BigInt<2> & binary)
+{
+	c2_ = binary.c2_;
+	return *this;
+}
+
 std::ostream& operator<<(std::ostream& os, const BigInt<2>& binary) {
 
 	for(int i=binary.c2_.size()-1; i>=0; i--){
@@ -765,7 +771,7 @@ std::ostream& operator<<(std::ostream& os, const BigInt<2>& binary) {
 	return os;
 }
 
-int BigInt<2>::sign() const
+bool BigInt<2>::sign() const
 {
 	return c2_.back();
 }
@@ -809,6 +815,67 @@ bool operator>(const BigInt<2>& first, const BigInt<2> & second) {
 	}
 	return false;
 }
+
+bool BigInt<2>::operator>=(const BigInt<2> & param) const {
+	return !(*this < param);
+}
+
+bool operator<(const BigInt<2>& first, const BigInt<2> & second) {
+	if(first.sign() != second.sign()){
+		return (first.sign() < second.sign());
+	}
+	if(first.c2_.size() != second.c2_.size()){
+		return (first.c2_.size() < second.c2_.size());
+	}
+	for(int i=first.c2_.size()-2; i>=0; --i){
+		if (first.c2_[i] != second.c2_[i]) {
+			return (first.c2_[i] < second.c2_[i]);
+		}
+	}
+	return false;
+}
+
+bool BigInt<2>::operator<=(const BigInt<2> & param) const {
+	return !(*this > param);
+}
+
+BigInt<2>& BigInt<2>::operator++() {
+	if (sign() == true) {
+		if (*this == BigInt<2>(-1)){	// Problema 0 negativo
+			*this = BigInt<2>("0");
+		}/* else {
+			BigInt<2> copy(*this);
+			copy.sign_ = 1;
+			--copy;
+			*this = copy;
+			sign_ = -1;
+		}*/
+	} else {
+		bool carry = true;
+		for(size_t i=0; i<c2_.size() - 1;i++) {
+			bool element = c2_[i] + carry;
+			if ((c2_[i] == true) && (carry == true)){
+				carry = true;
+				element = false;
+			}else
+				carry = false;
+			
+			c2_[i] = element;
+		}
+		if (carry == true) {
+			c2_.push_back(sign());
+			c2_[c2_.size()-2] = true;
+		}
+	}
+	return *this;
+}
+
+
+
+
+
+
+
 
 
 void BigInt<2>::build(std::string& str){
