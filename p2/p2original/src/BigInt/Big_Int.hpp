@@ -674,6 +674,7 @@ class BigInt<2> {
 		void build(std::string&);
 		void checkBinary(char);
 		BigInt<2> complementNumber();
+		// BigInt<2> removeUselessZero();
 
 	public:
 		// Constructores
@@ -682,6 +683,9 @@ class BigInt<2> {
 		BigInt(const char* );
 		BigInt(const BigInt<2>&); // Constructor de copia
 		~BigInt();
+
+		// Pruebas metodos privados
+		BigInt<2> removeUselessZero();
 
 		// Asignación:
 		BigInt<2>& operator=(const BigInt<2>&);
@@ -718,9 +722,10 @@ class BigInt<2> {
 		BigInt<2> operator%(const BigInt<2>&) const;
 
 		// Operadores de conversión
-		operator BigInt<8> ();
-		operator BigInt<10> ();
-		operator BigInt<16> ();
+		template <size_t BaseToConvert>
+		operator BigInt<BaseToConvert> ();
+		// operator BigInt<10> ();
+		// operator BigInt<16> ();
 
 		// Potencia a^b
 		friend BigInt<2> pow(const BigInt<2>&, const BigInt<2>&);
@@ -880,9 +885,40 @@ BigInt<2>& BigInt<2>::operator--() {
 	return *this;
 }// Pre-decremento
 
+BigInt<2> BigInt<2>::operator--(int) {
+	BigInt<2> copy(*this);
+	operator--();
+	return copy;
+}
 
+BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 
+	if (first < second)
+		return BigInt<2>(second+first);
 
+	std::list<bool> boolList;
+
+	bool negativeNumbers = ((first.sign()) || second.sign());
+	bool carry = false;
+	for(size_t i=0; i<first.c2_.size();i++) {
+		bool element = first.c2_[i] ^ second.c2_[i];
+		boolList.push_front(element + carry);
+		if (first.c2_[i] && second.c2_[i])
+			carry = true;
+		else
+			carry = false;
+		
+	}
+	if ((carry == true) && (negativeNumbers == false)) {
+		boolList.push_front(negativeNumbers);
+	}
+	std::string strParam;
+	for(auto i : boolList)
+		strParam.push_back(convertToCharacter(i));
+
+	BigInt<2> toReturn(strParam);
+	return toReturn;
+}
 
 void BigInt<2>::build(std::string& str){
 
