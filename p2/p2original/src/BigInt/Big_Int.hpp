@@ -685,9 +685,10 @@ class BigInt<2> {
 		~BigInt();
 
 		// Pruebas metodos privados
-		BigInt<2> removeUselessZero();
+		void removeUselessElements();
+    void fillDifference(int nElements);
 
-		// Asignación:
+        // Asignación:
 		BigInt<2>& operator=(const BigInt<2>&);
 
 		// Inserción y extracción en flujo:
@@ -767,6 +768,7 @@ BigInt<2>::BigInt(const BigInt<2>& copy)
 }
 
 BigInt<2>::~BigInt() {}
+
 
 inline BigInt<2> &BigInt<2>::operator=(const BigInt<2> & binary)
 {
@@ -929,6 +931,30 @@ void BigInt<2>::build(std::string& str){
 			continue;
 		}
 		c2_.push_back(true);
+	}
+}
+
+void BigInt<2>::removeUselessElements() {
+
+	if (!sign()) {
+		while ((!*(c2_.begin()+1)) && (c2_.size() > 2)) {
+			c2_.erase(c2_.begin()+1);
+		}
+	} else 
+		while ((*(c2_.begin()+1)) && (c2_.size() > 2)) {
+			c2_.erase(c2_.begin()+1);
+		}
+}
+
+void BigInt<2>::fillDifference(int nElements) {
+	if (!sign()) {
+		for (auto i = 0; i < nElements; i++){
+			c2_.insert(c2_.begin()+1);
+		}
+	} else {
+		for (auto i = 0; i < nElements; i++){
+			c2_.insert(c2_.begin()+1,sign());
+		}
 	}
 }
 
