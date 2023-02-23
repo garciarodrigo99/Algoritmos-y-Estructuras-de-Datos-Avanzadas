@@ -64,7 +64,7 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
-  BigInt<2> test("11111111111");
+  BigInt<2> test("0000010");
   test.removeUselessElements();
   std::cout << test << std::endl;
   test.fillDifference(2);

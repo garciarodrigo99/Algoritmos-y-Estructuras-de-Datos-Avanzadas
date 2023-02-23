@@ -937,23 +937,23 @@ void BigInt<2>::build(std::string& str){
 void BigInt<2>::removeUselessElements() {
 
 	if (!sign()) {
-		while ((!*(c2_.begin()+1)) && (c2_.size() > 2)) {
-			c2_.erase(c2_.begin()+1);
+		while ((!*(c2_.end()-2)) && (c2_.size() > 2)) {
+			c2_.erase(c2_.end()-2);
 		}
 	} else 
-		while ((*(c2_.begin()+1)) && (c2_.size() > 2)) {
-			c2_.erase(c2_.begin()+1);
+		while ((*(c2_.end()-2)) && (c2_.size() > 2)) {
+			c2_.erase(c2_.end()-2);
 		}
 }
 
 void BigInt<2>::fillDifference(int nElements) {
 	if (!sign()) {
 		for (auto i = 0; i < nElements; i++){
-			c2_.insert(c2_.begin()+1);
+			c2_.insert(c2_.end()-1);
 		}
 	} else {
 		for (auto i = 0; i < nElements; i++){
-			c2_.insert(c2_.begin()+1,sign());
+			c2_.insert(c2_.end()-1,sign());
 		}
 	}
 }
