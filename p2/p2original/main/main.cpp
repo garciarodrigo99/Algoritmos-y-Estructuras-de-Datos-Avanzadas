@@ -64,14 +64,13 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
-  BigInt<2> test("0101010");
-  BigInt<2> test2("0101011");
+  BigInt<2> test("1001");
+  std::cout << (BigInt<10>)test << std::endl;
 
-  std::cout << (test > test2) << std::endl;
-  std::cout << (test < test2) << std::endl;
-  std::cout << (test >= test2) << std::endl;
-  std::cout << (test <= test2) << std::endl;
-  // std::cout << test + test2 << std::endl;
+  // std::cout << (test + BigInt<2>("101")) << std::endl;
+  // std::cout << (test + BigInt<2>("10")) << std::endl;
+  // std::cout << (test + BigInt<2>("101")) << std::endl;
+  // std::cout << (test + BigInt<2>("1001")) << std::endl;
 
   return 0;
 

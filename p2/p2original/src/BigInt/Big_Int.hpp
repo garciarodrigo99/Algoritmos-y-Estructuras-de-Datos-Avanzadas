@@ -900,10 +900,10 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 
 	bool negativeNumbers = ((first.sign()) || second.sign());
 	bool carry = false;
-	for(size_t i=0; i<first.c2_.size();i++) {
-		bool element = first.c2_[i] ^ second.c2_[i];
-		boolList.push_front(element ^ carry);
-		carry  = ((first.c2_[i] && second.c2_[i]) || 
+	for(size_t i=0; i<second.c2_.size(); i++) {
+		bool element = first.c2_[i] ^ second.c2_[i] ^ carry;
+		boolList.push_front(element);
+		carry = ((first.c2_[i] && second.c2_[i]) || 
 							(first.c2_[i] && carry) ||
 							(second.c2_[i] && carry));
 		
@@ -917,6 +917,25 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 
 	BigInt<2> toReturn(strParam);
 	return toReturn;
+}
+
+template <size_t BaseToConvert>
+BigInt<2>::operator BigInt<BaseToConvert>()
+{
+	BigInt<BaseToConvert> result;
+	BigInt<2> naturalBinary(*this);
+	if (naturalBinary.sign())
+		naturalBinary = complementNumber();
+	
+	for (int i = 0; i < c2_.size()-1; i++) {
+		result = (result + (BigInt<BaseToConvert>
+							(pow(BigInt<BaseToConvert>(2),BigInt<BaseToConvert>(i)) 
+							* BigInt<BaseToConvert>(naturalBinary.c2_[i]))));
+	}
+	if (sign())
+		result = result * BigInt<BaseToConvert>(-1);
+	
+	return result;
 }
 
 /**
