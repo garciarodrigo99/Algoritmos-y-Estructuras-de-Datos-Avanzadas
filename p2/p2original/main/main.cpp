@@ -65,7 +65,8 @@ void auxFunction(std::string fileName) {
 int main(int argc, char *argv[]) {
 
   BigInt<2> test("0111");
-  std::cout << test + test << std::endl;
+  BigInt<2> test2("0111");
+  std::cout << test + test2 << std::endl;
 
   return 0;
 

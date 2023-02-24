@@ -902,7 +902,7 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 	bool carry = false;
 	for(size_t i=0; i<first.c2_.size();i++) {
 		bool element = first.c2_[i] ^ second.c2_[i];
-		boolList.push_front(element + carry);
+		boolList.push_front(element ^ carry);
 		carry  = ((first.c2_[i] && second.c2_[i]) || 
 							(first.c2_[i] && carry) ||
 							(second.c2_[i] && carry));
