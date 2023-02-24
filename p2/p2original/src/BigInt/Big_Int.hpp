@@ -814,7 +814,7 @@ bool BigInt<2>::operator!=(const BigInt<2>& param) const {
 
 bool operator>(const BigInt<2>& first, const BigInt<2> & second) {
 	if(first.sign() != second.sign()){
-		return (first.sign() > second.sign());
+		return (!first.sign());
 	}
 	if(first.c2_.size() != second.c2_.size()){
 		return (first.c2_.size() > second.c2_.size());
@@ -833,7 +833,7 @@ bool BigInt<2>::operator>=(const BigInt<2> & param) const {
 
 bool operator<(const BigInt<2>& first, const BigInt<2> & second) {
 	if(first.sign() != second.sign()){
-		return (first.sign() < second.sign());
+		return (first.sign());
 	}
 	if(first.c2_.size() != second.c2_.size()){
 		return (first.c2_.size() < second.c2_.size());
