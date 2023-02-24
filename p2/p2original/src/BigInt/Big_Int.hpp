@@ -674,7 +674,8 @@ class BigInt<2> {
 		void build(std::string&);
 		void checkBinary(char);
 		BigInt<2> complementNumber();
-		// BigInt<2> removeUselessZero();
+		void removeUselessElements();
+    //void fillDifference(int nElements);
 
 	public:
 		// Constructores
@@ -685,10 +686,8 @@ class BigInt<2> {
 		~BigInt();
 
 		// Pruebas metodos privados
-		void removeUselessElements();
-    void fillDifference(int nElements);
 
-        // Asignación:
+    // Asignación:
 		BigInt<2>& operator=(const BigInt<2>&);
 
 		// Inserción y extracción en flujo:
@@ -764,7 +763,8 @@ BigInt<2>::BigInt(const char* cchar)
 // OK
 BigInt<2>::BigInt(const BigInt<2>& copy)
 {	
-	*this = copy;	
+	*this = copy;
+	removeUselessElements();
 }
 
 BigInt<2>::~BigInt() {}
@@ -922,6 +922,12 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 	return toReturn;
 }
 
+/**
+ * @brief Metodo privado que funciona como constructor común y evita repetir 
+ * código
+ * 
+ * @param str Cadena de caracteres
+ */
 void BigInt<2>::build(std::string& str){
 
 	for(int i=str.size()-1; i>=0; i--){
@@ -932,32 +938,14 @@ void BigInt<2>::build(std::string& str){
 		}
 		c2_.push_back(true);
 	}
+	removeUselessElements();
 }
 
-void BigInt<2>::removeUselessElements() {
-
-	if (!sign()) {
-		while ((!*(c2_.end()-2)) && (c2_.size() > 2)) {
-			c2_.erase(c2_.end()-2);
-		}
-	} else 
-		while ((*(c2_.end()-2)) && (c2_.size() > 2)) {
-			c2_.erase(c2_.end()-2);
-		}
-}
-
-void BigInt<2>::fillDifference(int nElements) {
-	if (!sign()) {
-		for (auto i = 0; i < nElements; i++){
-			c2_.insert(c2_.end()-1);
-		}
-	} else {
-		for (auto i = 0; i < nElements; i++){
-			c2_.insert(c2_.end()-1,sign());
-		}
-	}
-}
-
+/**
+ * @brief Comprueba si un caracter es 1 ó 0
+ * 
+ * @param pCharacter Caracter a comprobar
+ */
 void BigInt<2>::checkBinary(char pCharacter) {
 
 	bool isBinary = ((pCharacter == '0') || (pCharacter == '1'));
@@ -975,7 +963,8 @@ void BigInt<2>::checkBinary(char pCharacter) {
  * No altera el estado del parametro. Util sobretodo para la resta.
  * 
  * @param param Binario en complemento a 2
- * @return BigInt<2> Binario en complemento a 2
+ * @return BigInt<2> Binario en complemento a 2 pasado por referencia cambiado
+ * de signo
  */
 BigInt<2> BigInt<2>::complementNumber() {
 	if (*this == BigInt<2>("0")) {
@@ -987,3 +976,34 @@ BigInt<2> BigInt<2>::complementNumber() {
 	++toReturn;
 	return toReturn;
 }
+
+/**
+ * @brief Elimina elementos que no aportan información al número.
+ * Útil sobretodo para hacer las comparaciones usando el tamaño del vector
+ * Ej:	000000001 -> 01
+ * 			111111111 -> 11
+ * 
+ */
+void BigInt<2>::removeUselessElements() {
+
+	if (!sign()) {
+		while ((!*(c2_.end()-2)) && (c2_.size() > 2)) {
+			c2_.erase(c2_.end()-2);
+		}
+	} else 
+		while ((*(c2_.end()-2)) && (c2_.size() > 2)) {
+			c2_.erase(c2_.end()-2);
+		}
+}
+
+// void BigInt<2>::fillDifference(int nElements) {
+// 	if (!sign()) {
+// 		for (auto i = 0; i < nElements; i++){
+// 			c2_.insert(c2_.end()-1);
+// 		}
+// 	} else {
+// 		for (auto i = 0; i < nElements; i++){
+// 			c2_.insert(c2_.end()-1,sign());
+// 		}
+// 	}
+// }
