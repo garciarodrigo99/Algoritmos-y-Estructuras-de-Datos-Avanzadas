@@ -46,6 +46,73 @@ template <std::size_t Base> BigInt<Base> pow(const BigInt<Base>&, const BigInt<B
 char convertToNumber(char);
 char convertToCharacter(char toConvert);
 
+template <>
+class BigInt<2> {
+	private:
+		std::vector<bool> c2_;
+		void build(std::string&);
+		void checkBinary(char);
+		BigInt<2> complementNumber();
+		void removeUselessElements();
+    //void fillDifference(int nElements);
+
+	public:
+		// Constructores
+		BigInt(long n = 0);
+		BigInt(std::string&, bool = false);
+		BigInt(const char* );
+		BigInt(const BigInt<2>&); // Constructor de copia
+		~BigInt();
+
+		// Pruebas metodos privados
+
+    // Asignación:
+		BigInt<2>& operator=(const BigInt<2>&);
+
+		// Inserción y extracción en flujo:
+		friend std::ostream& operator<< (std::ostream&, const BigInt<2>&);
+		// friend std::istream& operator>> <Base>(std::istream&, BigInt<Base>&);
+		// friend BigInt<Base>& operator>>(BigInt<Base>&, char &x);
+
+		// Accesor:
+		bool sign() const; // Signo: 0 ó 1
+		char operator[](int) const; // Acceso al i-ésimo dígito
+
+		// Comparación:
+		friend bool operator==(const BigInt<2>&, const BigInt<2> &);
+		bool operator!=(const BigInt<2>&) const;
+		friend bool operator>(const BigInt<2>&, const BigInt<2> &);
+		bool operator>=(const BigInt<2> &) const;
+		friend bool operator< (const BigInt<2>&, const BigInt<2>&);
+		bool operator<=(const BigInt<2>&) const;
+
+		// Incremento/decremento:
+		BigInt<2>& operator++(); // Pre-incremento(++i)
+		BigInt<2> operator++(int); // Post-incremento
+		BigInt<2>& operator--(); // Pre-decremento
+		BigInt<2> operator--(int); // Post-decremento
+
+		// Operadores aritméticos:
+		friend BigInt<2> operator+(const BigInt<2>&, const BigInt<2>&);
+		BigInt<2> operator-(const BigInt<2> &) const;
+		BigInt<2> operator-() const;
+		BigInt<2> operator*(const BigInt<2>&) const;
+		friend BigInt<2> operator/(const BigInt<2>&, const BigInt<2>&);
+		BigInt<2> operator%(const BigInt<2>&) const;
+
+		// Operador de conversión
+		template <size_t BaseToConvert> operator BigInt<BaseToConvert> ();
+
+		// Potencia a^b
+		friend BigInt<2> pow(const BigInt<2>&, const BigInt<2>&);
+
+		BigInt<2> factorial() const;
+
+		std::string cvToStr(void);
+
+		static unsigned totalInstances();
+};
+
 template <std::size_t Base = 10> 
 class BigInt {
 	private:
@@ -397,7 +464,7 @@ BigInt<Base> BigInt<Base>::operator-(const BigInt<Base> & param) const {
 		list.push_front(element);
 	}
 	// Borrar 0
-	for (size_t i = list.size()-1; i > 0; i++){
+	for (size_t i = list.size()-1; i > 0; i--){
 		if (list.front() == 0){
 			list.pop_front();
 		} else{
@@ -528,6 +595,40 @@ BigInt<Base> operator/(const BigInt<Base>& first, const BigInt<Base>& second) {
 template <size_t Base>
 BigInt<Base> BigInt<Base>::operator%(const BigInt<Base>& param) const {
 	return BigInt<Base>(*this - (param * (*this / param)));
+}
+
+template <size_t Base>
+BigInt<Base>::operator BigInt<2> () {
+
+	std::list<bool> boolList;
+	bool negativeNumber = (sign_ == -1);
+	BigInt<Base> dividendo(*this);
+	if (negativeNumber){
+		dividendo = dividendo * BigInt<Base> (-1);
+	}
+	
+
+	while (dividendo > BigInt<Base>("0")){
+		if ((dividendo % BigInt<Base>(2)) == BigInt<Base>("0"))
+			boolList.push_front(false);
+		else 
+			boolList.push_front(true);
+		
+		dividendo = dividendo / BigInt<Base>(2); 
+	}
+	
+	boolList.push_front(false);
+	std::string strParam;
+	for(auto i : boolList)
+		strParam.push_back(convertToCharacter(i));
+
+	if (negativeNumber){
+		BigInt<2> toReturn(strParam,true);
+		return toReturn;
+	}
+	
+	BigInt<2> toReturn(strParam);
+	return toReturn;
 }
 
 template <size_t Base>
@@ -667,74 +768,6 @@ char convertToCharacter(char toConvert) {
 
 // ----------------------------------------------------------------------------
 
-template <>
-class BigInt<2> {
-	private:
-		std::vector<bool> c2_;
-		void build(std::string&);
-		void checkBinary(char);
-		BigInt<2> complementNumber();
-		void removeUselessElements();
-    //void fillDifference(int nElements);
-
-	public:
-		// Constructores
-		BigInt(long n = 0);
-		BigInt(std::string&);
-		BigInt(const char* );
-		BigInt(const BigInt<2>&); // Constructor de copia
-		~BigInt();
-
-		// Pruebas metodos privados
-
-    // Asignación:
-		BigInt<2>& operator=(const BigInt<2>&);
-
-		// Inserción y extracción en flujo:
-		friend std::ostream& operator<< (std::ostream&, const BigInt<2>&);
-		// friend std::istream& operator>> <Base>(std::istream&, BigInt<Base>&);
-		// friend BigInt<Base>& operator>>(BigInt<Base>&, char &x);
-
-		// Accesor:
-		bool sign() const; // Signo: 0 ó 1
-		char operator[](int) const; // Acceso al i-ésimo dígito
-
-		// Comparación:
-		friend bool operator==(const BigInt<2>&, const BigInt<2> &);
-		bool operator!=(const BigInt<2>&) const;
-		friend bool operator>(const BigInt<2>&, const BigInt<2> &);
-		bool operator>=(const BigInt<2> &) const;
-		friend bool operator< (const BigInt<2>&, const BigInt<2>&);
-		bool operator<=(const BigInt<2>&) const;
-
-		// Incremento/decremento:
-		BigInt<2>& operator++(); // Pre-incremento(++i)
-		BigInt<2> operator++(int); // Post-incremento
-		BigInt<2>& operator--(); // Pre-decremento
-		BigInt<2> operator--(int); // Post-decremento
-
-		// Operadores aritméticos:
-		friend BigInt<2> operator+(const BigInt<2>&, const BigInt<2>&);
-		BigInt<2> operator-(const BigInt<2> &) const;
-		BigInt<2> operator-() const;
-		BigInt<2> operator*(const BigInt<2>&) const;
-		friend BigInt<2> operator/(const BigInt<2>&, const BigInt<2>&);
-		BigInt<2> operator%(const BigInt<2>&) const;
-
-		// Operadores de conversión
-		template <size_t BaseToConvert>
-		operator BigInt<BaseToConvert> ();
-
-		// Potencia a^b
-		friend BigInt<2> pow(const BigInt<2>&, const BigInt<2>&);
-
-		BigInt<2> factorial() const;
-
-		std::string cvToStr(void);
-
-		static unsigned totalInstances();
-};
-
 BigInt<2>::BigInt(long n)
 {
 	std::cout << "Binario\n";
@@ -747,9 +780,11 @@ BigInt<2>::BigInt(long n)
  * 
  * @param str 
  */
-BigInt<2>::BigInt(std::string& str)
+BigInt<2>::BigInt(std::string& str, bool condition)
 {
 	build(str);
+	if (condition)
+		*this = complementNumber();
 }
 
 BigInt<2>::BigInt(const char* cchar)
@@ -927,7 +962,7 @@ BigInt<2>::operator BigInt<BaseToConvert>()
 	if (naturalBinary.sign())
 		naturalBinary = complementNumber();
 	
-	for (int i = 0; i < c2_.size()-1; i++) {
+	for (size_t i = 0; i < c2_.size()-1; i++) {
 		result = (result + (BigInt<BaseToConvert>
 							(pow(BigInt<BaseToConvert>(2),BigInt<BaseToConvert>(i)) 
 							* BigInt<BaseToConvert>(naturalBinary.c2_[i]))));
