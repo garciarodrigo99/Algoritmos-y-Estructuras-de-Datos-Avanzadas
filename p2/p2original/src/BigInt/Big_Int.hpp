@@ -724,8 +724,6 @@ class BigInt<2> {
 		// Operadores de conversión
 		template <size_t BaseToConvert>
 		operator BigInt<BaseToConvert> ();
-		// operator BigInt<10> ();
-		// operator BigInt<16> ();
 
 		// Potencia a^b
 		friend BigInt<2> pow(const BigInt<2>&, const BigInt<2>&);
@@ -905,13 +903,12 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 	for(size_t i=0; i<first.c2_.size();i++) {
 		bool element = first.c2_[i] ^ second.c2_[i];
 		boolList.push_front(element + carry);
-		if (first.c2_[i] && second.c2_[i])
-			carry = true;
-		else
-			carry = false;
+		carry  = ((first.c2_[i] && second.c2_[i]) || 
+							(first.c2_[i] && carry) ||
+							(second.c2_[i] && carry));
 		
 	}
-	if ((carry == true) && (negativeNumbers == false)) {
+	if ((boolList.front() == true) && (negativeNumbers == false)) {
 		boolList.push_front(negativeNumbers);
 	}
 	std::string strParam;
