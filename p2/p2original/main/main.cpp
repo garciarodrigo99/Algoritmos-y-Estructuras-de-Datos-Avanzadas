@@ -64,10 +64,16 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
-  BigInt<2> test("0111");
-  std::cout << (BigInt<10>)(test+BigInt<2>("001")) << std::endl;
-  ++test;
-  std::cout << (BigInt<10>)(test) << std::endl;
+  // BigInt<2> a("01111");
+  // std::cout << (BigInt<10>)a << " + ";
+  // BigInt<2> b("01111111111111");
+  // std::cout << (BigInt<10>)b << " = ";
+  // BigInt<2> c(a+b);
+  // std::cout << (BigInt<10>)c << std::endl;
+  // ++test;
+  // std::cout << (BigInt<10>)(test) << std::endl;
+  
+  std::cout << pow(BigInt<10>(2),BigInt<10>(15)) << std::endl;
 
   return 0;
 

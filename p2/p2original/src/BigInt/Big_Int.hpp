@@ -77,6 +77,7 @@ class BigInt<2> {
 		// Accesor:
 		bool sign() const; // Signo: 0 ó 1
 		char operator[](int) const; // Acceso al i-ésimo dígito
+		int size(void) const;
 
 		// Comparación:
 		friend bool operator==(const BigInt<2>&, const BigInt<2> &);
@@ -104,7 +105,7 @@ class BigInt<2> {
 		template <size_t BaseToConvert> operator BigInt<BaseToConvert> ();
 
 		// Potencia a^b
-		friend BigInt<2> pow(const BigInt<2>&, const BigInt<2>&);
+		//friend BigInt<2> pow(const BigInt<2>&, const BigInt<2>&);
 
 		BigInt<2> factorial() const;
 
@@ -314,28 +315,29 @@ bool BigInt<Base>::operator<=(const BigInt<Base> & param) const {
 
 template <std::size_t Base>
 BigInt<Base>& BigInt<Base>::operator++() {
-	if (sign_ == -1) {
-		if (*this == BigInt<Base>(-1)){	// Problema 0 negativo
-			*this = BigInt<Base>("0");
-		} else {
-			BigInt<Base> copy(*this);
-			copy.sign_ = 1;
-			--copy;
-			*this = copy;
-			sign_ = -1;
-		}
-	} else {
-		int carry = 1;
-		for(size_t i=0; i<digits_.size();i++) {
-			int element = digits_[i] + carry;
-			carry = element / Base;
-			element = element % Base;
-			digits_[i] = element;
-		}
-		if (carry != 0) {
-			digits_.push_back('1');
-		}
-	}
+	// if (sign_ == -1) {
+	// 	if (*this == BigInt<Base>(-1)){	// Problema 0 negativo
+	// 		*this = BigInt<Base>("0");
+	// 	} else {
+	// 		BigInt<Base> copy(*this);
+	// 		copy.sign_ = 1;
+	// 		--copy;
+	// 		*this = copy;
+	// 		sign_ = -1;
+	// 	}
+	// } else {
+	// 	int carry = 1;
+	// 	for(size_t i=0; i<digits_.size();i++) {
+	// 		int element = digits_[i] + carry;
+	// 		carry = element / Base;
+	// 		element = element % Base;
+	// 		digits_[i] = element;
+	// 	}
+	// 	if (carry != 0) {
+	// 		digits_.push_back('1');
+	// 	}
+	// }
+	*this = *this + BigInt<Base>(1);
 	return *this;
 }
 
@@ -354,25 +356,26 @@ BigInt<Base> BigInt<Base>::operator++(int) {
 // CUIDADO 0, -1
 template <std::size_t Base>
 BigInt<Base>& BigInt<Base>::operator--() {
-	if (sign_ == -1) {
-		BigInt<Base> copy(*this);
-		copy.sign_ = 1;
-		++copy;
-		*this = copy;
-		sign_ = -1;
-	} else if (*this == BigInt<Base>("0")){
-		*this = BigInt<Base>(-1);
-	} else {
-		bool carry = true;
-		for(size_t i=0; i<digits_.size();i++) {
-			int element = digits_[i] - carry;
-			carry = (element < 0);
-			digits_[i] = element;
-		}
-		if (carry != 0) {
-			digits_.push_back('1');
-		}
-	}
+	// if (sign_ == -1) {
+	// 	BigInt<Base> copy(*this);
+	// 	copy.sign_ = 1;
+	// 	++copy;
+	// 	*this = copy;
+	// 	sign_ = -1;
+	// } else if (*this == BigInt<Base>("0")){
+	// 	*this = BigInt<Base>(-1);
+	// } else {
+	// 	bool carry = true;
+	// 	for(size_t i=0; i<digits_.size();i++) {
+	// 		char element = digits_[i] - carry;
+	// 		carry = (element < 0);
+	// 		digits_[i] = element;
+	// 	}
+	// 	if (carry != 0) {
+	// 		digits_.push_back('1');
+	// 	}
+	// }
+	*this = *this - BigInt<Base>(1);
 	return *this;
 }// Pre-decremento
 
@@ -645,10 +648,12 @@ BigInt<Base> pow(const BigInt<Base>& base, const BigInt<Base>& exponent) {
 	BigInt<Base> result(base);
 	BigInt<Base> operations(exponent);
 	--operations;
-	while (counter < (operations)) {
+	while (counter < operations) {
 		result = result * base;
+		std::cout << "it: " << counter << ", result: " << result << std::endl;
 		counter++;
 	}
+	std::cout << "Ultimo: " << counter << " < " << operations << " " << (counter < operations) << std::endl;
 	return result;
 }
 
@@ -827,6 +832,11 @@ char BigInt<2>::operator[](int index) const
   return c2_[index];
 }
 
+inline int BigInt<2>::size(void) const
+{
+  return c2_.size();
+}
+
 bool operator==(const BigInt<2>& first, const BigInt<2> & second) {
 	if(first.sign() != second.sign()){
 		return false;
@@ -928,6 +938,10 @@ BigInt<2> BigInt<2>::operator--(int) {
 
 BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 
+	BigInt<2> firstCopy(first);
+	BigInt<2> secondCopy(second);
+	int maxBase = std::max(firstCopy.size(),secondCopy.size());
+
 	if (first < second)
 		return BigInt<2>(second+first);
 
@@ -969,6 +983,9 @@ BigInt<2>::operator BigInt<BaseToConvert>()
 		result = (result + (BigInt<BaseToConvert>
 							(pow(BigInt<BaseToConvert>(2),BigInt<BaseToConvert>(i)) 
 							* BigInt<BaseToConvert>(naturalBinary.c2_[i]))));
+		std::cout << "it: " << i << ", valor iteracion: " << (BigInt<BaseToConvert>
+							(pow(BigInt<BaseToConvert>(2),BigInt<BaseToConvert>(i)) 
+							* BigInt<BaseToConvert>(naturalBinary.c2_[i]))) << ", result: " << (BigInt<10>)result << std::endl;
 	}
 	if (sign())
 		result = result * BigInt<BaseToConvert>(-1);
