@@ -54,7 +54,7 @@ class BigInt<2> {
 		void checkBinary(char);
 		BigInt<2> complementNumber();
 		void removeUselessElements();
-    //void fillDifference(int nElements);
+    void fillDifference(int nElements);
 
 	public:
 		// Constructores
@@ -940,28 +940,40 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 
 	BigInt<2> firstCopy(first);
 	BigInt<2> secondCopy(second);
-	int maxBase = std::max(firstCopy.size(),secondCopy.size());
-
-	if (first < second)
+	
+	// Optimización numeros positivos evitar rellenar
+	if ((!first.sign() && !second.sign()) && (first < second)) {
 		return BigInt<2>(second+first);
+	}
+	
+
+	// Necesario operaciones números negativos
+	if ((firstCopy.size() != secondCopy.size()) && 
+			(first.sign() || second.sign())){
+		if (firstCopy.size() < secondCopy.size()) {
+			firstCopy.fillDifference(secondCopy.size()-firstCopy.size());
+		} else {
+			secondCopy.fillDifference(firstCopy.size()-secondCopy.size());
+		}
+	}
 
 	std::list<bool> boolList;
 
-	bool addBit = (first.sign() ^ second.sign());
+	bool addBit = (firstCopy.sign() ^ secondCopy.sign());
 	bool carry = false;
-	for(size_t i=0; i<first.c2_.size(); i++) {
-		bool element = first.c2_[i] ^ carry;
-		carry = (first.c2_[i] && carry);
-		if (i < second.c2_.size()) {
-			element = element ^ second.c2_[i];
-			carry = carry || (first.c2_[i] && second.c2_[i]) ||
-							(second.c2_[i] && carry);
+	for(size_t i=0; i<firstCopy.c2_.size(); i++) {
+		bool element = firstCopy.c2_[i] ^ carry;
+		carry = (firstCopy.c2_[i] && carry);
+		if (i < secondCopy.c2_.size()) {
+			element = element ^ secondCopy.c2_[i];
+			carry = carry || (firstCopy.c2_[i] && secondCopy.c2_[i]) ||
+							(secondCopy.c2_[i] && carry);
 		}
 		boolList.push_front(element);
 		
 	}
 	if (!addBit) {
-		boolList.push_front(first.sign());
+		boolList.push_front(firstCopy.sign());
 	}
 	std::string strParam;
 	for(auto i : boolList)
@@ -1067,14 +1079,14 @@ void BigInt<2>::removeUselessElements() {
 		}
 }
 
-// void BigInt<2>::fillDifference(int nElements) {
-// 	if (!sign()) {
-// 		for (auto i = 0; i < nElements; i++){
-// 			c2_.insert(c2_.end()-1);
-// 		}
-// 	} else {
-// 		for (auto i = 0; i < nElements; i++){
-// 			c2_.insert(c2_.end()-1,sign());
-// 		}
-// 	}
-// }
+void BigInt<2>::fillDifference(int nElements) {
+	if (!sign()) {
+		for (auto i = 0; i < nElements; i++){
+			c2_.insert(c2_.end()-1);
+		}
+	} else {
+		for (auto i = 0; i < nElements; i++){
+			c2_.insert(c2_.end()-1,sign());
+		}
+	}
+}
