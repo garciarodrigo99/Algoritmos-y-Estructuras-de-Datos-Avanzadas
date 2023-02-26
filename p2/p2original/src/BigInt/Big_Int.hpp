@@ -650,10 +650,10 @@ BigInt<Base> pow(const BigInt<Base>& base, const BigInt<Base>& exponent) {
 	--operations;
 	while (counter < operations) {
 		result = result * base;
-		std::cout << "it: " << counter << ", result: " << result << std::endl;
+		//std::cout << "it: " << counter << ", result: " << result << std::endl;
 		counter++;
 	}
-	std::cout << "Ultimo: " << counter << " < " << operations << " " << (counter < operations) << std::endl;
+	//std::cout << "Ultimo: " << counter << " < " << operations << " " << (counter < operations) << std::endl;
 	return result;
 }
 
@@ -983,9 +983,9 @@ BigInt<2>::operator BigInt<BaseToConvert>()
 		result = (result + (BigInt<BaseToConvert>
 							(pow(BigInt<BaseToConvert>(2),BigInt<BaseToConvert>(i)) 
 							* BigInt<BaseToConvert>(naturalBinary.c2_[i]))));
-		std::cout << "it: " << i << ", valor iteracion: " << (BigInt<BaseToConvert>
+		/*std::cout << "it: " << i << ", valor iteracion: " << (BigInt<BaseToConvert>
 							(pow(BigInt<BaseToConvert>(2),BigInt<BaseToConvert>(i)) 
-							* BigInt<BaseToConvert>(naturalBinary.c2_[i]))) << ", result: " << (BigInt<10>)result << std::endl;
+							* BigInt<BaseToConvert>(naturalBinary.c2_[i]))) << ", result: " << (BigInt<10>)result << std::endl;*/
 	}
 	if (sign())
 		result = result * BigInt<BaseToConvert>(-1);
