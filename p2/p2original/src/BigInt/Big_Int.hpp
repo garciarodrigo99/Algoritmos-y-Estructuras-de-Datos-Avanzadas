@@ -933,7 +933,7 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 
 	std::list<bool> boolList;
 
-	bool negativeNumbers = ((first.sign()) || second.sign());
+	bool addBit = ((first.sign()) ^ second.sign());
 	bool carry = false;
 	for(size_t i=0; i<second.c2_.size(); i++) {
 		bool element = first.c2_[i] ^ second.c2_[i] ^ carry;
@@ -943,8 +943,8 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 							(second.c2_[i] && carry));
 		
 	}
-	if ((boolList.front() == true) && (negativeNumbers == false)) {
-		boolList.push_front(negativeNumbers);
+	if ((boolList.front() == true) && (addBit == false)) {
+		boolList.push_front(first.sign());
 	}
 	std::string strParam;
 	for(auto i : boolList)
@@ -962,7 +962,7 @@ BigInt<2>::operator BigInt<BaseToConvert>()
 	if (naturalBinary.sign())
 		naturalBinary = complementNumber();
 	
-	for (size_t i = 0; i < c2_.size()-1; i++) {
+	for (size_t i = 0; i < naturalBinary.c2_.size()-1; i++) {
 		result = (result + (BigInt<BaseToConvert>
 							(pow(BigInt<BaseToConvert>(2),BigInt<BaseToConvert>(i)) 
 							* BigInt<BaseToConvert>(naturalBinary.c2_[i]))));

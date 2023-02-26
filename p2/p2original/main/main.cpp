@@ -64,12 +64,8 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
-  BigInt<2> test("01000");
-  std::cout << "Base 8:" << (BigInt<8>)test << std::endl;
-  std::cout << "Base 10:" << (BigInt<10>)test << std::endl;
-  std::cout << "Base 16:" << (BigInt<16>)test << std::endl;
-  BigInt<10> hex("7");
-  std::cout << (BigInt<2>)hex << std::endl;
+  BigInt<2> test("1000");
+  std::cout << (BigInt<10>)test << std::endl;
 
   return 0;
 
