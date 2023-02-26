@@ -933,17 +933,20 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 
 	std::list<bool> boolList;
 
-	bool addBit = ((first.sign()) ^ second.sign());
+	bool addBit = (first.sign() ^ second.sign());
 	bool carry = false;
-	for(size_t i=0; i<second.c2_.size(); i++) {
-		bool element = first.c2_[i] ^ second.c2_[i] ^ carry;
+	for(size_t i=0; i<first.c2_.size(); i++) {
+		bool element = first.c2_[i] ^ carry;
+		carry = (first.c2_[i] && carry);
+		if (i < second.c2_.size()) {
+			element = element ^ second.c2_[i];
+			carry = carry || (first.c2_[i] && second.c2_[i]) ||
+							(second.c2_[i] && carry);
+		}
 		boolList.push_front(element);
-		carry = ((first.c2_[i] && second.c2_[i]) || 
-							(first.c2_[i] && carry) ||
-							(second.c2_[i] && carry));
 		
 	}
-	if ((boolList.front() == true) && (addBit == false)) {
+	if (!addBit) {
 		boolList.push_front(first.sign());
 	}
 	std::string strParam;
