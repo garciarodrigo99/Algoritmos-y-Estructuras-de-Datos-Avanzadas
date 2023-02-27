@@ -775,7 +775,7 @@ char convertToCharacter(char toConvert) {
 
 BigInt<2>::BigInt(long n)
 {
-	std::cout << "Binario\n";
+	//std::cout << "Binario\n";
 	std::string str(std::to_string(n));
 	build(str);
 }
@@ -984,6 +984,63 @@ BigInt<2> BigInt<2>::operator-(const BigInt<2> & param) const {
 
 	BigInt<2> toSubstract(param);
 	BigInt<2> toReturn(*this + toSubstract.complementNumber());
+	return toReturn;
+}
+
+BigInt<2> BigInt<2>::operator*(const BigInt<2>& multiplier) const {
+	BigInt<2> zero;
+	if ((multiplier == zero) || (*this == zero))
+		return zero;
+	if (multiplier == BigInt<2>(1))
+		return *this;
+	
+	if (*this == BigInt<2>(1))
+		return multiplier;
+
+	// Multiplicación negativos
+	if(sign() || multiplier.sign()){
+		BigInt<2> first(*this);
+		if (first.sign())
+			first = first.complementNumber();
+		
+		BigInt<2> second(multiplier);
+		if (second.sign())
+			second = second.complementNumber();
+
+		BigInt<2> toReturn(first * second);
+		if (sign() ^ multiplier.sign())
+			return toReturn.complementNumber();
+		
+		return toReturn;
+	}
+
+	std::vector<BigInt<2>> vectorsum;
+	for(std::size_t j=0;j<multiplier.c2_.size();j++){
+		int carry = 0;
+		std::list<char> result2;
+		for(std::size_t i=0;i<c2_.size();i++){
+			bool result = c2_[i] && multiplier[j];
+			result2.push_front(result);
+		}
+		// if(carry != 0){
+		// 	result2.push_front(carry);
+		// }
+		for (size_t i = 0; i < j; i++){
+			result2.push_back(0);
+		}
+		std::string strParam;
+		for(auto i : result2)
+			strParam.push_back(convertToCharacter(i));
+		vectorsum.push_back(BigInt<2>(strParam));
+	}
+	BigInt<2> toReturn;
+	for (std::size_t i=0; i<vectorsum.size();i++) {
+		toReturn = toReturn + vectorsum[i];
+	}
+	// if (negative) {
+	// 	toReturn.sign_ = -1;
+	// }
+	
 	return toReturn;
 }
 
