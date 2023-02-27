@@ -97,10 +97,8 @@ T Calculator<T>::GetResult(std::string line,
   numbers_.clear();
   for (auto it = numeros.begin(); it != numeros.end(); ++it) {
     BigInt<2> aux(it->second);
-    //std::cout << "Clave: " << it->first << ", Valor: " << it->second << std::endl;
     numbers_[it->first] = it->second;
   }
-  
 //-----------------------------------------------------------------------------
 
   if (numbers_.size() == 0)

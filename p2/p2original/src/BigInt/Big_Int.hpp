@@ -940,15 +940,10 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 
 	BigInt<2> firstCopy(first);
 	BigInt<2> secondCopy(second);
-	
-	// Optimización numeros positivos evitar rellenar
-	if ((!first.sign() && !second.sign()) && (first < second)) {
-		return BigInt<2>(second+first);
-	}
+
 	
 	// Necesario operaciones números negativos
-	if ((firstCopy.size() != secondCopy.size()) && 
-			(first.sign() || second.sign())){
+	if ((firstCopy.size() != secondCopy.size())){
 		if (firstCopy.size() < secondCopy.size()) {
 			firstCopy.fillDifference(secondCopy.size()-firstCopy.size());
 		} else {

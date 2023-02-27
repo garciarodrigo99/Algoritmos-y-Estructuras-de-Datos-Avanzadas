@@ -50,6 +50,7 @@ void auxFunction(std::string fileName) {
   Calculator<BigInt<2>> calc;
 	std::vector<std::string> splittedChain;
   while(getline(archivo_entrada, linea)) {
+    std::cout << "Hola\n";
 		splittedChain = SplitChain(linea);
 		if (splittedChain.size() == 3){
 			Board[splittedChain.at(0)] = T(splittedChain.at(2));
@@ -63,16 +64,19 @@ void auxFunction(std::string fileName) {
 }
 
 int main(int argc, char *argv[]) {
-
-  // BigInt<2> bin("011");
-  // BigInt<10> dec(bin);
-  // std::cout << dec << std::endl;
-
-  // BigInt<10> dec2(15);
-  // BigInt<2> bin2(dec2);
-  // std::cout << bin2 << std::endl;
-
-
+//488793485263218
+  // BigInt<2> n1(BigInt<10>(12));
+  // std::cout << "n1: " << (BigInt<10>)n1 << "  " << n1 << std::endl;
+  // BigInt<2> n2(BigInt<10>(6));
+  // std::cout << "n2: " << (BigInt<10>)n2 << "      " << n2 << std::endl;
+  // BigInt<2> e1(n1+n2);
+  // std::cout << "e1: " << (BigInt<10>)e1 << "  " << e1 << std::endl;
+  // BigInt<2> aux(n1-n2);
+  // std::cout << "aux: " << (BigInt<10>)aux << "    " << aux << std::endl;
+  // BigInt<2> e2(aux+e1);
+  // std::cout << "e2: " << (BigInt<10>)e2 << "  " << e2 << std::endl;
+  // // BigInt<2> e2((BigInt<10>)(18)+(BigInt<10>)(6));
+  // // std::cout << "e2: " << (BigInt<10>)e2 << "  " << e2 << std::endl;
   // return 0;
 
   std::string fileName = argv[1];
