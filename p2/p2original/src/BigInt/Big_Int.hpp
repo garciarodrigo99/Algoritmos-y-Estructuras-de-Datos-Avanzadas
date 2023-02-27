@@ -1044,6 +1044,28 @@ BigInt<2> BigInt<2>::operator*(const BigInt<2>& multiplier) const {
 	return toReturn;
 }
 
+BigInt<2> pow(const BigInt<2>& base, const BigInt<2>& exponent) {
+	
+	if (exponent == BigInt<2>("0")) {
+		return BigInt<2>(1);
+	}
+	if (exponent < BigInt<2>("0")){
+		throw std::domain_error("Operacion no soportada");
+	}
+
+	BigInt<2> counter;
+	BigInt<2> result(base);
+	BigInt<2> operations(exponent);
+	--operations;
+	while (counter < operations) {
+		result = result * base;
+		//std::cout << "it: " << counter << ", result: " << result << std::endl;
+		counter++;
+	}
+	//std::cout << "Ultimo: " << counter << " < " << operations << " " << (counter < operations) << std::endl;
+	return result;
+}
+
 template <size_t BaseToConvert>
 BigInt<2>::operator BigInt<BaseToConvert>()
 {
