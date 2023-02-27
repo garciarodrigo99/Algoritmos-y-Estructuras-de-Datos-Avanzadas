@@ -980,6 +980,13 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 	return toReturn;
 }
 
+BigInt<2> BigInt<2>::operator-(const BigInt<2> & param) const {
+
+	BigInt<2> toSubstract(param);
+	BigInt<2> toReturn(*this + toSubstract.complementNumber());
+	return toReturn;
+}
+
 template <size_t BaseToConvert>
 BigInt<2>::operator BigInt<BaseToConvert>()
 {
