@@ -66,16 +66,14 @@ void auxFunction(std::string fileName) {
 int main(int argc, char *argv[]) {
 //488793485263218
   // std::cout << (BigInt<10>)pow(BigInt<2>(BigInt<10>(2)),BigInt<2>(BigInt<10>(100))).size() << std::endl;
-  BigInt<2> n1(BigInt<10>(442142117615672));
+  BigInt<2> n1(BigInt<10>(2629));
   std::cout << "n1: " << (BigInt<10>)n1 << "   " << n1 << std::endl;
-  BigInt<2> n2(BigInt<10>(46651367647546));
+  BigInt<2> n2(BigInt<10>(82));
   std::cout << "n2: " << (BigInt<10>)n2 << "    " << n2 << std::endl;
-  BigInt<2> e1(n1+n2);
+  BigInt<2> e1(n1/n2);
   std::cout << "e1: " << (BigInt<10>)e1 << "  " << e1 << std::endl;
-  BigInt<2> t1(n1-n2);
-  std::cout << "t1: " << (BigInt<10>)t1 << "  " << t1 << std::endl;
-  BigInt<2> e2(t1+e1);
-  std::cout << "e2: " << (BigInt<10>)e2 << " " << e2 << std::endl;
+  BigInt<2> e2(n1%n2);
+  std::cout << "e2: " << (BigInt<10>)e2 << "  " << e2 << std::endl;
 
   // return 0;
 

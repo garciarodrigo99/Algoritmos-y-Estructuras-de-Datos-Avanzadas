@@ -105,7 +105,7 @@ class BigInt<2> {
 		BigInt<2> operator%(const BigInt<2>&) const;
 
 		// Operador de conversión
-		template <size_t BaseToConvert> operator BigInt<BaseToConvert> ();
+		template <size_t BaseToConvert> operator BigInt<BaseToConvert> ();						
 
 		// Potencia a^b
 		//friend BigInt<2> pow(const BigInt<2>&, const BigInt<2>&);
@@ -318,28 +318,6 @@ bool BigInt<Base>::operator<=(const BigInt<Base> & param) const {
 
 template <std::size_t Base>
 BigInt<Base>& BigInt<Base>::operator++() {
-	// if (sign_ == -1) {
-	// 	if (*this == BigInt<Base>(-1)){	// Problema 0 negativo
-	// 		*this = BigInt<Base>("0");
-	// 	} else {
-	// 		BigInt<Base> copy(*this);
-	// 		copy.sign_ = 1;
-	// 		--copy;
-	// 		*this = copy;
-	// 		sign_ = -1;
-	// 	}
-	// } else {
-	// 	int carry = 1;
-	// 	for(size_t i=0; i<digits_.size();i++) {
-	// 		int element = digits_[i] + carry;
-	// 		carry = element / Base;
-	// 		element = element % Base;
-	// 		digits_[i] = element;
-	// 	}
-	// 	if (carry != 0) {
-	// 		digits_.push_back('1');
-	// 	}
-	// }
 	*this = *this + BigInt<Base>(1);
 	return *this;
 }
@@ -359,25 +337,6 @@ BigInt<Base> BigInt<Base>::operator++(int) {
 // CUIDADO 0, -1
 template <std::size_t Base>
 BigInt<Base>& BigInt<Base>::operator--() {
-	// if (sign_ == -1) {
-	// 	BigInt<Base> copy(*this);
-	// 	copy.sign_ = 1;
-	// 	++copy;
-	// 	*this = copy;
-	// 	sign_ = -1;
-	// } else if (*this == BigInt<Base>("0")){
-	// 	*this = BigInt<Base>(-1);
-	// } else {
-	// 	bool carry = true;
-	// 	for(size_t i=0; i<digits_.size();i++) {
-	// 		char element = digits_[i] - carry;
-	// 		carry = (element < 0);
-	// 		digits_[i] = element;
-	// 	}
-	// 	if (carry != 0) {
-	// 		digits_.push_back('1');
-	// 	}
-	// }
 	*this = *this - BigInt<Base>(1);
 	return *this;
 }// Pre-decremento
@@ -1041,6 +1000,65 @@ BigInt<2> BigInt<2>::operator*(const BigInt<2>& multiplier) const {
 	// }
 	
 	return toReturn;
+}
+
+BigInt<2> operator/(const BigInt<2>& first, const BigInt<2>& second) {
+	if (second == BigInt<2>("0")){
+		throw std::domain_error("Divisor es 0");
+	}
+	if (first == BigInt<2>("0")){
+		return BigInt<2>("0");
+	}
+	if (first < second){
+		return BigInt<2>("0");
+	}
+	BigInt<2> base("010");
+	BigInt<2> minuendo(first.c2_.back());		// Va a ser el resto
+	BigInt<2> sustraendo;	
+	std::string cociente;
+	bool firstElementSet = false;
+	int firstElemPos = first.c2_.size() - 1;
+	while (minuendo < second){
+		minuendo.c2_.insert(minuendo.c2_.begin(),first.c2_[firstElemPos-1]);
+		--firstElemPos;
+		cociente.push_back('0');
+	}
+	++firstElemPos;
+	for (int i = firstElemPos; i > 0; i--) {
+		if(firstElementSet) {
+			if (i != 0) {
+				minuendo.c2_.insert(minuendo.c2_.begin(),first.c2_[i-1]);
+			} else {
+				minuendo.c2_.insert(minuendo.c2_.begin(),first.c2_[i]);
+			}
+		}
+		int secondLoop = 0;
+		BigInt<2> indexCociente;
+		BigInt<2> tmp;	// Elemento i del while pero en base(Base)
+		if (!firstElementSet){
+			secondLoop = 1;
+			tmp++;
+			indexCociente++; // Minimo ya que sabemos first > second
+			firstElementSet = true;
+		}
+		while (secondLoop < 2){ // Cambiar primera vez
+			if((tmp*second) <= minuendo){
+				indexCociente = tmp;
+			} else {
+				break;
+			}
+			secondLoop++;
+			tmp++;
+		}
+		sustraendo = second * indexCociente;
+		cociente.push_back(convertToCharacter(indexCociente.c2_[0]));
+		minuendo = minuendo - sustraendo;
+	}
+	return (BigInt<2>(cociente));
+}
+
+BigInt<2> BigInt<2>::operator%(const BigInt<2>& param) const {
+	return BigInt<2>(*this - (param * (*this / param)));
 }
 
 BigInt<2> pow(const BigInt<2>& base, const BigInt<2>& exponent) {
