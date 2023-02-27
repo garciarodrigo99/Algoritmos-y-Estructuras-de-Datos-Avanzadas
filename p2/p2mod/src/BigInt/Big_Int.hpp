@@ -951,7 +951,6 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 
 	BigInt<2> firstCopy(first);
 	BigInt<2> secondCopy(second);
-
 	
 	// Necesario operaciones números negativos
 	if ((firstCopy.size() != secondCopy.size())){
@@ -967,17 +966,11 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 	bool addBit = (firstCopy.sign() ^ secondCopy.sign());
 	bool carry = false;
 	for(size_t i=0; i<firstCopy.c2_.size(); i++) {
-		bool element = firstCopy.c2_[i] ^ carry;
-		carry = (firstCopy.c2_[i] && carry);
-		if (i < secondCopy.c2_.size()) {
-			element = element ^ secondCopy.c2_[i];
-			carry = carry || (firstCopy.c2_[i] && secondCopy.c2_[i]) ||
-							(secondCopy.c2_[i] && carry);
-		}
+		bool element = firstCopy.c2_[i] ^ secondCopy.c2_[i] ^ carry;
+		carry = (firstCopy[i] & secondCopy[i]) | (firstCopy[i] & carry) | (secondCopy[i] & carry);
 		boolString.push_back(element ? '1' : '0');
-		
 	}
-	if (!addBit && boolString.back()) {
+	if (!addBit && (boolString.back() != firstCopy.sign())) {
 		boolString.push_back(firstCopy.sign() ? '1' : '0');
 	}
 	std::reverse(boolString.begin(), boolString.end());
@@ -1085,9 +1078,6 @@ BigInt<2>::operator BigInt<BaseToConvert>()
 		result = (result + (BigInt<BaseToConvert>
 							(pow(BigInt<BaseToConvert>(2),exponent) 
 							* BigInt<BaseToConvert>(naturalBinary.c2_[i]))));
-		std::cout << "it: " << i << ", valor iteracion: " << (BigInt<BaseToConvert>
-							(pow(BigInt<BaseToConvert>(2),exponent) 
-							* BigInt<BaseToConvert>(naturalBinary.c2_[i]))) << ", result: " << (BigInt<BaseToConvert>)result << std::endl;
 		exponent++;
 	}
 	if (sign())
