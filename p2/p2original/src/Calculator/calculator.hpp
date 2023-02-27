@@ -44,7 +44,8 @@ public:
   static unsigned totalInstances();
 
   // Getter
-  T GetResult(std::string,std::map<std::string, T>);
+  template<class M>
+  T GetResult(std::string,std::map<std::string, M>);
   void insertNum(std::string, T);
 
 private:
@@ -87,10 +88,21 @@ inline unsigned Calculator<T>::totalInstances(){
 // (para separar la secuencia), devuelve el lenguaje resultante de todas las
 // operaciones previas
 template <class T>
+template <class M>
 T Calculator<T>::GetResult(std::string line,
-  std::map<std::string, T> numeros) {
+  std::map<std::string, M> numeros) {
   std::vector<std::string> sequence(SplitChain(line));
-  numbers_ = numeros;
+  //numbers_ = numeros;
+//-----------------------------------------------------------------------------
+  numbers_.clear();
+  for (auto it = numeros.begin(); it != numeros.end(); ++it) {
+    BigInt<2> aux(it->second);
+    //std::cout << "Clave: " << it->first << ", Valor: " << it->second << std::endl;
+    numbers_[it->first] = it->second;
+  }
+  
+//-----------------------------------------------------------------------------
+
   if (numbers_.size() == 0)
     throw std::domain_error("La pila no dispone de números almacenados");
 
@@ -137,7 +149,7 @@ void Calculator<T>::Operations(char _operator, int power) {
   stack_.pop();
 
   if (_operator == Operators::factorial) {
-    stack_.push(secondNumber.factorial());
+    //stack_.push(secondNumber.factorial());
   } else {
     assert(!(stack_.empty()));
     T firstNumber(stack_.top());
@@ -153,13 +165,13 @@ void Calculator<T>::Operations(char _operator, int power) {
         stack_.push(firstNumber * secondNumber);
         break;
       case Operators::split:
-        stack_.push(firstNumber / secondNumber);
+        //stack_.push(firstNumber / secondNumber);
         break;
       case Operators::power:
         stack_.push(pow(firstNumber,secondNumber));
         break;
       case Operators::modulo:
-        stack_.push(firstNumber % secondNumber);
+        //stack_.push(firstNumber % secondNumber);
         break;
       default:
         throw std::domain_error("Simbolo no soportado");

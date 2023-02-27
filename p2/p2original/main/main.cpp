@@ -47,14 +47,14 @@ void auxFunction(std::string fileName) {
 	getline(archivo_entrada, linea);
 
 	//int i = 0;
-  Calculator<T> calc;
+  Calculator<BigInt<2>> calc;
 	std::vector<std::string> splittedChain;
   while(getline(archivo_entrada, linea)) {
 		splittedChain = SplitChain(linea);
 		if (splittedChain.size() == 3){
 			Board[splittedChain.at(0)] = T(splittedChain.at(2));
 		} else {
-			Board[splittedChain.at(0)] = T(calc.GetResult(linea,Board));
+			Board[splittedChain.at(0)] = T(calc.GetResult<T>(linea,Board));
 		}
   }
   archivo_entrada.close();
@@ -64,16 +64,16 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 
-  BigInt<2> a("1011");
-  std::cout << (BigInt<10>)a << " ^ ";
-  BigInt<2> b("011");
-  std::cout << (BigInt<10>)b << " = ";
-  //BigInt<2> c(a+b);
-  std::cout << (BigInt<10>)(pow(a,b)) << std::endl;
-  
-  //std::cout << pow(BigInt<10>(2),BigInt<10>(15)) << std::endl;
+  // BigInt<2> bin("011");
+  // BigInt<10> dec(bin);
+  // std::cout << dec << std::endl;
 
-  return 0;
+  // BigInt<10> dec2(15);
+  // BigInt<2> bin2(dec2);
+  // std::cout << bin2 << std::endl;
+
+
+  // return 0;
 
   std::string fileName = argv[1];
   // --------------------------------------------------------------------------
@@ -100,10 +100,6 @@ int main(int argc, char *argv[]) {
   switch (option) {
     case 2:
       auxFunction<BigInt<2>>(fileName);
-      break;
-
-    case 7:
-      auxFunction<BigInt<7>>(fileName);      
       break;
 
     case 8:
