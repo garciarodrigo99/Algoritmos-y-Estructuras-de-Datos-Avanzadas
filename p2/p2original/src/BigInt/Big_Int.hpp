@@ -946,7 +946,6 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 		return BigInt<2>(second+first);
 	}
 	
-
 	// Necesario operaciones números negativos
 	if ((firstCopy.size() != secondCopy.size()) && 
 			(first.sign() || second.sign())){
@@ -957,7 +956,7 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 		}
 	}
 
-	std::list<bool> boolList;
+	std::string boolString;
 
 	bool addBit = (firstCopy.sign() ^ secondCopy.sign());
 	bool carry = false;
@@ -969,17 +968,15 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 			carry = carry || (firstCopy.c2_[i] && secondCopy.c2_[i]) ||
 							(secondCopy.c2_[i] && carry);
 		}
-		boolList.push_front(element);
+		boolString.push_back(element ? '1' : '0');
 		
 	}
 	if (!addBit) {
-		boolList.push_front(firstCopy.sign());
+		boolString.push_back(firstCopy.sign() ? '1' : '0');
 	}
-	std::string strParam;
-	for(auto i : boolList)
-		strParam.push_back(convertToCharacter(i));
+	std::reverse(boolString.begin(), boolString.end());
 
-	BigInt<2> toReturn(strParam);
+	BigInt<2> toReturn(boolString);
 	return toReturn;
 }
 
