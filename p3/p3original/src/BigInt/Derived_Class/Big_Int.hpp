@@ -3,17 +3,17 @@
 // Grado en Ingeniería Informática
 // Asignatura: ALGORITMOS Y ESTRUCTURAS DE DATOS AVANZADAS
 // Curso: 2º
-// Práctica 3: Calculadora universal para números enteros grandes
+// Práctica 1: Representación de números grandes en notación posicional
 // Autor: Rodrigo Garcia Jimenez
 // Correo: alu0101154473@ull.edu.es
-// Fecha: 06/03/2023
+// Fecha: 13/02/2023
 // Archivo Big_Int.hpp: Definición e implementación de la clase 
 // BigInt<std::size_t Base>
 // Referencias:
 // Enlaces de interéss
 // https://stackoverflow.com/questions/2209224/vector-vs-list-in-stl
 // Historial de revisiones
-// 28/02/2023 - Creaci´on (primera versi´on) del c´odigo
+// 13/10/2022 - Creaci´on (primera versi´on) del c´odigo
 
 #include <iostream>
 #include <vector>
@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <cmath>
 
+#include "../../Exceptions/Base_Class/BigIntException.hpp"
 #pragma once
 
 template <std::size_t Base> class BigInt;
@@ -66,6 +67,9 @@ class BigInt<2> {
 
 		// Pruebas metodos privados
 
+		// Modif
+		size_t sizeOf();
+
     // Asignación:
 		BigInt<2>& operator=(const BigInt<2>&);
 
@@ -102,10 +106,10 @@ class BigInt<2> {
 		BigInt<2> operator%(const BigInt<2>&) const;
 
 		// Operador de conversión
-		template <size_t BaseToConvert> operator BigInt<BaseToConvert> ();
+		template <size_t BaseToConvert> operator BigInt<BaseToConvert> ();						
 
 		// Potencia a^b
-		//friend BigInt<2> pow(const BigInt<2>&, const BigInt<2>&);
+		friend BigInt<2> pow(const BigInt<2>&, const BigInt<2>&);
 
 		BigInt<2> factorial() const;
 
@@ -315,28 +319,6 @@ bool BigInt<Base>::operator<=(const BigInt<Base> & param) const {
 
 template <std::size_t Base>
 BigInt<Base>& BigInt<Base>::operator++() {
-	// if (sign_ == -1) {
-	// 	if (*this == BigInt<Base>(-1)){	// Problema 0 negativo
-	// 		*this = BigInt<Base>("0");
-	// 	} else {
-	// 		BigInt<Base> copy(*this);
-	// 		copy.sign_ = 1;
-	// 		--copy;
-	// 		*this = copy;
-	// 		sign_ = -1;
-	// 	}
-	// } else {
-	// 	int carry = 1;
-	// 	for(size_t i=0; i<digits_.size();i++) {
-	// 		int element = digits_[i] + carry;
-	// 		carry = element / Base;
-	// 		element = element % Base;
-	// 		digits_[i] = element;
-	// 	}
-	// 	if (carry != 0) {
-	// 		digits_.push_back('1');
-	// 	}
-	// }
 	*this = *this + BigInt<Base>(1);
 	return *this;
 }
@@ -356,25 +338,6 @@ BigInt<Base> BigInt<Base>::operator++(int) {
 // CUIDADO 0, -1
 template <std::size_t Base>
 BigInt<Base>& BigInt<Base>::operator--() {
-	// if (sign_ == -1) {
-	// 	BigInt<Base> copy(*this);
-	// 	copy.sign_ = 1;
-	// 	++copy;
-	// 	*this = copy;
-	// 	sign_ = -1;
-	// } else if (*this == BigInt<Base>("0")){
-	// 	*this = BigInt<Base>(-1);
-	// } else {
-	// 	bool carry = true;
-	// 	for(size_t i=0; i<digits_.size();i++) {
-	// 		char element = digits_[i] - carry;
-	// 		carry = (element < 0);
-	// 		digits_[i] = element;
-	// 	}
-	// 	if (carry != 0) {
-	// 		digits_.push_back('1');
-	// 	}
-	// }
 	*this = *this - BigInt<Base>(1);
 	return *this;
 }// Pre-decremento
@@ -537,7 +500,7 @@ BigInt<Base> BigInt<Base>::operator*(const BigInt<Base>& multiplier) const {
 template <size_t Base>
 BigInt<Base> operator/(const BigInt<Base>& first, const BigInt<Base>& second) {
 	if (second == BigInt<Base>("0")){
-		throw std::domain_error("Divisor es 0");
+		throw BigIntDivisionByZero("Divisor es 0");
 	}
 	if (first == BigInt<Base>("0")){
 		return BigInt<Base>("0");
@@ -610,7 +573,6 @@ BigInt<Base>::operator BigInt<2> () {
 		dividendo = dividendo * BigInt<Base> (-1);
 	}
 	
-
 	while (dividendo > BigInt<Base>("0")){
 		if ((dividendo % BigInt<Base>(2)) == BigInt<Base>("0"))
 			boolList.push_front(false);
@@ -641,7 +603,7 @@ BigInt<Base> pow(const BigInt<Base>& base, const BigInt<Base>& exponent) {
 		return BigInt<Base>(1);
 	}
 	if (exponent < BigInt<Base>("0")){
-		throw std::domain_error("Operacion no soportada");
+		throw BigIntOperationNotSupported("Operacion no soportada");
 	}
 
 	BigInt<Base> counter;
@@ -713,8 +675,8 @@ void BigInt<Base>::checkCharFromBase(char pCharacter) {
 	if(!isDec && !isHex){		
 		std::string message;
 		message.push_back(pCharacter);
-		message.append(" no es un caracter valido");		
-		throw std::domain_error(message);
+		message.append("Caracter no valido");		
+		throw BigIntBadDigit("Caracter no valido");
 	}
 
 	int digit = pCharacter;
@@ -723,7 +685,7 @@ void BigInt<Base>::checkCharFromBase(char pCharacter) {
 		std::string message;
 		message.push_back(pCharacter);
 		message.append(" no es un caracter valido para la base seleccionada");
-		throw std::domain_error(message);
+		throw BigIntBadDigit("Caracter no valido para la base seleccionada");
 	}
 
 }
@@ -807,8 +769,17 @@ BigInt<2>::BigInt(const BigInt<2>& copy)
 
 BigInt<2>::~BigInt() {}
 
+inline size_t BigInt<2>::sizeOf()
+{
+	size_t result;
+	for (size_t i = 0; i < c2_.size(); i++){
+		result += sizeof(bool);
+	}
+	
+  return result;
+}
 
-inline BigInt<2> &BigInt<2>::operator=(const BigInt<2> & binary)
+inline BigInt<2> &BigInt<2>::operator=(const BigInt<2> &binary)
 {
 	c2_ = binary.c2_;
 	return *this;
@@ -940,7 +911,6 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 
 	BigInt<2> firstCopy(first);
 	BigInt<2> secondCopy(second);
-
 	
 	// Necesario operaciones números negativos
 	if ((firstCopy.size() != secondCopy.size())){
@@ -956,17 +926,11 @@ BigInt<2> operator+(const BigInt<2>& first, const BigInt<2>& second) {
 	bool addBit = (firstCopy.sign() ^ secondCopy.sign());
 	bool carry = false;
 	for(size_t i=0; i<firstCopy.c2_.size(); i++) {
-		bool element = firstCopy.c2_[i] ^ carry;
-		carry = (firstCopy.c2_[i] && carry);
-		if (i < secondCopy.c2_.size()) {
-			element = element ^ secondCopy.c2_[i];
-			carry = carry || (firstCopy.c2_[i] && secondCopy.c2_[i]) ||
-							(secondCopy.c2_[i] && carry);
-		}
+		bool element = firstCopy.c2_[i] ^ secondCopy.c2_[i] ^ carry;
+		carry = (firstCopy[i] & secondCopy[i]) | (firstCopy[i] & carry) | (secondCopy[i] & carry);
 		boolString.push_back(element ? '1' : '0');
-		
 	}
-	if (!addBit && boolString.back()) {
+	if (!addBit && (boolString.back() != firstCopy.sign())) {
 		boolString.push_back(firstCopy.sign() ? '1' : '0');
 	}
 	std::reverse(boolString.begin(), boolString.end());
@@ -1032,13 +996,72 @@ BigInt<2> BigInt<2>::operator*(const BigInt<2>& multiplier) const {
 	return toReturn;
 }
 
+BigInt<2> operator/(const BigInt<2>& first, const BigInt<2>& second) {
+	if (second == BigInt<2>("0")){
+		throw BigIntDivisionByZero("Divisor es 0");
+	}
+	if (first == BigInt<2>("0")){
+		return BigInt<2>("0");
+	}
+	if (first < second){
+		return BigInt<2>("0");
+	}
+	BigInt<2> base("010");
+	BigInt<2> minuendo(first.c2_.back());		// Va a ser el resto
+	BigInt<2> sustraendo;	
+	std::string cociente;
+	bool firstElementSet = false;
+	int firstElemPos = first.c2_.size() - 1;
+	while (minuendo < second){
+		minuendo.c2_.insert(minuendo.c2_.begin(),first.c2_[firstElemPos-1]);
+		--firstElemPos;
+		cociente.push_back('0');
+	}
+	++firstElemPos;
+	for (int i = firstElemPos; i > 0; i--) {
+		if(firstElementSet) {
+			if (i != 0) {
+				minuendo.c2_.insert(minuendo.c2_.begin(),first.c2_[i-1]);
+			} else {
+				minuendo.c2_.insert(minuendo.c2_.begin(),first.c2_[i]);
+			}
+		}
+		int secondLoop = 0;
+		BigInt<2> indexCociente;
+		BigInt<2> tmp;	// Elemento i del while pero en base(Base)
+		if (!firstElementSet){
+			secondLoop = 1;
+			tmp++;
+			indexCociente++; // Minimo ya que sabemos first > second
+			firstElementSet = true;
+		}
+		while (secondLoop < 2){ // Cambiar primera vez
+			if((tmp*second) <= minuendo){
+				indexCociente = tmp;
+			} else {
+				break;
+			}
+			secondLoop++;
+			tmp++;
+		}
+		sustraendo = second * indexCociente;
+		cociente.push_back(convertToCharacter(indexCociente.c2_[0]));
+		minuendo = minuendo - sustraendo;
+	}
+	return (BigInt<2>(cociente));
+}
+
+BigInt<2> BigInt<2>::operator%(const BigInt<2>& param) const {
+	return BigInt<2>(*this - (param * (*this / param)));
+}
+
 BigInt<2> pow(const BigInt<2>& base, const BigInt<2>& exponent) {
 	
 	if (exponent == BigInt<2>("0")) {
 		return BigInt<2>(1);
 	}
 	if (exponent < BigInt<2>("0")){
-		throw std::domain_error("Operacion no soportada");
+		throw BigIntOperationNotSupported("Operacion no soportada");
 	}
 
 	BigInt<2> counter;
@@ -1054,6 +1077,18 @@ BigInt<2> pow(const BigInt<2>& base, const BigInt<2>& exponent) {
 	return result;
 }
 
+BigInt<2> BigInt<2>::factorial() const  {
+	BigInt<2> result("01");
+	BigInt<2> current(*this);
+
+	while (current > BigInt<2>("01")) {
+		result = result * current;
+		--current;
+	}
+
+	return result;
+}
+
 template <size_t BaseToConvert>
 BigInt<2>::operator BigInt<BaseToConvert>()
 {
@@ -1062,13 +1097,12 @@ BigInt<2>::operator BigInt<BaseToConvert>()
 	if (naturalBinary.sign())
 		naturalBinary = complementNumber();
 	
+	BigInt<BaseToConvert> exponent;
 	for (size_t i = 0; i < naturalBinary.c2_.size()-1; i++) {
 		result = (result + (BigInt<BaseToConvert>
-							(pow(BigInt<BaseToConvert>(2),BigInt<BaseToConvert>(i)) 
+							(pow(BigInt<BaseToConvert>(2),exponent) 
 							* BigInt<BaseToConvert>(naturalBinary.c2_[i]))));
-		/*std::cout << "it: " << i << ", valor iteracion: " << (BigInt<BaseToConvert>
-							(pow(BigInt<BaseToConvert>(2),BigInt<BaseToConvert>(i)) 
-							* BigInt<BaseToConvert>(naturalBinary.c2_[i]))) << ", result: " << (BigInt<10>)result << std::endl;*/
+		exponent++;
 	}
 	if (sign())
 		result = result * BigInt<BaseToConvert>(-1);
@@ -1092,6 +1126,10 @@ void BigInt<2>::build(std::string& str){
 		}
 		c2_.push_back(true);
 	}
+	if (c2_.size() == 1){
+		c2_.push_back(false);
+	}
+	
 	removeUselessElements();
 }
 
@@ -1108,7 +1146,7 @@ void BigInt<2>::checkBinary(char pCharacter) {
 		std::string message;
 		message.push_back(pCharacter);
 		message.append(" no es 0 ó 1");
-		throw std::domain_error(message);
+		throw BigIntBadDigit("Digito no binario");
 	}
 }
 

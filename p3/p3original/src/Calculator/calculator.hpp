@@ -102,7 +102,7 @@ T Calculator<T>::GetResult(std::string line,
 //-----------------------------------------------------------------------------
 
   if (numbers_.size() == 0)
-    throw std::domain_error("La pila no dispone de números almacenados");
+    throw std::out_of_range("La pila no dispone de números almacenados");
 
   int power = 1;
   for (size_t i = 2; i < sequence.size(); i++) {
@@ -163,16 +163,16 @@ void Calculator<T>::Operations(char _operator, int power) {
         stack_.push(firstNumber * secondNumber);
         break;
       case Operators::split:
-        //stack_.push(firstNumber / secondNumber);
+        stack_.push(firstNumber / secondNumber);
         break;
       case Operators::power:
         stack_.push(pow(firstNumber,secondNumber));
         break;
       case Operators::modulo:
-        //stack_.push(firstNumber % secondNumber);
+        stack_.push(firstNumber % secondNumber);
         break;
       default:
-        throw std::domain_error("Simbolo no soportado");
+        throw std::invalid_argument("Simbolo no soportado");
         break;
     }
   }

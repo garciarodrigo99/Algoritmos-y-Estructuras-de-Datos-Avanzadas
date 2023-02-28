@@ -66,43 +66,44 @@ void auxFunction(std::string fileName) {
 
 int main(int argc, char *argv[]) {
 //488793485263218
-  std::cout << (BigInt<10>)pow(BigInt<2>(BigInt<10>(2)),BigInt<2>(BigInt<10>(100))).size() << std::endl;
-  BigInt<2> n1(BigInt<10>(442142117615672));
-  std::cout << "n1: " << (BigInt<10>)n1 << "  " << n1 << std::endl;
-  BigInt<2> n2(BigInt<10>(46651367647546));
-  std::cout << "n2: " << (BigInt<10>)n2 << "      " << n2 << std::endl;
-  BigInt<2> e1(n1+n2);
-  std::cout << "e1: " << (BigInt<10>)e1 << "  " << e1 << std::endl;
-  BigInt<2> t1(n1-n2);
-  std::cout << "t1: " << (BigInt<10>)t1 << "  " << t1 << std::endl;
-  BigInt<2> e2(t1+e1);
-  std::cout << "e2: " << (BigInt<10>)e2 << " " << e2  << ", e2.size: " << e2.size() << std::endl;
+  // std::cout << (BigInt<10>)pow(BigInt<2>(BigInt<10>(2)),BigInt<2>(BigInt<10>(100))).size() << std::endl;
+  // BigInt<2> n1(BigInt<10>(442142117615672));
+  // std::cout << "n1: " << (BigInt<10>)n1 << "  " << n1 << std::endl;
+  // BigInt<2> n2(BigInt<10>(46651367647546));
+  // std::cout << "n2: " << (BigInt<10>)n2 << "      " << n2 << std::endl;
+  // BigInt<2> e1(n1+n2);
+  // std::cout << "e1: " << (BigInt<10>)e1 << "  " << e1 << std::endl;
+  // BigInt<2> t1(n1-n2);
+  // std::cout << "t1: " << (BigInt<10>)t1 << "  " << t1 << std::endl;
+  // BigInt<2> e2(t1+e1);
+  // std::cout << "e2: " << (BigInt<10>)e2 << " " << e2  << ", e2.size: " << e2.size() << std::endl;
   
-  // BigInt<2> e2((BigInt<10>)(18)+(BigInt<10>)(6));
-  // std::cout << "e2: " << (BigInt<10>)e2 << "  " << e2 << std::endl;
-  return 0;
+  // // BigInt<2> e2((BigInt<10>)(18)+(BigInt<10>)(6));
+  // // std::cout << "e2: " << (BigInt<10>)e2 << "  " << e2 << std::endl;
+  // return 0;
 
   std::string fileName = argv[1];
   // --------------------------------------------------------------------------
   std::ifstream archivo_entrada(fileName);
   std::string linea;
 
-  int contador = 0;
-  int max = 0;
-  int option = 10;
+  // int contador = 0;
+  // int max = 0;
+  int option = 5;
 
-  while(getline(archivo_entrada, linea)) {
-    if(max == contador) {
-      // Manejar excepción
-      // To-Do something here
+  // while(getline(archivo_entrada, linea)) {
+  //   if(max == contador) {
+  //     // Manejar excepción
+  //     // To-Do something here
 
-      option = std::stoi(SplitChain(linea).at(2));
-      break;
-    }
-    contador++;
-  }
-  archivo_entrada.close();
+  //     option = std::stoi(SplitChain(linea).at(2));
+  //     break;
+  //   }
+  //   contador++;
+  // }
+  // archivo_entrada.close();
   // --------------------------------------------------------------------------
+
 
   switch (option) {
     case 2:
@@ -122,7 +123,7 @@ int main(int argc, char *argv[]) {
       break;
     
     default:
-      throw std::domain_error("Base no válida");
+      throw BigIntBaseNotImplemented("Base no válida");
       break;
   }
 

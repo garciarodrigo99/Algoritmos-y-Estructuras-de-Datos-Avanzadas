@@ -6,6 +6,7 @@
 class BigIntBaseNotImplemented;
 class BigIntBadDigit;
 class BigIntDivisionByZero;
+class BigIntOperationNotSupported;
 
 class BigIntException : public std::exception {
 public:
@@ -20,3 +21,4 @@ private:
 #include "../Derived_Class/BigIntBaseNotImplemented.hpp"
 #include "../Derived_Class/BigIntBadDigit.hpp"
 #include "../Derived_Class/BigIntDivisionByZero.hpp"
+#include "../Derived_Class/BigIntOperationNotSupported.hpp"
