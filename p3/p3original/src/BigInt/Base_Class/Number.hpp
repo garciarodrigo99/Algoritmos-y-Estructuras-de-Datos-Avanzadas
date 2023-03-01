@@ -39,11 +39,11 @@ class Number {
 		virtual Number* module(const Number*) const = 0;
 		// virtual Number* pow(const Number*) const = 0;
 
-	// Se definen las operaciones de cambio de tipo.
-		// virtual operator BigInt<2>() const = 0;
-		// virtual operator BigInt<8>() const = 0;
-		// virtual operator BigInt<10>() const = 0;
-		// virtual operator BigInt<16>() const = 0;
+	// Operaciones de cambio de tipo.
+		//virtual operator BigInt<2>() const = 0;
+		virtual operator BigInt<8>() const = 0;
+		virtual operator BigInt<10>() const = 0;
+		virtual operator BigInt<16>() const = 0;
 
 	static Number* create(size_t, std::string&);
 

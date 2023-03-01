@@ -185,6 +185,11 @@ class BigInt : public Number{
 		Number* module(const Number*) const override;
 		// Number* pow(const Number*) const override;
 
+		// operator BigInt<2>() const override;
+		operator BigInt<8>() const override;
+		operator BigInt<10>() const override;
+		operator BigInt<16>() const override;
+
 		std::string cvToStr(void);
 		static unsigned totalInstances();
 };
@@ -571,7 +576,7 @@ BigInt<Base> BigInt<Base>::operator%(const BigInt<Base>& param) const {
 }
 
 // template <size_t Base>
-// BigInt<Base>::operator BigInt<2> () {
+// BigInt<Base>::operator BigInt<2> () const {
 
 // 	std::list<bool> boolList;
 // 	bool negativeNumber = (sign_ == -1);
@@ -666,6 +671,121 @@ Number *BigInt<Base>::module(const Number *) const
 {
   return nullptr;
 }
+
+template <std::size_t Base>
+BigInt<Base>::operator BigInt<8>() const
+{
+	std::list<bool> boolList;
+	bool negativeNumber = (sign_ == -1);
+	BigInt<Base> dividendo(*this);
+	if (negativeNumber){
+		dividendo = dividendo * BigInt<Base> (-1);
+	}
+	
+	while (dividendo > BigInt<Base>("0")){
+		if ((dividendo % BigInt<Base>(8)) == BigInt<Base>("0"))
+			boolList.push_front(false);
+		else 
+			boolList.push_front(true);
+		
+		dividendo = dividendo / BigInt<Base>(2); 
+	}
+	
+	boolList.push_front(false);
+	std::string strParam;
+	for(auto i : boolList)
+		strParam.push_back(convertToCharacter(i));
+	
+	BigInt<8> toReturn(strParam);
+	return toReturn;
+}
+
+template <std::size_t Base>
+BigInt<Base>::operator BigInt<10>() const
+{	
+	BigInt<10> toReturn;
+	BigInt<10> max(10);
+	BigInt<10> base;
+	size_t aux = 0;
+	while (Base > aux){
+		base++;
+		aux++;
+	}
+	BigInt<10> exponent;
+
+	for (size_t i=0; i<=digits_.size()-1; i++) {
+		int value = (digits_[i] < 10) ? (digits_[i] - 0) : (digits_[i] - 10 + 10);
+		toReturn = toReturn + (BigInt<10>(value) * pow(base,exponent));
+		exponent++;
+	}
+
+	if (sign_ == -1) {
+			toReturn = toReturn * BigInt<10>("-1");
+	}
+
+	return toReturn;
+}
+
+template <std::size_t Base>
+BigInt<Base>::operator BigInt<16>() const
+{
+	std::list<bool> boolList;
+	bool negativeNumber = (sign_ == -1);
+	BigInt<Base> dividendo(*this);
+	if (negativeNumber){
+		dividendo = dividendo * BigInt<Base> (-1);
+	}
+	
+	while (dividendo > BigInt<Base>("0")){
+		if ((dividendo % BigInt<Base>(16)) == BigInt<Base>("0"))
+			boolList.push_front(false);
+		else 
+			boolList.push_front(true);
+		
+		dividendo = dividendo / BigInt<Base>(2); 
+	}
+	
+	boolList.push_front(false);
+	std::string strParam;
+	for(auto i : boolList)
+		strParam.push_back(convertToCharacter(i));
+	
+	BigInt<16> toReturn(strParam);
+	return toReturn;
+}
+
+// template <std::size_t Base>
+// BigInt<Base>::operator BigInt<2>() const
+// {
+// 		std::list<bool> boolList;
+// 	bool negativeNumber = (sign_ == -1);
+// 	BigInt<Base> dividendo(*this);
+// 	if (negativeNumber){
+// 		dividendo = dividendo * BigInt<Base> (-1);
+// 	}
+	
+// 	while (dividendo > BigInt<Base>("0")){
+// 		if ((dividendo % BigInt<Base>(2)) == BigInt<Base>("0"))
+// 			boolList.push_front(false);
+// 		else 
+// 			boolList.push_front(true);
+		
+// 		dividendo = dividendo / BigInt<Base>(2); 
+// 	}
+	
+// 	boolList.push_front(false);
+// 	std::string strParam;
+// 	for(auto i : boolList)
+// 		strParam.push_back(convertToCharacter(i));
+
+// 	if (negativeNumber){
+// 		BigInt<2> toReturn(strParam,true);
+// 		return toReturn;
+// 	}
+	
+// 	BigInt<2> toReturn(strParam);
+// 	return toReturn;
+// }
 
 // template <std::size_t Base>
 // Number *BigInt<Base>::pow(const Number *) const

@@ -79,11 +79,13 @@ int main(int argc, char *argv[]) {
   
   // // BigInt<2> e2((BigInt<10>)(18)+(BigInt<10>)(6));
   // // std::cout << "e2: " << (BigInt<10>)e2 << "  " << e2 << std::endl;
-  Number* test8 = new BigInt<8>("7162616");
+  Number* test8 = new BigInt<8>("10");
   Number* test10 = new BigInt<10>("7162616");
-  Number* test16 = new BigInt<16>("7162616");
+  Number* test16 = new BigInt<16>("3A");
   std::string aux("7162616");
   Number* test2 = Number::create(10,aux);
+  BigInt<10> test2_10 = dynamic_cast<Number*>(test8)->operator BigInt<10>();
+  std::cout << test2_10 << std::endl;
 
   return 0;
 
