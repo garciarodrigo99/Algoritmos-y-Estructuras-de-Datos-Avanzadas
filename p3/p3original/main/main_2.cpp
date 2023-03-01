@@ -16,14 +16,15 @@
 
 #include <fstream>
 #include <chrono>
+#include <map>
 
-#include "../src/BigInt/Derived_Class/Big_Int.hpp"
-#include "../src/BigInt/Base_Class/Number.hpp"
-#include "../lib/auxFunctions.hpp"
-#include "../src/Calculator/calculator.hpp"
-#include "../src/Exceptions/Base_Class/BigIntException.hpp"
+//#include "../src/BigInt/Derived_Class/Big_Int.hpp"
+#include "Number.hpp"
+//#include "../lib/splitChain.hpp"
+//#include "../src/Calculator/calculator.hpp"
+//#include "../src/Exceptions/Base_Class/BigIntException.hpp"
 
-template <class T>
+/*template <class T>
 void writeToFile(std::map<std::string, T> board, std::string fileName = "a.out") {
   std::string outputFilePath = "output/";
   // std::string outputFilePath = "";
@@ -36,7 +37,7 @@ void writeToFile(std::map<std::string, T> board, std::string fileName = "a.out")
   } else {
     std::cout << "No se pudo abrir el archivo." << std::endl;
   }
-}
+}*/
 
 template <class T>
 void auxFunction(std::string fileName) {
@@ -48,7 +49,7 @@ void auxFunction(std::string fileName) {
 	getline(archivo_entrada, linea);
 
 	//int i = 0;
-  Calculator<T> calc;
+  /*Calculator<T> calc;
 	std::vector<std::string> splittedChain;
   while(getline(archivo_entrada, linea)) {
 		splittedChain = SplitChain(linea);
@@ -57,10 +58,10 @@ void auxFunction(std::string fileName) {
 		} else {
 			Board[splittedChain.at(0)] = T(calc.GetResult(linea,Board));
 		}
-  }
+  }*/
   archivo_entrada.close();
   //std::cout << T::totalInstances();
-  writeToFile(Board);
+  //writeToFile(Board);
 }
 
 int main(int argc, char *argv[]) {
@@ -128,7 +129,7 @@ int main(int argc, char *argv[]) {
       break;
     
     default:
-      throw BigIntBaseNotImplemented("Base no válida");
+      //throw BigIntBaseNotImplemented("Base no válida");
       break;
   }
 

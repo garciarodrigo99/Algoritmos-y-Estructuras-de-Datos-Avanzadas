@@ -14,13 +14,13 @@
 // https://stackoverflow.com/questions/2209224/vector-vs-list-in-stl
 // Historial de revisiones
 // 28/02/2023 - Creaci´on (primera versi´on) del c´odigo
-
+#pragma once
 #include <stack>
 #include <string>
 #include <vector>
 #include <map>
 #include <cassert>
-#include "../../lib/splitChain.hpp"
+#include "../../lib/auxFunctions.hpp"
 
 enum Operators {
   plus = '+',

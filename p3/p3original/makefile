@@ -5,7 +5,7 @@ MAIN_FILE = $(MAIN)main.cpp
 SRC = src/
 BIG = $(SRC)BigInt/
 CALC = $(SRC)Calculator/
-SRC_FILES = #$(CALC)*.cpp $(BIG)*.cpp
+SRC_FILES = $(BIG)Base_Class/Number.cpp
 BIN = bin/
 EXE_FILE = $(BIN)operations
 IN = input/
@@ -16,7 +16,8 @@ OUT = output/
 # g++ -std=c++14 -g -Wall -o bin/main main/main.cc
 # g++ $(MAIN_FILE) $(SRC_FILES) -o $(OUT_FILE)
 default:
-	g++ -std=c++14 -g -Wall -o $(EXE_FILE) $(MAIN_FILE) $(SRC_FILES)
+#	g++ -std=c++17 -g -Wall -o $(EXE_FILE) $(MAIN_FILE) $(SRC_FILES)
+	g++ -std=c++14 -g -Wall $(MAIN_FILE) $(SRC_FILES) -o $(EXE_FILE)
 
 file:
 	$(EXE_FILE) $(IN_FILE)

@@ -15,13 +15,13 @@
 // Historial de revisiones
 // 28/02/2023 - Creaci´on (primera versi´on) del c´odigo
 
+#pragma once
+
 #include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
 #include <cmath>
-
-#pragma once
 
 template <std::size_t Base> class BigInt;
 
@@ -32,18 +32,18 @@ class Number {
 		virtual ~Number();
 
 	// Operaciones aritmeticas
-	virtual Number* add(const Number*) const = 0;
-	virtual Number* subtract(const Number*) const = 0;
-	virtual Number* multiply(const Number*) const = 0;
-	virtual Number* divide(const Number*) const = 0;
-	virtual Number* module(const Number*) const = 0;
-	virtual Number* pow(const Number*) const = 0;
+		virtual Number* add(const Number*) const = 0;
+		virtual Number* subtract(const Number*) const = 0;
+		virtual Number* multiply(const Number*) const = 0;
+		virtual Number* divide(const Number*) const = 0;
+		virtual Number* module(const Number*) const = 0;
+		// virtual Number* pow(const Number*) const = 0;
 
 	// Se definen las operaciones de cambio de tipo.
-	// virtual operator BigInt<2>() const = 0;
-	// virtual operator BigInt<8>() const = 0;
-	// virtual operator BigInt<10>() const = 0;
-	// virtual operator BigInt<16>() const = 0;
+		// virtual operator BigInt<2>() const = 0;
+		// virtual operator BigInt<8>() const = 0;
+		// virtual operator BigInt<10>() const = 0;
+		// virtual operator BigInt<16>() const = 0;
 
 	static Number* create(size_t, std::string&);
 
@@ -55,30 +55,5 @@ class Number {
 
 };
 
-
-Number::~Number()
-{
-}
-
 #include "../Derived_Class/Big_Int.hpp"
 
-Number *Number::create(size_t base, std::string &s)
-{
-	Number* toReturn = new BigInt<8>(s);
-	if (base == 2) {
-		// toReturn = new BigInt<2>(s);
-		// return toReturn;
-		return nullptr;
-	} else if (base == 8) {
-		Number* toReturn = new BigInt<8>(s);
-		return toReturn;
-	} else if (base == 10) {
-		return (new BigInt<10>(s));
-	} else if (base == 16) {
-		return (new BigInt<16>(s));
-	} else {
-		throw BigIntBaseNotImplemented("Base no válida");
-	}
-
-  return nullptr;
-}
