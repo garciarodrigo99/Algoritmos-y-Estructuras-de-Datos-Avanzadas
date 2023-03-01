@@ -48,15 +48,14 @@ void auxFunction(std::string fileName) {
 	getline(archivo_entrada, linea);
 
 	//int i = 0;
-  Calculator<BigInt<2>> calc;
+  Calculator<T> calc;
 	std::vector<std::string> splittedChain;
   while(getline(archivo_entrada, linea)) {
-    std::cout << "Hola\n";
 		splittedChain = SplitChain(linea);
 		if (splittedChain[1] == '='){
 			Board[splittedChain.at(0)] = T(splittedChain.at(2));
 		} else {
-			Board[splittedChain.at(0)] = T(calc.GetResult<T>(linea,Board));
+			Board[splittedChain.at(0)] = T(calc.GetResult(linea,Board));
 		}
   }
   archivo_entrada.close();
@@ -89,7 +88,7 @@ int main(int argc, char *argv[]) {
 
   // int contador = 0;
   // int max = 0;
-  int option = 5;
+  int option = 10;
 
   // while(getline(archivo_entrada, linea)) {
   //   if(max == contador) {

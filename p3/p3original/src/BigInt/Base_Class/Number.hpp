@@ -24,6 +24,8 @@
 
 #pragma once
 
+template <std::size_t Base> class BigInt;
+
 class Number {
 
 	public:
@@ -66,3 +68,5 @@ Number *Number::create(size_t base, const std::string &s)
 {
   return nullptr;
 }
+
+#include "../Derived_Class/Big_Int.hpp"

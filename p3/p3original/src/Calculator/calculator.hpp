@@ -44,8 +44,7 @@ public:
   static unsigned totalInstances();
 
   // Getter
-  template<class M>
-  T GetResult(std::string,std::map<std::string, M>);
+  T GetResult(std::string,std::map<std::string, T>);
   void insertNum(std::string, T);
 
 private:
@@ -88,18 +87,10 @@ inline unsigned Calculator<T>::totalInstances(){
 // (para separar la secuencia), devuelve el lenguaje resultante de todas las
 // operaciones previas
 template <class T>
-template <class M>
 T Calculator<T>::GetResult(std::string line,
-  std::map<std::string, M> numeros) {
+  std::map<std::string, T> numeros) {
   std::vector<std::string> sequence(SplitChain(line));
-  //numbers_ = numeros;
-//-----------------------------------------------------------------------------
-  numbers_.clear();
-  for (auto it = numeros.begin(); it != numeros.end(); ++it) {
-    BigInt<2> aux(it->second);
-    numbers_[it->first] = it->second;
-  }
-//-----------------------------------------------------------------------------
+  numbers_ = numeros;
 
   if (numbers_.size() == 0)
     throw std::out_of_range("La pila no dispone de números almacenados");

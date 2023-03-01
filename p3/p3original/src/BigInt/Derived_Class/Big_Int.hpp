@@ -22,8 +22,11 @@
 #include <algorithm>
 #include <cmath>
 
-#include "../../Exceptions/Base_Class/BigIntException.hpp"
 #pragma once
+
+#include "../../Exceptions/Base_Class/BigIntException.hpp"
+#include "../Base_Class/Number.hpp"
+
 
 template <std::size_t Base> class BigInt;
 
@@ -119,7 +122,7 @@ class BigInt<2> {
 };
 
 template <std::size_t Base = 10> 
-class BigInt {
+class BigInt : public Number{
 	private:
 		std::vector<char> digits_;
 		int sign_ = 1;
