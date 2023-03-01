@@ -66,6 +66,43 @@ Number::~Number()
 
 Number *Number::create(size_t base, const std::string &s)
 {
+	Number* toReturn;
+	if (base == 2) {
+		toReturn = new BigInt<2>(s);
+	} else if (base == 8) {
+		toReturn = new BigInt<8>(s);
+	} else if (base == 10) {
+		toReturn = new BigInt<10>(s);
+	} else if (base == 16) {
+		toReturn = new BigInt<16>(s);
+	} else {
+		throw BigIntBaseNotImplemented("Base no válida");
+	}
+	// switch (base) {
+  //   case 2:
+	// 		Number* toReturn = new BigInt<2>(s);
+  //     return toReturn;
+  //     break;
+
+  //   case 8:
+  //     Number* toReturn = new BigInt<8>(s);
+  //     return toReturn;     
+  //     break;
+
+  //   case 10:
+  //     Number* toReturn = new BigInt<10>(s);
+  //     return toReturn;
+  //     break;
+
+  //   case 16:
+  //     Number* toReturn = new BigInt<16>(s);
+  //     return toReturn;
+  //     break;
+    
+  //   default:
+  //     throw BigIntBaseNotImplemented("Base no válida");
+  //     break;
+  // }
   return nullptr;
 }
 
