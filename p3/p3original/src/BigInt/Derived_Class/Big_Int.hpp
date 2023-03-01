@@ -113,11 +113,9 @@ class BigInt<2> {
 
 		// Potencia a^b
 		friend BigInt<2> pow(const BigInt<2>&, const BigInt<2>&);
-
 		BigInt<2> factorial() const;
 
 		std::string cvToStr(void);
-
 		static unsigned totalInstances();
 };
 
@@ -177,11 +175,17 @@ class BigInt : public Number{
 
 		// Potencia a^b
 		friend BigInt<Base> pow<Base>(const BigInt<Base>&, const BigInt<Base>&);
-
 		BigInt<Base> factorial() const;
 
-		std::string cvToStr(void);
+		// Operaciones aritmeticas heredadas
+		Number* add(const Number*) const override;
+		Number* subtract(const Number*) const override;
+		Number* multiply(const Number*) const override;
+		Number* divide(const Number*) const override;
+		Number* module(const Number*) const override;
+		Number* pow(const Number*) const override;
 
+		std::string cvToStr(void);
 		static unsigned totalInstances();
 };
 
@@ -631,6 +635,42 @@ BigInt<Base> BigInt<Base>::factorial() const  {
 	BigInt<Base> minus(toReturn - BigInt<Base>(1));
 	toReturn = toReturn * minus.factorial();
 	return toReturn;
+}
+
+template <std::size_t Base>
+Number *BigInt<Base>::add(const Number *) const
+{
+  return nullptr;
+}
+
+template <std::size_t Base>
+Number *BigInt<Base>::subtract(const Number *) const
+{
+  return nullptr;
+}
+
+template <std::size_t Base>
+Number *BigInt<Base>::multiply(const Number *) const
+{
+  return nullptr;
+}
+
+template <std::size_t Base>
+Number *BigInt<Base>::divide(const Number *) const
+{
+  return nullptr;
+}
+
+template <std::size_t Base>
+Number *BigInt<Base>::module(const Number *) const
+{
+  return nullptr;
+}
+
+template <std::size_t Base>
+Number *BigInt<Base>::pow(const Number *) const
+{
+  return nullptr;
 }
 
 // Metodos privados

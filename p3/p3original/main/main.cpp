@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
   
   // // BigInt<2> e2((BigInt<10>)(18)+(BigInt<10>)(6));
   // // std::cout << "e2: " << (BigInt<10>)e2 << "  " << e2 << std::endl;
-  // return 0;
+  return 0;
 
   std::string fileName = argv[1];
   // --------------------------------------------------------------------------

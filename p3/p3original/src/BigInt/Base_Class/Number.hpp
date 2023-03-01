@@ -29,8 +29,8 @@ template <std::size_t Base> class BigInt;
 class Number {
 
 	public:
-		Number(/* args */);
-		~Number();
+		//Number(/* args */);
+		virtual ~Number();
 
 	// Operaciones aritmeticas
 	virtual Number* add(const Number*) const = 0;
@@ -46,63 +46,39 @@ class Number {
 	// virtual operator BigInt<10>() const = 0;
 	// virtual operator BigInt<16>() const = 0;
 
-	static Number* create(size_t base, const std::string& s);
+	static Number* create(size_t base, std::string& s);
 
 	protected:
-	virtual std::ostream& write(std::ostream&) const = 0;
-	virtual std::istream& read(std::istream&) = 0;
+	// virtual std::ostream& write(std::ostream&) const = 0;
+	// virtual std::istream& read(std::istream&) = 0;
 	friend std::ostream& operator<<(std::ostream&, const Number&);
 	friend std::istream& operator>>(std::istream&, Number&);
 
 };
 
-Number::Number(/* args */)
-{
-}
-
 Number::~Number()
 {
 }
 
-Number *Number::create(size_t base, const std::string &s)
+Number *Number::create(size_t base, std::string &s)
 {
 	Number* toReturn;
 	if (base == 2) {
 		toReturn = new BigInt<2>(s);
+		return toReturn;
 	} else if (base == 8) {
-		toReturn = new BigInt<8>(s);
+		//toReturn = new BigInt<8>(s);
+		return (new BigInt<8>(s));
 	} else if (base == 10) {
 		toReturn = new BigInt<10>(s);
+		return toReturn;
 	} else if (base == 16) {
 		toReturn = new BigInt<16>(s);
+		return toReturn;
 	} else {
 		throw BigIntBaseNotImplemented("Base no válida");
 	}
-	// switch (base) {
-  //   case 2:
-	// 		Number* toReturn = new BigInt<2>(s);
-  //     return toReturn;
-  //     break;
 
-  //   case 8:
-  //     Number* toReturn = new BigInt<8>(s);
-  //     return toReturn;     
-  //     break;
-
-  //   case 10:
-  //     Number* toReturn = new BigInt<10>(s);
-  //     return toReturn;
-  //     break;
-
-  //   case 16:
-  //     Number* toReturn = new BigInt<16>(s);
-  //     return toReturn;
-  //     break;
-    
-  //   default:
-  //     throw BigIntBaseNotImplemented("Base no válida");
-  //     break;
-  // }
   return nullptr;
 }
 
