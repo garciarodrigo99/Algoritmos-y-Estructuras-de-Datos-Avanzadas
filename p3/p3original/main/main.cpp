@@ -79,6 +79,10 @@ int main(int argc, char *argv[]) {
   
   // // BigInt<2> e2((BigInt<10>)(18)+(BigInt<10>)(6));
   // // std::cout << "e2: " << (BigInt<10>)e2 << "  " << e2 << std::endl;
+  Number* test = new BigInt<8>("7162616");
+  std::string aux("7162616");
+  Number* test2 = Number::create(10,aux);
+
   return 0;
 
   std::string fileName = argv[1];

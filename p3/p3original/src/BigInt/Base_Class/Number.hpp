@@ -18,7 +18,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <list>
 #include <algorithm>
 #include <cmath>
 
@@ -46,40 +45,40 @@ class Number {
 	// virtual operator BigInt<10>() const = 0;
 	// virtual operator BigInt<16>() const = 0;
 
-	static Number* create(size_t base, std::string& s);
+	static Number* create(size_t, std::string&);
 
 	protected:
 	// virtual std::ostream& write(std::ostream&) const = 0;
 	// virtual std::istream& read(std::istream&) = 0;
-	friend std::ostream& operator<<(std::ostream&, const Number&);
-	friend std::istream& operator>>(std::istream&, Number&);
+	// friend std::ostream& operator<<(std::ostream&, const Number&);
+	// friend std::istream& operator>>(std::istream&, Number&);
 
 };
+
 
 Number::~Number()
 {
 }
 
+#include "../Derived_Class/Big_Int.hpp"
+
 Number *Number::create(size_t base, std::string &s)
 {
-	Number* toReturn;
+	Number* toReturn = new BigInt<8>(s);
 	if (base == 2) {
-		toReturn = new BigInt<2>(s);
-		return toReturn;
+		// toReturn = new BigInt<2>(s);
+		// return toReturn;
+		return nullptr;
 	} else if (base == 8) {
-		//toReturn = new BigInt<8>(s);
-		return (new BigInt<8>(s));
+		Number* toReturn = new BigInt<8>(s);
+		return toReturn;
 	} else if (base == 10) {
-		toReturn = new BigInt<10>(s);
-		return toReturn;
+		return (new BigInt<10>(s));
 	} else if (base == 16) {
-		toReturn = new BigInt<16>(s);
-		return toReturn;
+		return (new BigInt<16>(s));
 	} else {
 		throw BigIntBaseNotImplemented("Base no válida");
 	}
 
   return nullptr;
 }
-
-#include "../Derived_Class/Big_Int.hpp"
