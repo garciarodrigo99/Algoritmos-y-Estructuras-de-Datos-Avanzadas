@@ -189,6 +189,7 @@ class BigInt : public Number{
 		operator BigInt<8>() const override;
 		operator BigInt<10>() const override;
 		operator BigInt<16>() const override;
+		std::ostream& write(std::ostream&) const;
 
 		std::string cvToStr(void);
 		static unsigned totalInstances();
@@ -648,9 +649,10 @@ Number *BigInt<Base>::add(const Number * number) const
 	//BigInt<Base> test = dynamic_cast<const Number*>(number)->operator BigInt<Base>();
 	BigInt<Base> aux = number->operator BigInt<Base>();
 	aux = aux + *this;
-	Number* test8 = new BigInt<8>(aux);
+	std::cout << aux << std::endl;
+	Number* toReturn = new BigInt<Base>(aux);
 	//throw BigIntOperationNotSupported("Operacion no soportada");
-  return test8;
+  return toReturn;
 }
 
 template <std::size_t Base>
@@ -865,8 +867,17 @@ inline void BigInt<Base>::print()
 }
 
 template <std::size_t Base>
-std::string BigInt<Base>::cvToStr(void) {
-	std::string str;
+inline std::ostream &BigInt<Base>::write(std::ostream & os) const
+{
+	size_t aux = Base;
+  os << aux << "," << *this << std::endl;
+	return os;
+}
+
+template <std::size_t Base>
+std::string BigInt<Base>::cvToStr(void)
+{
+  std::string str;
 	for(int i=digits_.size()-1; i>=0; i--){
 		str.push_back(digits_[i]);
 	}

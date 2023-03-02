@@ -80,8 +80,10 @@ int main(int argc, char *argv[]) {
   // // BigInt<2> e2((BigInt<10>)(18)+(BigInt<10>)(6));
   // // std::cout << "e2: " << (BigInt<10>)e2 << "  " << e2 << std::endl;
   Number* test8 = new BigInt<8>("40");
-  Number* test10 = new BigInt<10>("32");
+  Number* test10 = new BigInt<10>("15");
   Number* test16 = new BigInt<16>("20");
+  std::ostream& os = std::cout;
+  (test10->add(test16))->write(os);
   // std::string aux("7162616");
   // Number* test2 = Number::create(10,aux);
   // BigInt<10> test10_8 = dynamic_cast<Number*>(test8)->operator BigInt<10>();
