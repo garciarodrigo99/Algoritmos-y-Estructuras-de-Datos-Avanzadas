@@ -21,3 +21,14 @@ Number *Number::create(size_t base, std::string &s)
 
   return toReturn;
 }
+
+std::ostream &operator<<(std::ostream &os, const Number &number)
+{
+  number.write(os);
+	return os;
+}
+
+// std::istream &operator>>(std::istream &, Number &)
+// {
+//   // TODO: Insertar una instrucción "return" aquí
+// }

@@ -46,13 +46,13 @@ class Number {
 		virtual operator BigInt<16>() const = 0;
 
 	static Number* create(size_t, std::string&);
-	virtual std::ostream& write(std::ostream&) const = 0;
+	//virtual std::ostream& write(std::ostream&) const = 0;
 
 	protected:
-	// virtual std::ostream& write(std::ostream&) const = 0;
-	// virtual std::istream& read(std::istream&) = 0;
-	// friend std::ostream& operator<<(std::ostream&, const Number&);
-	// friend std::istream& operator>>(std::istream&, Number&);
+	virtual std::ostream& write(std::ostream&) const = 0;
+	//virtual std::istream& read(std::istream&) = 0;
+	friend std::ostream& operator<<(std::ostream&, const Number&);
+	//friend std::istream& operator>>(std::istream&, Number&);
 
 };
 

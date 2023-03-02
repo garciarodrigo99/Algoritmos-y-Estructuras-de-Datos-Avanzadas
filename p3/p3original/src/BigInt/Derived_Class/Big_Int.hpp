@@ -189,7 +189,9 @@ class BigInt : public Number{
 		operator BigInt<8>() const override;
 		operator BigInt<10>() const override;
 		operator BigInt<16>() const override;
-		std::ostream& write(std::ostream&) const;
+
+		std::ostream& write(std::ostream&) const override;
+		//virtual std::istream& read(std::istream&) = 0;
 
 		std::string cvToStr(void);
 		static unsigned totalInstances();
@@ -648,39 +650,50 @@ Number *BigInt<Base>::add(const Number * number) const
 {
 	//BigInt<Base> test = dynamic_cast<const Number*>(number)->operator BigInt<Base>();
 	BigInt<Base> aux = number->operator BigInt<Base>();
-	aux = aux + *this;
-	std::cout << aux << std::endl;
-	Number* toReturn = new BigInt<Base>(aux);
+	aux = *this + aux;
+	// std::cout << aux << std::endl;
+  return (new BigInt<Base>(aux));
+}
+
+template <std::size_t Base>
+Number *BigInt<Base>::subtract(const Number * number) const
+{
 	//throw BigIntOperationNotSupported("Operacion no soportada");
-  return toReturn;
+	BigInt<Base> aux = number->operator BigInt<Base>();
+	std::cout << *this << " - " << aux << " = ";
+	aux = *this - aux;
+	// std::cout << aux << std::endl;
+  return (new BigInt<Base>(aux));
 }
 
 template <std::size_t Base>
-Number *BigInt<Base>::subtract(const Number *) const
+Number *BigInt<Base>::multiply(const Number * number) const
 {
-		throw BigIntOperationNotSupported("Operacion no soportada");
-  return nullptr;
+	//throw BigIntOperationNotSupported("Operacion no soportada");
+	BigInt<Base> aux = number->operator BigInt<Base>();
+	aux = *this * aux;
+	// std::cout << aux << std::endl;
+  return (new BigInt<Base>(aux));
 }
 
 template <std::size_t Base>
-Number *BigInt<Base>::multiply(const Number *) const
+Number *BigInt<Base>::divide(const Number * number) const
 {
-		throw BigIntOperationNotSupported("Operacion no soportada");
-  return nullptr;
+	//throw BigIntOperationNotSupported("Operacion no soportada");
+	BigInt<Base> aux = number->operator BigInt<Base>();
+	aux = *this / aux;
+	// std::cout << aux << std::endl;
+  return (new BigInt<Base>(aux));
 }
 
 template <std::size_t Base>
-Number *BigInt<Base>::divide(const Number *) const
+Number *BigInt<Base>::module(const Number * number) const
 {
-		throw BigIntOperationNotSupported("Operacion no soportada");
-  return nullptr;
-}
-
-template <std::size_t Base>
-Number *BigInt<Base>::module(const Number *) const
-{
-		throw BigIntOperationNotSupported("Operacion no soportada");
-  return nullptr;
+	//throw BigIntOperationNotSupported("Operacion no soportada");
+	BigInt<Base> aux = number->operator BigInt<Base>();
+	aux = *this % aux;
+	// std::cout << aux << std::endl;
+  return (new BigInt<Base>(aux));
 }
 
 template <std::size_t Base>
@@ -756,6 +769,14 @@ BigInt<Base>::operator BigInt<16>() const
 	}
 
 	return toReturn;
+}
+
+template <std::size_t Base>
+inline std::ostream &BigInt<Base>::write(std::ostream & os) const
+{
+	size_t aux = Base;
+  os << aux << "," << *this;
+	return os;
 }
 
 // template <std::size_t Base>
@@ -864,14 +885,6 @@ inline void BigInt<Base>::print()
 		std::cout << i << " | ";
 
 	std::endl(std::cout);
-}
-
-template <std::size_t Base>
-inline std::ostream &BigInt<Base>::write(std::ostream & os) const
-{
-	size_t aux = Base;
-  os << aux << "," << *this << std::endl;
-	return os;
 }
 
 template <std::size_t Base>
