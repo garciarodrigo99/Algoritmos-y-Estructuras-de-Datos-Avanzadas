@@ -7,7 +7,8 @@ Number *Number::create(size_t base, std::string &s)
 {
 	Number* toReturn = nullptr;
 	if (base == 2) {
-		toReturn = new BigInt<2>(s);
+		//toReturn = new BigInt<2>(s);
+		nullptr;
 	} else if (base == 8) {
 		toReturn = new BigInt<8>(s);
 	} else if (base == 10) {

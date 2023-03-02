@@ -643,60 +643,66 @@ BigInt<Base> BigInt<Base>::factorial() const  {
 }
 
 template <std::size_t Base>
-Number *BigInt<Base>::add(const Number *) const
+Number *BigInt<Base>::add(const Number * number) const
 {
-  return nullptr;
+	//BigInt<Base> test = dynamic_cast<const Number*>(number)->operator BigInt<Base>();
+	BigInt<Base> aux = number->operator BigInt<Base>();
+	aux = aux + *this;
+	Number* test8 = new BigInt<8>(aux);
+	//throw BigIntOperationNotSupported("Operacion no soportada");
+  return test8;
 }
 
 template <std::size_t Base>
 Number *BigInt<Base>::subtract(const Number *) const
 {
+		throw BigIntOperationNotSupported("Operacion no soportada");
   return nullptr;
 }
 
 template <std::size_t Base>
 Number *BigInt<Base>::multiply(const Number *) const
 {
+		throw BigIntOperationNotSupported("Operacion no soportada");
   return nullptr;
 }
 
 template <std::size_t Base>
 Number *BigInt<Base>::divide(const Number *) const
 {
+		throw BigIntOperationNotSupported("Operacion no soportada");
   return nullptr;
 }
 
 template <std::size_t Base>
 Number *BigInt<Base>::module(const Number *) const
 {
+		throw BigIntOperationNotSupported("Operacion no soportada");
   return nullptr;
 }
 
 template <std::size_t Base>
 BigInt<Base>::operator BigInt<8>() const
 {
-	std::list<bool> boolList;
-	bool negativeNumber = (sign_ == -1);
-	BigInt<Base> dividendo(*this);
-	if (negativeNumber){
-		dividendo = dividendo * BigInt<Base> (-1);
+	BigInt<8> toReturn;
+	BigInt<8> base;
+	size_t aux = 0;
+	while (Base > aux){
+		base++;
+		aux++;
 	}
-	
-	while (dividendo > BigInt<Base>("0")){
-		if ((dividendo % BigInt<Base>(8)) == BigInt<Base>("0"))
-			boolList.push_front(false);
-		else 
-			boolList.push_front(true);
-		
-		dividendo = dividendo / BigInt<Base>(2); 
+	BigInt<8> exponent;
+
+	for (size_t i=0; i<=digits_.size()-1; i++) {
+		int value = (digits_[i] < 8) ? (digits_[i] - 0) : (digits_[i] - 8 + 10);
+		toReturn = toReturn + (BigInt<8>(value) * pow(base,exponent));
+		exponent++;
 	}
-	
-	boolList.push_front(false);
-	std::string strParam;
-	for(auto i : boolList)
-		strParam.push_back(convertToCharacter(i));
-	
-	BigInt<8> toReturn(strParam);
+
+	if (sign_ == -1) {
+			toReturn = toReturn * BigInt<8>("-1");
+	}
+
 	return toReturn;
 }
 
@@ -704,7 +710,6 @@ template <std::size_t Base>
 BigInt<Base>::operator BigInt<10>() const
 {	
 	BigInt<10> toReturn;
-	BigInt<10> max(10);
 	BigInt<10> base;
 	size_t aux = 0;
 	while (Base > aux){
@@ -729,28 +734,25 @@ BigInt<Base>::operator BigInt<10>() const
 template <std::size_t Base>
 BigInt<Base>::operator BigInt<16>() const
 {
-	std::list<bool> boolList;
-	bool negativeNumber = (sign_ == -1);
-	BigInt<Base> dividendo(*this);
-	if (negativeNumber){
-		dividendo = dividendo * BigInt<Base> (-1);
+	BigInt<16> toReturn;
+	BigInt<16> base;
+	size_t aux = 0;
+	while (Base > aux){
+		base++;
+		aux++;
 	}
-	
-	while (dividendo > BigInt<Base>("0")){
-		if ((dividendo % BigInt<Base>(16)) == BigInt<Base>("0"))
-			boolList.push_front(false);
-		else 
-			boolList.push_front(true);
-		
-		dividendo = dividendo / BigInt<Base>(2); 
+	BigInt<16> exponent;
+
+	for (size_t i=0; i<=digits_.size()-1; i++) {
+		int value = (digits_[i] < 16) ? (digits_[i] - 0) : (digits_[i] - 16 + 10);
+		toReturn = toReturn + (BigInt<16>(value) * pow(base,exponent));
+		exponent++;
 	}
-	
-	boolList.push_front(false);
-	std::string strParam;
-	for(auto i : boolList)
-		strParam.push_back(convertToCharacter(i));
-	
-	BigInt<16> toReturn(strParam);
+
+	if (sign_ == -1) {
+			toReturn = toReturn * BigInt<16>("-1");
+	}
+
 	return toReturn;
 }
 
