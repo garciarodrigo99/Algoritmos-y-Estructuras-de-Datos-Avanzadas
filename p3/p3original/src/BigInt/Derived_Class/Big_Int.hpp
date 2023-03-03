@@ -650,7 +650,8 @@ Number *BigInt<Base>::add(const Number * number) const
 {
 	//BigInt<Base> test = dynamic_cast<const Number*>(number)->operator BigInt<Base>();
 	BigInt<Base> aux = number->operator BigInt<Base>();
-	aux = *this + aux;
+	BigInt<Base> copy(*this);
+	aux = copy + aux;
 	// std::cout << aux << std::endl;
   return (new BigInt<Base>(aux));
 }
@@ -775,7 +776,7 @@ template <std::size_t Base>
 inline std::ostream &BigInt<Base>::write(std::ostream & os) const
 {
 	size_t aux = Base;
-  os << aux << "," << *this;
+  os << aux << ", " << *this;
 	return os;
 }
 

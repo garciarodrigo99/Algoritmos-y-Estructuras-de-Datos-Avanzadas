@@ -145,22 +145,28 @@ void Calculator<T>::Operations(char _operator, int power) {
     stack_.pop();
     switch (_operator) {
       case Operators::plus:
-        stack_.push(firstNumber + secondNumber);
+        //stack_.push(firstNumber + secondNumber);
+        stack_.push(firstNumber->add(secondNumber));
         break;
       case Operators::minus:
-        stack_.push(firstNumber - secondNumber);
+        stack_.push(firstNumber->subtract(secondNumber));
+        //stack_.push(firstNumber - secondNumber);
         break;
       case Operators::multiply:
-        stack_.push(firstNumber * secondNumber);
+        stack_.push(firstNumber->multiply(secondNumber));
+        //stack_.push(firstNumber * secondNumber);
         break;
       case Operators::split:
-        stack_.push(firstNumber / secondNumber);
+        stack_.push(firstNumber->divide(secondNumber));
+        //stack_.push(firstNumber / secondNumber);
         break;
       case Operators::power:
-        stack_.push(pow(firstNumber,secondNumber));
+        // stack_.push(pow(firstNumber,secondNumber));
+        throw BigIntOperationNotSupported("Operacion no soportada");
         break;
       case Operators::modulo:
-        stack_.push(firstNumber % secondNumber);
+        stack_.push(firstNumber->module(secondNumber));
+        //stack_.push(firstNumber % secondNumber);
         break;
       default:
         throw std::invalid_argument("Simbolo no soportado");
