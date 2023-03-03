@@ -11,6 +11,7 @@ EXE_FILE = $(BIN)operations
 IN = input/
 IN_FILE = $(IN)board.txt
 OUT = output/
+TEST = test/
 
 # Reglas explícitas
 # g++ -std=c++14 -g -Wall -o bin/main main/main.cc
@@ -33,4 +34,9 @@ run-file:
 clean:
 	rm $(BIN)*
 	rm $(OUT)*
+
+test:
+	g++ -o test_number test_number.cpp
+	./test_number
+
 
