@@ -661,7 +661,6 @@ Number *BigInt<Base>::subtract(const Number * number) const
 {
 	//throw BigIntOperationNotSupported("Operacion no soportada");
 	BigInt<Base> aux = number->operator BigInt<Base>();
-	std::cout << *this << " - " << aux << " = ";
 	aux = *this - aux;
 	// std::cout << aux << std::endl;
   return (new BigInt<Base>(aux));
@@ -700,18 +699,21 @@ Number *BigInt<Base>::module(const Number * number) const
 template <std::size_t Base>
 BigInt<Base>::operator BigInt<8>() const
 {
+	if (Base == 8) {
+		return *this;
+	}
 	BigInt<8> toReturn;
-	BigInt<8> base;
-	size_t aux = 0;
-	while (Base > aux){
-		base++;
-		aux++;
+	BigInt<8> objectBase;
+	size_t counter = 0;
+	while (Base > counter){
+		objectBase++;
+		counter++;
 	}
 	BigInt<8> exponent;
 
 	for (size_t i=0; i<=digits_.size()-1; i++) {
 		int value = (digits_[i] < 8) ? (digits_[i] - 0) : (digits_[i] - 8 + 10);
-		toReturn = toReturn + (BigInt<8>(value) * pow(base,exponent));
+		toReturn = toReturn + (BigInt<8>(value) * pow(objectBase,exponent));
 		exponent++;
 	}
 
@@ -725,18 +727,21 @@ BigInt<Base>::operator BigInt<8>() const
 template <std::size_t Base>
 BigInt<Base>::operator BigInt<10>() const
 {	
+	if (Base == 10) {
+		return *this;
+	}
 	BigInt<10> toReturn;
-	BigInt<10> base;
-	size_t aux = 0;
-	while (Base > aux){
-		base++;
-		aux++;
+	BigInt<10> objectBase;
+	size_t counter = 0;
+	while (Base > counter){
+		objectBase++;
+		counter++;
 	}
 	BigInt<10> exponent;
 
 	for (size_t i=0; i<=digits_.size()-1; i++) {
 		int value = (digits_[i] < 10) ? (digits_[i] - 0) : (digits_[i] - 10 + 10);
-		toReturn = toReturn + (BigInt<10>(value) * pow(base,exponent));
+		toReturn = toReturn + (BigInt<10>(value) * pow(objectBase,exponent));
 		exponent++;
 	}
 
@@ -750,18 +755,30 @@ BigInt<Base>::operator BigInt<10>() const
 template <std::size_t Base>
 BigInt<Base>::operator BigInt<16>() const
 {
+	// if (Base == 16) {
+	// 	return *this;
+	// }
+	
 	BigInt<16> toReturn;
-	BigInt<16> base;
-	size_t aux = 0;
-	while (Base > aux){
-		base++;
-		aux++;
+	BigInt<16> objectBase;
+	size_t counter = 0;
+	while (Base > counter){
+		objectBase++;
+		counter++;
 	}
 	BigInt<16> exponent;
 
 	for (size_t i=0; i<=digits_.size()-1; i++) {
 		int value = (digits_[i] < 16) ? (digits_[i] - 0) : (digits_[i] - 16 + 10);
-		toReturn = toReturn + (BigInt<16>(value) * pow(base,exponent));
+		if (value > 9){
+			std::string auxStr;
+			auxStr.push_back((value-10)+'A');
+			toReturn = toReturn + (BigInt<16>(auxStr) * pow(objectBase,exponent));
+		} else {
+			toReturn = toReturn + (BigInt<16>(value) * pow(objectBase,exponent));
+		}
+		// std::cout << BigInt<16>(value) << " * " << pow(base,exponent) << " = " << (BigInt<16>(value) * pow(base,exponent)) << std::endl;
+		// std::cout << toReturn << std::endl;
 		exponent++;
 	}
 

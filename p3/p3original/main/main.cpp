@@ -37,44 +37,36 @@ void writeToFile(std::map<std::string, Number*> board,
   }
 }
 
-void auxFunction(std::string fileName) {
+// void auxFunction(std::string fileName) {
 
-  std::map<std::string, Number*> Board;
-  Calculator<Number*> calc;
-	std::vector<std::string> splittedChain;
-  std::ifstream archivo_entrada(fileName);
-  if (!archivo_entrada.fail()) {
-      std::cout << "El archivo se abrió correctamente\n";
-  } else {
-      std::cout << "El archivo NO se abrió correctamente\n";
-  }
-  std::string linea;
-  getline(archivo_entrada, linea);
-  std::cout << linea << std::endl;
-	//int i = 0;
-  while(getline(archivo_entrada, linea)) {
-		splittedChain = SplitChain(linea);
-		if (splittedChain[1][0] == '='){
-			Board[splittedChain.at(0)] = Number::create(
-        std::stoul(splittedChain.at(2)),splittedChain.at(3));
-      std::cout << "Hola\n";
-		} else {
-			Board[splittedChain.at(0)] = calc.GetResult(linea,Board);
-		}
-  }
-  archivo_entrada.close();
-  writeToFile(Board);
-}
+//   std::map<std::string, Number*> Board;
+//   Calculator<Number*> calc;
+// 	std::vector<std::string> splittedChain;
+//   std::ifstream archivo_entrada(fileName);
+//   if (!archivo_entrada.fail()) {
+//       std::cout << "El archivo se abrió correctamente\n";
+//   } else {
+//       std::cout << "El archivo NO se abrió correctamente\n";
+//   }
+//   std::string linea;
+//   getline(archivo_entrada, linea);
+//   std::cout << linea << std::endl;
+// 	//int i = 0;
+//   while(getline(archivo_entrada, linea)) {
+// 		splittedChain = SplitChain(linea);
+// 		if (splittedChain[1][0] == '='){
+// 			Board[splittedChain.at(0)] = Number::create(
+//         std::stoul(splittedChain.at(2)),splittedChain.at(3));
+//       std::cout << "Hola\n";
+// 		} else {
+// 			Board[splittedChain.at(0)] = calc.GetResult(linea,Board);
+// 		}
+//   }
+//   archivo_entrada.close();
+//   writeToFile(Board);
+// }
 
 int main(int argc, char *argv[]) {
-
-  // Number* test8 = new BigInt<8>("10");
-  // Number* test10 = new BigInt<10>("10");
-  // Number* test16 = new BigInt<16>("10");
-  // std::cout << *test8 << std::endl;
-  // std::cout << *test10->multiply(test8) << std::endl;
-
-  // return 0;
 
   std::string fileName = argv[1];
   std::map<std::string, Number*> Board;
