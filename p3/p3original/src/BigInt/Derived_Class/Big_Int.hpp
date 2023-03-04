@@ -7,15 +7,15 @@
 // Autor: Rodrigo Garcia Jimenez
 // Correo: alu0101154473@ull.edu.es
 // Fecha: 06/03/2023
-// Archivo Big_Int.hpp: Definición e implementación de la clase 
-// BigInt<std::size_t Base>
+// Archivo Big_Int.hpp: Declaración y definición de la clase 
+// BigInt<std::size_t Base> y declaración de la especialización BigInt<2>
 // Referencias:
 // Enlaces de interéss
 // https://stackoverflow.com/questions/4445654/multiple-definition-of-template-specialization-when-using-different-objects
 // https://stackoverflow.com/questions/53660616/explicit-template-specialization-multiple-definitions
 // https://stackoverflow.com/questions/43566006/c-error-multiple-definition-of-a-member-function-specialized-in-template-clas
 // Historial de revisiones
-// 13/10/2022 - Creaci´on (primera versi´on) del c´odigo
+// 28/02/2023 - Creación (primera versión) del código
 
 #pragma once
 #include "../Base_Class/Number.hpp"

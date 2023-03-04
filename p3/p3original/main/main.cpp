@@ -9,10 +9,9 @@
 // Fecha: 06/03/2023
 // Archivo main.cpp: Programa principal
 // Referencias:
-// Enlaces de interéss
-// https://stackoverflow.com/questions/2209224/vector-vs-list-in-stl
+// Enlaces de interés
 // Historial de revisiones
-// 28/02/2023 - Creaci´on (primera versi´on) del c´odigo
+// 28/02/2023 - Creación (primera versión) del código
 
 #include <fstream>
 #include <chrono>
@@ -37,40 +36,18 @@ void writeToFile(std::map<std::string, Number*> board,
   }
 }
 
-// void auxFunction(std::string fileName) {
-
-//   std::map<std::string, Number*> Board;
-//   Calculator<Number*> calc;
-// 	std::vector<std::string> splittedChain;
-//   std::ifstream archivo_entrada(fileName);
-//   if (!archivo_entrada.fail()) {
-//       std::cout << "El archivo se abrió correctamente\n";
-//   } else {
-//       std::cout << "El archivo NO se abrió correctamente\n";
-//   }
-//   std::string linea;
-//   getline(archivo_entrada, linea);
-//   std::cout << linea << std::endl;
-// 	//int i = 0;
-//   while(getline(archivo_entrada, linea)) {
-// 		splittedChain = SplitChain(linea);
-// 		if (splittedChain[1][0] == '='){
-// 			Board[splittedChain.at(0)] = Number::create(
-//         std::stoul(splittedChain.at(2)),splittedChain.at(3));
-//       std::cout << "Hola\n";
-// 		} else {
-// 			Board[splittedChain.at(0)] = calc.GetResult(linea,Board);
-// 		}
-//   }
-//   archivo_entrada.close();
-//   writeToFile(Board);
-// }
-
 int main(int argc, char *argv[]) {
+
+  Number* a = new BigInt<2>("0111");
+  Number* b = new BigInt<10>(7);
+  std::cout << *(a->add(b)) << std::endl;
+  std::cout << *(b->add(a)) << std::endl;
+
+  return 0;
 
   std::string fileName = argv[1];
   std::map<std::string, Number*> Board;
-  Calculator<Number*> calc;
+  Calculator calc;
 	std::vector<std::string> splittedChain;
   std::ifstream archivo_entrada(fileName);
   if (!archivo_entrada.fail()) {

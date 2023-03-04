@@ -7,15 +7,16 @@
 // Autor: Rodrigo Garcia Jimenez
 // Correo: alu0101154473@ull.edu.es
 // Fecha: 06/03/2023
-// Archivo Big_Int.hpp: Definición e implementación de la clase 
-// BigInt<std::size_t Base>
+// Archivo Big_Int.hpp: Definición de la especialización BigInt<2>
+// Se hace de esta manera para evitar la definición múltiple de los métodos
+// de la especialización de la plantilla.
 // Referencias:
 // Enlaces de interéss
 // https://stackoverflow.com/questions/4445654/multiple-definition-of-template-specialization-when-using-different-objects
 // https://stackoverflow.com/questions/53660616/explicit-template-specialization-multiple-definitions
 // https://stackoverflow.com/questions/43566006/c-error-multiple-definition-of-a-member-function-specialized-in-template-clas
 // Historial de revisiones
-// 13/10/2022 - Creaci´on (primera versi´on) del c´odigo
+// 28/02/2023 - Creación (primera versión) del código
 
 #include "Big_Int.hpp"
 
@@ -446,17 +447,23 @@ BigInt<2>::operator BigInt<2>() const
 
 BigInt<2>::operator BigInt<8>() const
 {
-	return BigInt<8>(*this);
+  BigInt<2> copy(*this);
+	return BigInt<8>(copy);
+  //return BigInt<8>(*this); // Segmentation fault
 }
 
 BigInt<2>::operator BigInt<10>() const
 {	
-	return BigInt<10>(*this);
+  BigInt<2> copy(*this);
+	return BigInt<10>(copy);
+  //return BigInt<10>(*this); // Segmentation fault
 }
 
 BigInt<2>::operator BigInt<16>() const
 {
-	return BigInt<8>(*this);
+  BigInt<2> copy(*this);
+	return BigInt<16>(copy);
+  //return BigInt<16>(*this); // Segmentation fault
 }
 
 inline std::ostream &BigInt<2>::write(std::ostream & os) const

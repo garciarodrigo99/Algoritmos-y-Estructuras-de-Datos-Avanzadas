@@ -13,7 +13,8 @@
 // Enlaces de interéss
 // https://stackoverflow.com/questions/2209224/vector-vs-list-in-stl
 // Historial de revisiones
-// 28/02/2023 - Creaci´on (primera versi´on) del c´odigo
+// 28/02/2023 - Creación (primera versión) del código
+
 #pragma once
 #include <stack>
 #include <string>
@@ -31,64 +32,57 @@ enum Operators {
   modulo = '%',
   factorial = '!',
 };
-
-template <class T> 
+ 
 class Calculator {
 
 public:
   // Constructores y destructor
   Calculator();
-  Calculator(std::map<std::string, T>);
+  Calculator(std::map<std::string, Number*>);
   ~Calculator();
 
   static unsigned totalInstances();
 
   // Getter
-  T GetResult(std::string,std::map<std::string, T>);
-  void insertNum(std::string, T);
+  Number* GetResult(std::string,std::map<std::string, Number*>);
+  void insertNum(std::string, Number*);
 
 private:
   bool isNumber(std::string);
   void Operations(char, int = 1);
 
 private:
-  std::stack<T> stack_;
-  std::map<std::string, T> numbers_;
+  std::stack<Number*> stack_;
+  std::map<std::string, Number*> numbers_;
   static unsigned instanceCount;
 };
-
-template <class T> 
-unsigned Calculator<T>::instanceCount = 0;
+ 
+unsigned Calculator::instanceCount = 0;
 
 // // Funcion para separar cada linea en cadenas según espacios
 // std::vector<std::string> SplitChain(std::string str, char pattern);
 
-template <class T>
-Calculator<T>::Calculator() {
-  ++Calculator<T>::instanceCount;
+Calculator::Calculator() {
+  ++Calculator::instanceCount;
 }
 
-template <class T>
-Calculator<T>::Calculator(std::map<std::string, T> mapNum) : 
+Calculator::Calculator(std::map<std::string, Number*> mapNum) : 
 numbers_(mapNum){}
 
-template <class T>
-Calculator<T>::~Calculator(){
-  --Calculator<T>::instanceCount;
+Calculator::~Calculator(){
+  --Calculator::instanceCount;
 }
 
-template <class T>
-inline unsigned Calculator<T>::totalInstances(){
-  return Calculator<T>::instanceCount;
+inline unsigned Calculator::totalInstances(){
+  return Calculator::instanceCount;
 }
 
 
 // Metodo que dada una sentencia (conjunto de operaciones) y delimitador
 // (para separar la secuencia), devuelve el lenguaje resultante de todas las
 // operaciones previas
-template <class T>
-T Calculator<T>::GetResult(std::string line,
-  std::map<std::string, T> numeros) {
+Number* Calculator::GetResult(std::string line,
+  std::map<std::string, Number*> numeros) {
   std::vector<std::string> sequence(SplitChain(line));
   numbers_ = numeros;
 
@@ -111,15 +105,14 @@ T Calculator<T>::GetResult(std::string line,
   }
   assert(stack_.size() == 1);
 
-  T toRetun(stack_.top());
+  Number* toRetun(stack_.top());
   stack_.pop();
   return toRetun;
 }
 
 // Metodo para saber si existe un lenguaje con un identificador de lenguaje
 // recibido por parametro (modularidad)
-template <class T>
-bool Calculator<T>::isNumber(std::string paramName) {
+bool Calculator::isNumber(std::string paramName) {
   auto it = numbers_.find(paramName);
   if (it != numbers_.end()) {
     return true;
@@ -130,18 +123,17 @@ bool Calculator<T>::isNumber(std::string paramName) {
 // Metodo que ejecuta las operaciones soportadas por la calculadora, que recibe
 // el supuesto operador, y un entero, para usar en el caso de la potencia, y
 // si no se indica el parametro, se pasará uno por defecto (modularidad)
-template <class T>
-void Calculator<T>::Operations(char _operator, int power) {
+void Calculator::Operations(char _operator, int power) {
   // Pila no vacia
   assert(!(stack_.empty()));
-  T secondNumber(stack_.top());
+  Number* secondNumber(stack_.top());
   stack_.pop();
 
   if (_operator == Operators::factorial) {
     //stack_.push(secondNumber.factorial());
   } else {
     assert(!(stack_.empty()));
-    T firstNumber(stack_.top());
+    Number* firstNumber(stack_.top());
     stack_.pop();
     switch (_operator) {
       case Operators::plus:
@@ -175,7 +167,6 @@ void Calculator<T>::Operations(char _operator, int power) {
   }
 }
 
-template <class T>
-void Calculator<T>::insertNum(std::string tag, T value) {
+void Calculator::insertNum(std::string tag, Number* value) {
   numbers_[tag] = value;
 }

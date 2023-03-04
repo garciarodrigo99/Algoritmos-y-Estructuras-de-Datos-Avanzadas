@@ -7,13 +7,11 @@
 // Autor: Rodrigo Garcia Jimenez
 // Correo: alu0101154473@ull.edu.es
 // Fecha: 06/03/2023
-// Archivo Big_Int.hpp: Definición e implementación de la clase 
-// BigInt<std::size_t Base>
+// Archivo Big_Int.hpp: Declaración de la clase abstracta Number
 // Referencias:
 // Enlaces de interéss
-// https://stackoverflow.com/questions/2209224/vector-vs-list-in-stl
 // Historial de revisiones
-// 28/02/2023 - Creaci´on (primera versi´on) del c´odigo
+// 28/02/2023 - Creación (primera versión) del código
 
 #pragma once
 
