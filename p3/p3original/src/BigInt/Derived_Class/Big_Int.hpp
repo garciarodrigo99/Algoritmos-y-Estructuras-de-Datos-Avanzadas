@@ -3,15 +3,17 @@
 // Grado en Ingeniería Informática
 // Asignatura: ALGORITMOS Y ESTRUCTURAS DE DATOS AVANZADAS
 // Curso: 2º
-// Práctica 1: Representación de números grandes en notación posicional
+// Práctica 3: Calculadora universal para números enteros grandes
 // Autor: Rodrigo Garcia Jimenez
 // Correo: alu0101154473@ull.edu.es
-// Fecha: 13/02/2023
+// Fecha: 06/03/2023
 // Archivo Big_Int.hpp: Definición e implementación de la clase 
 // BigInt<std::size_t Base>
 // Referencias:
 // Enlaces de interéss
-// https://stackoverflow.com/questions/2209224/vector-vs-list-in-stl
+// https://stackoverflow.com/questions/4445654/multiple-definition-of-template-specialization-when-using-different-objects
+// https://stackoverflow.com/questions/53660616/explicit-template-specialization-multiple-definitions
+// https://stackoverflow.com/questions/43566006/c-error-multiple-definition-of-a-member-function-specialized-in-template-clas
 // Historial de revisiones
 // 13/10/2022 - Creaci´on (primera versi´on) del c´odigo
 
@@ -30,74 +32,90 @@
 
 template <std::size_t Base> class BigInt;
 
-// template <>
-// class BigInt<2> {
-// 	private:
-// 		std::vector<bool> c2_;
-// 		void build(std::string&);
-// 		void checkBinary(char);
-// 		BigInt<2> complementNumber();
-// 		void removeUselessElements();
-//     void fillDifference(int nElements);
+template <>
+class BigInt<2> : public Number{
+	private:
+		std::vector<bool> c2_;
+		void build(std::string&);
+		void checkBinary(char);
+		BigInt<2> complementNumber();
+		void removeUselessElements();
+    void fillDifference(int nElements);
 
-// 	public:
-// 		// Constructores
-// 		BigInt(long n = 0);
-// 		BigInt(std::string&, bool = false);
-// 		BigInt(const char* );
-// 		BigInt(const BigInt<2>&); // Constructor de copia
-// 		~BigInt();
+	public:
+		// Constructores
+		BigInt(long n = 0);
+		BigInt(std::string&, bool = false);
+		BigInt(const char* );
+		BigInt(const BigInt<2>&); // Constructor de copia
+		~BigInt();
 
-// 		// Pruebas metodos privados
+		// Pruebas metodos privados
 
-// 		// Modif
-// 		size_t sizeOf();
+		// Modif
+		size_t sizeOf();
 
-//     // Asignación:
-// 		BigInt<2>& operator=(const BigInt<2>&);
+    // Asignación:
+		BigInt<2>& operator=(const BigInt<2>&);
 
-// 		// Inserción y extracción en flujo:
-// 		friend std::ostream& operator<< (std::ostream&, const BigInt<2>&);
-// 		// friend std::istream& operator>> <Base>(std::istream&, BigInt<Base>&);
-// 		// friend BigInt<Base>& operator>>(BigInt<Base>&, char &x);
+		// Inserción y extracción en flujo:
+		friend std::ostream& operator<< (std::ostream&, const BigInt<2>&);
+		// friend std::istream& operator>> <Base>(std::istream&, BigInt<Base>&);
+		// friend BigInt<Base>& operator>>(BigInt<Base>&, char &x);
 
-// 		// Accesor:
-// 		bool sign() const; // Signo: 0 ó 1
-// 		char operator[](int) const; // Acceso al i-ésimo dígito
-// 		int size(void) const;
+		// Accesor:
+		bool sign() const; // Signo: 0 ó 1
+		char operator[](int) const; // Acceso al i-ésimo dígito
+		int size(void) const;
 
-// 		// Comparación:
-// 		friend bool operator==(const BigInt<2>&, const BigInt<2> &);
-// 		bool operator!=(const BigInt<2>&) const;
-// 		friend bool operator>(const BigInt<2>&, const BigInt<2> &);
-// 		bool operator>=(const BigInt<2> &) const;
-// 		friend bool operator< (const BigInt<2>&, const BigInt<2>&);
-// 		bool operator<=(const BigInt<2>&) const;
+		// Comparación:
+		friend bool operator==(const BigInt<2>&, const BigInt<2> &);
+		bool operator!=(const BigInt<2>&) const;
+		friend bool operator>(const BigInt<2>&, const BigInt<2> &);
+		bool operator>=(const BigInt<2> &) const;
+		friend bool operator< (const BigInt<2>&, const BigInt<2>&);
+		bool operator<=(const BigInt<2>&) const;
 
-// 		// Incremento/decremento:
-// 		BigInt<2>& operator++(); // Pre-incremento(++i)
-// 		BigInt<2> operator++(int); // Post-incremento
-// 		BigInt<2>& operator--(); // Pre-decremento
-// 		BigInt<2> operator--(int); // Post-decremento
+		// Incremento/decremento:
+		BigInt<2>& operator++(); // Pre-incremento(++i)
+		BigInt<2> operator++(int); // Post-incremento
+		BigInt<2>& operator--(); // Pre-decremento
+		BigInt<2> operator--(int); // Post-decremento
 
-// 		// Operadores aritméticos:
-// 		friend BigInt<2> operator+(const BigInt<2>&, const BigInt<2>&);
-// 		BigInt<2> operator-(const BigInt<2> &) const;
-// 		BigInt<2> operator-() const;
-// 		BigInt<2> operator*(const BigInt<2>&) const;
-// 		friend BigInt<2> operator/(const BigInt<2>&, const BigInt<2>&);
-// 		BigInt<2> operator%(const BigInt<2>&) const;
+		// Operadores aritméticos:
+		friend BigInt<2> operator+(const BigInt<2>&, const BigInt<2>&);
+		BigInt<2> operator-(const BigInt<2> &) const;
+		BigInt<2> operator-() const;
+		BigInt<2> operator*(const BigInt<2>&) const;
+		friend BigInt<2> operator/(const BigInt<2>&, const BigInt<2>&);
+		BigInt<2> operator%(const BigInt<2>&) const;
 
-// 		// Operador de conversión
-// 		template <size_t BaseToConvert> operator BigInt<BaseToConvert> ();						
+		// Operador de conversión
+		template <size_t BaseToConvert> operator BigInt<BaseToConvert> ();						
 
-// 		// Potencia a^b
-// 		friend BigInt<2> pow(const BigInt<2>&, const BigInt<2>&);
-// 		BigInt<2> factorial() const;
+		// Potencia a^b
+		friend BigInt<2> pow(const BigInt<2>&, const BigInt<2>&);
+		BigInt<2> factorial() const;
 
-// 		std::string cvToStr(void);
-// 		static unsigned totalInstances();
-// };
+		// Operaciones aritmeticas heredadas
+		Number* add(const Number*) const override;
+		Number* subtract(const Number*) const override;
+		Number* multiply(const Number*) const override;
+		Number* divide(const Number*) const override;
+		Number* module(const Number*) const override;
+		// Number* pow(const Number*) const override;
+
+		operator BigInt<2>() const override;
+		operator BigInt<8>() const override;
+		operator BigInt<10>() const override;
+		operator BigInt<16>() const override;
+
+		std::ostream& write(std::ostream&) const override;
+		//virtual std::istream& read(std::istream&) = 0;
+
+		std::string cvToStr(void);
+		static unsigned totalInstances();
+};
 
 template <std::size_t Base> std::ostream& operator<< (std::ostream&, const BigInt<Base>&);
 
@@ -171,7 +189,7 @@ class BigInt : public Number{
 		BigInt<Base> operator*(const BigInt<Base>&) const;
 		friend BigInt<Base> operator/ <Base>(const BigInt<Base>&, const BigInt<Base>&);
 		BigInt<Base> operator%(const BigInt<Base>&) const;
-		//operator BigInt<2> ();
+		operator BigInt<2> ();
 
 		// Potencia a^b
 		friend BigInt<Base> pow<Base>(const BigInt<Base>&, const BigInt<Base>&);
@@ -185,7 +203,7 @@ class BigInt : public Number{
 		Number* module(const Number*) const override;
 		// Number* pow(const Number*) const override;
 
-		// operator BigInt<2>() const override;
+		operator BigInt<2>() const override;
 		operator BigInt<8>() const override;
 		operator BigInt<10>() const override;
 		operator BigInt<16>() const override;
@@ -755,9 +773,9 @@ BigInt<Base>::operator BigInt<10>() const
 template <std::size_t Base>
 BigInt<Base>::operator BigInt<16>() const
 {
-	// if (Base == 16) {
-	// 	return *this;
-	// }
+	if (Base == 16) {
+		return *this;
+	}
 	
 	BigInt<16> toReturn;
 	BigInt<16> objectBase;
@@ -797,38 +815,38 @@ inline std::ostream &BigInt<Base>::write(std::ostream & os) const
 	return os;
 }
 
-// template <std::size_t Base>
-// BigInt<Base>::operator BigInt<2>() const
-// {
-// 		std::list<bool> boolList;
-// 	bool negativeNumber = (sign_ == -1);
-// 	BigInt<Base> dividendo(*this);
-// 	if (negativeNumber){
-// 		dividendo = dividendo * BigInt<Base> (-1);
-// 	}
+template <std::size_t Base>
+BigInt<Base>::operator BigInt<2>() const
+{
+	std::list<bool> boolList;
+	bool negativeNumber = (sign_ == -1);
+	BigInt<Base> dividendo(*this);
+	if (negativeNumber){
+		dividendo = dividendo * BigInt<Base> (-1);
+	}
 	
-// 	while (dividendo > BigInt<Base>("0")){
-// 		if ((dividendo % BigInt<Base>(2)) == BigInt<Base>("0"))
-// 			boolList.push_front(false);
-// 		else 
-// 			boolList.push_front(true);
+	while (dividendo > BigInt<Base>("0")){
+		if ((dividendo % BigInt<Base>(2)) == BigInt<Base>("0"))
+			boolList.push_front(false);
+		else 
+			boolList.push_front(true);
 		
-// 		dividendo = dividendo / BigInt<Base>(2); 
-// 	}
+		dividendo = dividendo / BigInt<Base>(2); 
+	}
 	
-// 	boolList.push_front(false);
-// 	std::string strParam;
-// 	for(auto i : boolList)
-// 		strParam.push_back(convertToCharacter(i));
+	boolList.push_front(false);
+	std::string strParam;
+	for(auto i : boolList)
+		strParam.push_back(convertToCharacter(i));
 
-// 	if (negativeNumber){
-// 		BigInt<2> toReturn(strParam,true);
-// 		return toReturn;
-// 	}
+	if (negativeNumber){
+		BigInt<2> toReturn(strParam,true);
+		return toReturn;
+	}
 	
-// 	BigInt<2> toReturn(strParam);
-// 	return toReturn;
-// }
+	BigInt<2> toReturn(strParam);
+	return toReturn;
+}
 
 // template <std::size_t Base>
 // Number *BigInt<Base>::pow(const Number *) const
@@ -976,7 +994,7 @@ char convertToCharacter(char toConvert) {
 
 // BigInt<2>::~BigInt() {}
 
-// inline size_t BigInt<2>::sizeOf()
+// size_t BigInt<2>::sizeOf()
 // {
 // 	size_t result;
 // 	for (size_t i = 0; i < c2_.size(); i++){
@@ -986,7 +1004,7 @@ char convertToCharacter(char toConvert) {
 //   return result;
 // }
 
-// inline BigInt<2> &BigInt<2>::operator=(const BigInt<2> &binary)
+// BigInt<2> &BigInt<2>::operator=(const BigInt<2> &binary)
 // {
 // 	c2_ = binary.c2_;
 // 	return *this;
@@ -1010,7 +1028,7 @@ char convertToCharacter(char toConvert) {
 //   return c2_[index];
 // }
 
-// inline int BigInt<2>::size(void) const
+// int BigInt<2>::size(void) const
 // {
 //   return c2_.size();
 // }
@@ -1315,6 +1333,77 @@ char convertToCharacter(char toConvert) {
 // 		result = result * BigInt<BaseToConvert>(-1);
 	
 // 	return result;
+// }
+
+// Number *BigInt<2>::add(const Number * number) const
+// {
+// 	BigInt<2> aux = number->operator BigInt<2>();
+// 	BigInt<2> copy(*this);
+// 	aux = copy + aux;
+// 	// std::cout << aux << std::endl;
+//   return (new BigInt<2>(aux));
+// }
+
+// Number *BigInt<2>::subtract(const Number * number) const
+// {
+// 	//throw BigIntOperationNotSupported("Operacion no soportada");
+// 	BigInt<2> aux = number->operator BigInt<2>();
+// 	aux = *this - aux;
+// 	// std::cout << aux << std::endl;
+//   return (new BigInt<2>(aux));
+// }
+
+// Number *BigInt<2>::multiply(const Number * number) const
+// {
+// 	//throw BigIntOperationNotSupported("Operacion no soportada");
+// 	BigInt<2> aux = number->operator BigInt<2>();
+// 	aux = *this * aux;
+// 	// std::cout << aux << std::endl;
+//   return (new BigInt<2>(aux));
+// }
+
+// Number *BigInt<2>::divide(const Number * number) const
+// {
+// 	//throw BigIntOperationNotSupported("Operacion no soportada");
+// 	BigInt<2> aux = number->operator BigInt<2>();
+// 	aux = *this / aux;
+// 	// std::cout << aux << std::endl;
+//   return (new BigInt<2>(aux));
+// }
+
+// Number *BigInt<2>::module(const Number * number) const
+// {
+// 	//throw BigIntOperationNotSupported("Operacion no soportada");
+// 	BigInt<2> aux = number->operator BigInt<2>();
+// 	aux = *this % aux;
+// 	// std::cout << aux << std::endl;
+//   return (new BigInt<2>(aux));
+// }
+
+// BigInt<2>::operator BigInt<2>() const
+// {
+// 	return (*this);
+// }
+
+// BigInt<2>::operator BigInt<8>() const
+// {
+// 	return BigInt<8>(*this);
+// }
+
+// BigInt<2>::operator BigInt<10>() const
+// {	
+// 	return BigInt<10>(*this);
+// }
+
+// BigInt<2>::operator BigInt<16>() const
+// {
+// 	return BigInt<8>(*this);
+// }
+
+// inline std::ostream &BigInt<2>::write(std::ostream & os) const
+// {
+//   os << "2, " << *this;
+// 	return os;
 // }
 
 // /**

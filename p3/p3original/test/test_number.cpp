@@ -100,6 +100,126 @@ TEST(AddTest, b16b10) {
   EXPECT_EQ(result->operator BigInt<16UL>(), expected);
 }
 
+TEST(SubtractTest, b8b10) {
+BigInt<8> a("76542");//(32098)10
+BigInt<10> b("16344");
+BigInt<8> expected("36612");
+Number* num1 = &a;
+Number* num2 = &b;
+Number* result = num1->subtract(num2);
+EXPECT_EQ(result->operator BigInt<8UL>(), expected);
+}
+
+TEST(SubtractTest, b8b16) {
+BigInt<8> a("65432");//(27114)10
+BigInt<16> b("38AF");
+BigInt<8> expected("57317");
+Number* num1 = &a;
+Number* num2 = &b;
+Number* result = num1->subtract(num2);
+EXPECT_EQ(result->operator BigInt<8UL>(), expected);
+}
+
+TEST(SubtractTest, b10b8) {
+BigInt<10> a("567890");
+BigInt<8> b("12345670");
+BigInt<10> expected("545550");
+Number* num1 = &a;
+Number* num2 = &b;
+Number* result = num1->subtract(num2);
+EXPECT_EQ(result->operator BigInt<10UL>(), expected);
+}
+
+TEST(SubtractTest, b10b16) {
+BigInt<10> a("24680");
+BigInt<16> b("A1B2");
+BigInt<10> expected("9958");
+Number* num1 = &a;
+Number* num2 = &b;
+Number* result = num1->subtract(num2);
+EXPECT_EQ(result->operator BigInt<10UL>(), expected);
+}
+
+TEST(SubtractTest, b16b8) {
+BigInt<16> a("4D0");//(1232)10
+BigInt<8> b("543");
+BigInt<16> expected("394");
+Number* num1 = &a;
+Number* num2 = &b;
+Number* result = num1->subtract(num2);
+EXPECT_EQ(result->operator BigInt<16UL>(), expected);
+}
+
+TEST(SubtractTest, b16b10) {
+BigInt<16> a("F0F0");//(61680)10
+BigInt<10> b("12345");
+BigInt<16> expected("DCAB");
+Number* num1 = &a;
+Number* num2 = &b;
+Number* result = num1->subtract(num2);
+EXPECT_EQ(result->operator BigInt<16UL>(), expected);
+}
+
+TEST(MultiplyTest, b8b10) {
+BigInt<8> a("765");//(501)10
+BigInt<10> b("243");
+BigInt<8> expected("207353");
+Number* num1 = &a;
+Number* num2 = &b;
+Number* result = num1->multiply(num2);
+EXPECT_EQ(result->operator BigInt<8UL>(), expected);
+}
+
+TEST(MultiplyTest, b8b16) {
+BigInt<8> a("456");//(238)10
+BigInt<16> b("9B");
+BigInt<8> expected("373506");
+Number* num1 = &a;
+Number* num2 = &b;
+Number* result = num1->multiply(num2);
+EXPECT_EQ(result->operator BigInt<8UL>(), expected);
+}
+
+TEST(MultiplyTest, b10b8) {
+BigInt<10> a("4879");
+BigInt<8> b("674315");
+BigInt<10> expected("328963545");
+Number* num1 = &a;
+Number* num2 = &b;
+Number* result = num1->multiply(num2);
+EXPECT_EQ(result->operator BigInt<10UL>(), expected);
+}
+
+TEST(MultiplyTest, b10b16) {
+BigInt<10> a("98765");
+BigInt<16> b("9ABC");
+BigInt<10> expected("939734500");
+Number* num1 = &a;
+Number* num2 = &b;
+Number* result = num1->multiply(num2);
+EXPECT_EQ(result->operator BigInt<10UL>(), expected);
+}
+
+TEST(MultiplyTest, b16b8) {
+BigInt<16> a("2FCA");//(12234)10
+BigInt<8> b("754");
+BigInt<16> expected("16BA00");
+Number* num1 = &a;
+Number* num2 = &b;
+Number* result = num1->multiply(num2);
+EXPECT_EQ(result->operator BigInt<16UL>(), expected);
+}
+
+TEST(MultiplyTest, b16b10) {
+BigInt<16> a("AB4C");//(43852)10
+BigInt<10> b("2987");
+BigInt<16> expected("28DAA744");
+Number* num1 = &a;
+Number* num2 = &b;
+Number* result = num1->multiply(num2);
+EXPECT_EQ(result->operator BigInt<16UL>(), expected);
+}
+
 // TEST(NumberTest, SubtractTest) {
 //   BigInt<10> a("5678");
 //   BigInt<10> b("1234");
