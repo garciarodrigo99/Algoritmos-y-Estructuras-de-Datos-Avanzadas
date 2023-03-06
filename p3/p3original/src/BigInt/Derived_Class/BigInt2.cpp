@@ -78,17 +78,24 @@ std::ostream& operator<<(std::ostream& os, const BigInt<2>& binary) {
 	return os;
 }
 
-bool BigInt<2>::sign() const
+std::istream& operator>>(std::istream& is,BigInt<2>& binary) {
+	std::string input;
+	is >> input;
+	binary = BigInt<2>(input);
+	return is;
+}
+
+inline bool BigInt<2>::sign() const
 {
 	return c2_.back();
 }
 
-char BigInt<2>::operator[](int index) const
+inline char BigInt<2>::operator[](int index) const
 {
   return c2_[index];
 }
 
-int BigInt<2>::size(void) const
+inline int BigInt<2>::size(void) const
 {
   return c2_.size();
 }
@@ -400,44 +407,44 @@ Number *BigInt<2>::add(const Number * number) const
 	BigInt<2> aux = number->operator BigInt<2>();
 	BigInt<2> copy(*this);
 	aux = copy + aux;
-	// std::cout << aux << std::endl;
   return (new BigInt<2>(aux));
 }
 
 Number *BigInt<2>::subtract(const Number * number) const
 {
-	//throw BigIntOperationNotSupported("Operacion no soportada");
 	BigInt<2> aux = number->operator BigInt<2>();
 	aux = *this - aux;
-	// std::cout << aux << std::endl;
   return (new BigInt<2>(aux));
 }
 
 Number *BigInt<2>::multiply(const Number * number) const
 {
-	//throw BigIntOperationNotSupported("Operacion no soportada");
 	BigInt<2> aux = number->operator BigInt<2>();
 	aux = *this * aux;
-	// std::cout << aux << std::endl;
   return (new BigInt<2>(aux));
 }
 
 Number *BigInt<2>::divide(const Number * number) const
 {
-	//throw BigIntOperationNotSupported("Operacion no soportada");
 	BigInt<2> aux = number->operator BigInt<2>();
 	aux = *this / aux;
-	// std::cout << aux << std::endl;
   return (new BigInt<2>(aux));
 }
 
 Number *BigInt<2>::module(const Number * number) const
 {
-	//throw BigIntOperationNotSupported("Operacion no soportada");
 	BigInt<2> aux = number->operator BigInt<2>();
 	aux = *this % aux;
-	// std::cout << aux << std::endl;
   return (new BigInt<2>(aux));
+}
+
+Number *BigInt<2>::power(const Number * number) const
+{
+	BigInt<2> aux = number->operator BigInt<2>();
+	BigInt<2> copy(*this);
+	BigInt<2> result(pow(copy,aux));
+	// aux = pow(*this,aux);
+  return (new BigInt<2>(result));
 }
 
 BigInt<2>::operator BigInt<2>() const
@@ -470,6 +477,12 @@ inline std::ostream &BigInt<2>::write(std::ostream & os) const
 {
   os << "2, " << *this;
 	return os;
+}
+
+std::istream &BigInt<2>::read(std::istream & is)
+{
+  is >> *this;
+	return is;
 }
 
 /**

@@ -42,7 +42,8 @@ std::ostream &operator<<(std::ostream &os, const Number &number)
 	return os;
 }
 
-// std::istream &operator>>(std::istream &, Number &)
-// {
-//   // TODO: Insertar una instrucción "return" aquí
-// }
+std::istream &operator>>(std::istream & is, Number & number)
+{
+  number.read(is);
+	return is;
+}

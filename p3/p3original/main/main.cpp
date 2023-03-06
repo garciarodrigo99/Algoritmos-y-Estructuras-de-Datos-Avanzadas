@@ -38,12 +38,21 @@ void writeToFile(std::map<std::string, Number*> board,
 
 int main(int argc, char *argv[]) {
 
-  Number* a = new BigInt<2>("0111");
-  Number* b = new BigInt<10>(7);
-  std::cout << *(a->add(b)) << std::endl;
-  std::cout << *(b->add(a)) << std::endl;
+//   // Number* a = new BigInt<2>("0111");
+//   // Number* b = new BigInt<10>(7);
+//   // std::cout << *(a->add(b)) << std::endl;
+//   // std::cout << *(b->add(a)) << std::endl;
+//   // std::cout << *b->power(a) << std::endl;
 
-  return 0;
+// Number* num = new BigInt<10>();
+// std::cin >> *num;
+
+// // También podrías leer números de una base específica
+// Number* num2 = new BigInt<2>();
+// std::cin >> *num2;
+
+
+//   return 0;
 
   std::string fileName = argv[1];
   std::map<std::string, Number*> Board;

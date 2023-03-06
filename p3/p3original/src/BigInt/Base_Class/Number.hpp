@@ -26,7 +26,6 @@ template <std::size_t Base> class BigInt;
 class Number {
 
 	public:
-		//Number(/* args */);
 		virtual ~Number();
 
 	// Operaciones aritmeticas
@@ -35,7 +34,7 @@ class Number {
 		virtual Number* multiply(const Number*) const = 0;
 		virtual Number* divide(const Number*) const = 0;
 		virtual Number* module(const Number*) const = 0;
-		// virtual Number* pow(const Number*) const = 0;
+		virtual Number* power(const Number*) const = 0;
 
 	// Operaciones de cambio de tipo.
 		virtual operator BigInt<2>() const = 0;
@@ -44,13 +43,12 @@ class Number {
 		virtual operator BigInt<16>() const = 0;
 
 	static Number* create(size_t, std::string&);
-	//virtual std::ostream& write(std::ostream&) const = 0;
 
 	protected:
 	virtual std::ostream& write(std::ostream&) const = 0;
-	//virtual std::istream& read(std::istream&) = 0;
+	virtual std::istream& read(std::istream&) = 0;
 	friend std::ostream& operator<<(std::ostream&, const Number&);
-	//friend std::istream& operator>>(std::istream&, Number&);
+	friend std::istream& operator>>(std::istream&, Number&);
 
 };
 
