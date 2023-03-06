@@ -153,8 +153,7 @@ void Calculator::Operations(char _operator, int power) {
         //stack_.push(firstNumber / secondNumber);
         break;
       case Operators::power:
-        // stack_.push(pow(firstNumber,secondNumber));
-        throw BigIntOperationNotSupported("Operacion no soportada");
+        stack_.push(firstNumber->power(secondNumber));
         break;
       case Operators::modulo:
         stack_.push(firstNumber->module(secondNumber));

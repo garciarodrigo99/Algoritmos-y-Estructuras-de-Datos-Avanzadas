@@ -21,16 +21,23 @@ Number::~Number() {}
 Number *Number::create(size_t base, std::string &s)
 {
 	Number* toReturn = nullptr;
-	if (base == 2) {
-		toReturn = new BigInt<2>(s);
-	} else if (base == 8) {
-		toReturn = new BigInt<8>(s);
-	} else if (base == 10) {
-		toReturn = new BigInt<10>(s);
-	} else if (base == 16) {
-		toReturn = new BigInt<16>(s);
-	} else {
-		throw BigIntBaseNotImplemented("Base no válida");
+	try{
+		if (base == 2) {
+			toReturn = new BigInt<2>(s);
+		} else if (base == 8) {
+			toReturn = new BigInt<8>(s);
+		} else if (base == 10) {
+			toReturn = new BigInt<10>(s);
+		} else if (base == 16) {
+			toReturn = new BigInt<16>(s);
+		} else {
+			throw BigIntBaseNotImplemented();
+		}
+	}
+	catch (const BigIntBaseNotImplemented& bni){
+		std::cerr << bni.what() << '\n';
+		std::cerr << "Base no válida. Comportamiento por defecto...\n";
+		toReturn = new BigInt<>();
 	}
 
   return toReturn;

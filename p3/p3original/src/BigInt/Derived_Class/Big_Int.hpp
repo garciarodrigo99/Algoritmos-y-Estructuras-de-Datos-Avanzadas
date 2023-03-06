@@ -899,8 +899,14 @@ void BigInt<Base>::build(std::string& str){
 
 	for(int i=str.size()-1; i>=0; i--){
 		char toConvert = convertToNumber(str[i]);
-		checkCharFromBase(toConvert);
-		digits_.push_back(toConvert);
+		try {
+			checkCharFromBase(toConvert);
+			digits_.push_back(toConvert);
+		}
+		catch(const BigIntBadDigit& bd) {
+			std::cerr << bd.what() << '\n';
+			digits_.push_back(0);
+		}
 	}
 	++BigInt<Base>::instanceCount;
 }

@@ -2,7 +2,7 @@
 
 class BigIntBaseNotImplemented : public BigIntException {
 public:
-    BigIntBaseNotImplemented(const char* message) : BigIntException(message), msg_(message) {}
+    BigIntBaseNotImplemented() : BigIntException("BigIntException"), msg_("Base no implementada") {}
     const char* what() const noexcept override {
         return msg_.c_str();
     }
