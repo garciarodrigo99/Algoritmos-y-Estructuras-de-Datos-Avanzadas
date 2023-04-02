@@ -27,28 +27,28 @@ void quickSortFunction(std::vector<Key>& seq, long start, long end) {
 }
 
 template<class Key>
-class QuickSort : public SortMethod<Key>{
+class QuickSortMethod : public SortMethod<Key>{
 
 public:
-    QuickSort(std::vector<Key>&,long,long);
-    ~QuickSort() override;
+    QuickSortMethod(std::vector<Key>&,int);
+    ~QuickSortMethod() override;
     void Sort() override;
 
 private:
-    std::vector<Key> vector_;
-    long start_,end_;
+    std::vector<Key>& vector_;
+    long size_;
 };
 
 template<class Key>
-QuickSort<Key>::QuickSort(std::vector<Key>& vct_p, long ini_p, long end__p) : 
-                        vector_(vct_p) , start_(ini_p), end_(end__p) {}
+QuickSortMethod<Key>::QuickSortMethod(std::vector<Key>& vct_p, int size_p) : 
+                        vector_(vct_p), size_(size_p) {}
 
 template<class Key>
-QuickSort<Key>::~QuickSort(){}
+QuickSortMethod<Key>::~QuickSortMethod(){}
 
 
 template <class Key>
-inline void QuickSort<Key>::Sort()
+inline void QuickSortMethod<Key>::Sort()
 {
-    quickSortFunction(vector_,start_,end_);
+    quickSortFunction(vector_,0,size_-1);
 }

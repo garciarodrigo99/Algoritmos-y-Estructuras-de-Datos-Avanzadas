@@ -3,8 +3,8 @@
 // https://docs.google.com/presentation/d/1Hllv0bOMllv5sYFNPZ05NhISbtf6hGJE5BhZi0Fpq3g/edit#slide=id.g119bcdab500_1_716
 
 template<typename Key>
-void deltaSort(std::vector<Key>& seq, unsigned size, unsigned delta) {
-    for (int i = delta; i < size; i++){
+void deltaSort(std::vector<Key>& seq, unsigned size, float delta) {
+    for (unsigned i = delta; i < size; i++){
         Key x = seq[i];
         int j = i;
         while ((j >= delta) && (x<seq[j-delta])){
@@ -16,8 +16,9 @@ void deltaSort(std::vector<Key>& seq, unsigned size, unsigned delta) {
 }
 
 template<typename Key>
-void shellSortFunction(std::vector<Key>& seq, unsigned size, unsigned alfa = 0.5) {
-    float delta = size * alfa;
+void shellSortFunction(std::vector<Key>& seq, unsigned size, float alfa = 0.5) {
+    // float delta = size * alfa;
+    float delta = size;
     int contador = 0;
     while (delta > 1.0){
         delta *= alfa;
@@ -36,7 +37,7 @@ public:
     void Sort() override;
 
 private:
-    std::vector<Key> vector_;
+    std::vector<Key>& vector_;
     long size_ = 0;
     float alfa_ = 0.5;
 };

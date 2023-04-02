@@ -110,7 +110,7 @@ int main(int argc, char* argv[]){
     // int alg = inputData<int>('a');//b)
     // long tam_sec = inputData<long>('t');//b)
     // char form = inputData<char>('f');
-    int alg = 1;
+    int alg = 2;
     int tam_sec = 10;
     char form = 'a';
 
@@ -144,25 +144,29 @@ int main(int argc, char* argv[]){
     SortMethod<int>* m_ptr;//a)
     switch (alg){
         case 1:
-            m_ptr = new SelectionSortMethod<int>(vect, tam_sec);
-            break;
-        case 2:
             m_ptr = new InsertionSortMethod<int>(vect, tam_sec);
             break;
-        case 3:
-            m_ptr = new QuickSort<int>(vect, 0, tam_sec-1);
-            break; 
-        case 4: {
+        case 2:
+            m_ptr = new MergeSortMethod<int>(vect, tam_sec);
+            break;
+        case 3: {
             float alfa = inputData<float>('c');
+            std::cout << "alfa = " << alfa << std::endl;
             m_ptr = new ShellShortMethod<int>(vect, tam_sec,alfa);            
             break;
-            }
+        }
+        case 4:
+            m_ptr = new HeapSortMethod<int>(vect, tam_sec);
+            break;
         case 5:
-            m_ptr = new HeapSort<int>(vect, tam_sec);
+            m_ptr = new RadixSortMethod<int>(vect, tam_sec);
             break;
         case 6:
-            m_ptr = new RadixSort<int>(vect, tam_sec);
+            m_ptr = new SelectionSortMethod<int>(vect, tam_sec);
             break;
+        case 7:
+            m_ptr = new QuickSortMethod<int>(vect, tam_sec);
+            break; 
 
         default:
             break;

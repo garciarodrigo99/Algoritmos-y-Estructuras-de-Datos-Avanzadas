@@ -2,27 +2,62 @@
 // Complejidad O(nk)
 // https://docs.google.com/presentation/d/1Hllv0bOMllv5sYFNPZ05NhISbtf6hGJE5BhZi0Fpq3g/edit#slide=id.g119bcdab500_1_742
 
+#include "../Base_class/SortMethod.hpp"
+
+template<typename Key>
+void countingSort(std::vector<Key>& seq, unsigned exp) {
+    std::vector<Key> output(seq.size());
+    int count[10] = {0};
+    for(unsigned i = 0; i < seq.size(); ++i) {
+        count[(seq[i] / exp) % 10]++;
+    }
+    for(unsigned i = 1; i < 10; ++i) {
+        count[i] += count[i - 1];
+    }
+    for(int i = seq.size() - 1; i >= 0; --i) {
+        output[count[(seq[i] / exp) % 10] - 1] = seq[i];
+        count[(seq[i] / exp) % 10]--;
+    }
+    for(unsigned i = 0; i < seq.size(); ++i) {
+        seq[i] = output[i];
+    }
+}
+
+template<typename Key>
+void radixSortFunction(std::vector<Key>& seq, unsigned size) {
+    Key max = seq[0];
+    for(unsigned i = 1; i < size; ++i) {
+        if(seq[i] > max) {
+            max = seq[i];
+        }
+    }
+    for(unsigned exp = 1; max / exp > 0; exp *= 10) {
+        countingSort(seq, exp);
+    }
+}
+
 template<class Key>
-class RadixSort : public SortMethod<Key>{
+class RadixSortMethod : public SortMethod<Key>{
 
 public:
-    RadixSort(std::vector<Key>&,long);
-    ~RadixSort() override;
+    RadixSortMethod(std::vector<Key>&,long);
+    ~RadixSortMethod() override;
     void Sort() override;
 
 private:
-    std::vector<Key> vector_;
+    std::vector<Key>& vector_;
     long size_;
 };
 
 template<class Key>
-RadixSort<Key>::RadixSort(std::vector<Key>& vct_p, long tam_p) : 
+RadixSortMethod<Key>::RadixSortMethod(std::vector<Key>& vct_p, long tam_p) : 
                         vector_(vct_p) , size_(tam_p){}
 
 template<class Key>
-RadixSort<Key>::~RadixSort(){}
+RadixSortMethod<Key>::~RadixSortMethod(){}
 
 template <class Key>
-inline void RadixSort<Key>::Sort()
+inline void RadixSortMethod<Key>::Sort()
 {
+    radixSortFunction(vector_,size_);
 }

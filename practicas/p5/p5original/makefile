@@ -2,24 +2,26 @@
 
 MAIN = main/
 MAIN_FILE = $(MAIN)main.cpp
-#SRC = src/Key/Derivated_class/
-#DNI = $(SRC)DNI/dni.cpp
+TEST_FILE = $(MAIN)test.cpp
 OUT = bin/
 OUT_FILE = $(OUT)p5
+OUT_TEST_FILE = $(OUT)test
 
 # Reglas explícitas
 
 default:
 	g++ -std=c++14 -g -Wall $(MAIN_FILE) -o $(OUT_FILE)
 
-manual:
+test:
+	g++ -std=c++14 -g -Wall $(TEST_FILE) -o $(OUT_TEST_FILE)
+
+run:
 	$(OUT_FILE)
 
 file:
 	$(OUT_FILE) $(IN_FILE)
 
-run: manual
-
 run-file: default file
 
-#g++ -std=c++14 -g -Wall -o bin/main main/main.cpp src/Key/Derivated_class/DNI/dni.cpp src/Key/Derivated_class/Matricula/matricula.cpp
+run-test:
+	$(OUT_TEST_FILE)
