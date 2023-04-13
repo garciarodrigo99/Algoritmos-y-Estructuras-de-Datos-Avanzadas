@@ -21,18 +21,18 @@ template<class Key>
 class SelectionSortMethod : public SortMethod<Key>{
 
 public:
-    SelectionSortMethod(std::vector<Key>&,long);
+    SelectionSortMethod(std::vector<Key>&);
     ~SelectionSortMethod() override;
     void Sort() override;
 
-private:
-    std::vector<Key>& vector_;
-    long size_;
+// private:
+//     std::vector<Key>& vector_;
+//     long size_;
 };
 
 template<class Key>
-SelectionSortMethod<Key>::SelectionSortMethod(std::vector<Key>& vct_p, long tam_p) : 
-                        vector_(vct_p) , size_(tam_p){}
+SelectionSortMethod<Key>::SelectionSortMethod(std::vector<Key>& vct_p) : 
+                          SortMethod<Key>(vct_p) {}
 
 template<class Key>
 SelectionSortMethod<Key>::~SelectionSortMethod(){}
@@ -40,5 +40,5 @@ SelectionSortMethod<Key>::~SelectionSortMethod(){}
 template <class Key>
 inline void SelectionSortMethod<Key>::Sort()
 {
-    selectionSortFunction(vector_,size_);
+    selectionSortFunction(this->vector_,this->size_);
 }

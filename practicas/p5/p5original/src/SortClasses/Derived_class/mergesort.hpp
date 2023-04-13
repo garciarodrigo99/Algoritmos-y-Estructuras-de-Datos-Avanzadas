@@ -51,18 +51,18 @@ template<class Key>
 class MergeSortMethod : public SortMethod<Key>{
 
 public:
-    MergeSortMethod(std::vector<Key>&,long);
+    MergeSortMethod(std::vector<Key>&);
     ~MergeSortMethod() override;
     void Sort() override;
 
-private:
-    std::vector<Key>& vector_;
-    long size_;
+// private:
+    // std::vector<Key>& vector_;
+    // long size_;
 };
 
 template<class Key>
-MergeSortMethod<Key>::MergeSortMethod(std::vector<Key>& vct_p, long tam_p) : 
-                        vector_(vct_p) , size_(tam_p){}
+MergeSortMethod<Key>::MergeSortMethod(std::vector<Key>& vct_p) : 
+                      SortMethod<Key>(vct_p) {}
 
 template<class Key>
 MergeSortMethod<Key>::~MergeSortMethod(){}
@@ -70,5 +70,5 @@ MergeSortMethod<Key>::~MergeSortMethod(){}
 template <class Key>
 inline void MergeSortMethod<Key>::Sort()
 {
-  mergeSortFunction(vector_,0,size_-1);
+  mergeSortFunction(this->vector_,0,this->size_-1);
 }

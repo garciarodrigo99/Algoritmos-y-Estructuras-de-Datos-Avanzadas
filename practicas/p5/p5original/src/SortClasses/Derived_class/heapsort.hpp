@@ -39,18 +39,18 @@ template<class Key>
 class HeapSortMethod : public SortMethod<Key>{
 
 public:
-    HeapSortMethod(std::vector<Key>&,long);
+    HeapSortMethod(std::vector<Key>&);
     ~HeapSortMethod() override;
     void Sort() override;
 
-private:
-    std::vector<Key>& vector_;
-    long size_;
+// private:
+    // std::vector<Key>& vector_;
+    // long size_;
 };
 
 template<class Key>
-HeapSortMethod<Key>::HeapSortMethod(std::vector<Key>& vct_p, long tam_p) : 
-                        vector_(vct_p) , size_(tam_p){}
+HeapSortMethod<Key>::HeapSortMethod(std::vector<Key>& vct_p) : 
+                    SortMethod<Key>(vct_p) {}
 
 template<class Key>
 HeapSortMethod<Key>::~HeapSortMethod(){}
@@ -58,5 +58,5 @@ HeapSortMethod<Key>::~HeapSortMethod(){}
 template <class Key>
 inline void HeapSortMethod<Key>::Sort()
 {
-    heapSortFunction(vector_,size_);
+    heapSortFunction(this->vector_,this->size_);
 }

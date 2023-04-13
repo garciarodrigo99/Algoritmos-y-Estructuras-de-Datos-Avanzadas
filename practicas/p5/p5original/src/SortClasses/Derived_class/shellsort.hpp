@@ -32,19 +32,19 @@ template<class Key>
 class ShellShortMethod : public SortMethod<Key>{
 
 public:
-    ShellShortMethod(std::vector<Key>&,long,float = 0.5);
+    ShellShortMethod(std::vector<Key>&,float = 0.5);
     ~ShellShortMethod() override;
     void Sort() override;
 
-private:
-    std::vector<Key>& vector_;
-    long size_ = 0;
+// private:
+    // std::vector<Key>& vector_;
+    // long size_ = 0;
     float alfa_ = 0.5;
 };
 
 template<class Key>
-ShellShortMethod<Key>::ShellShortMethod(std::vector<Key>& vct_p, long tam_p, float alfa__p) :
-                            vector_(vct_p), size_(tam_p), alfa_(alfa__p){}
+ShellShortMethod<Key>::ShellShortMethod(std::vector<Key>& vct_p, float alfa_p) : 
+                        SortMethod<Key>(vct_p), alfa_(alfa_p) {}
 
 template<class Key>
 ShellShortMethod<Key>::~ShellShortMethod(){}
@@ -52,5 +52,5 @@ ShellShortMethod<Key>::~ShellShortMethod(){}
 template <class Key>
 inline void ShellShortMethod<Key>::Sort()
 {
-    shellSortFunction(vector_,size_,alfa_);
+    shellSortFunction(this->vector_,this->size_,alfa_);
 }

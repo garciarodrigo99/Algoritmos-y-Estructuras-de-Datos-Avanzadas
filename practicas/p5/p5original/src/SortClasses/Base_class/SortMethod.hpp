@@ -3,10 +3,14 @@
 
 template<class Key>
 class SortMethod{
+    protected:
+        std::vector<Key>& vector_;
+        long size_;
 
-public:
-    virtual ~SortMethod(){}
-    virtual void Sort() = 0;
+    public:
+        SortMethod(std::vector<Key>& vct) : vector_(vct),size_(vct.size()){}
+        virtual ~SortMethod(){}
+        virtual void Sort() = 0;
 };
 
 #include "../Derived_class/heapsort.hpp"

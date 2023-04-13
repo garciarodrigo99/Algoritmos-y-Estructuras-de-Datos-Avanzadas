@@ -141,38 +141,38 @@ int main(int argc, char* argv[]){
             std::cout << "\n";
     }
     std::cout << "\n";
-    SortMethod<int>* m_ptr;//a)
+    SortMethod<int>* sort_method_ptr;//a)
     switch (alg){
         case 1:
-            m_ptr = new InsertionSortMethod<int>(vect, tam_sec);
+            sort_method_ptr = new InsertionSortMethod<int>(vect);
             break;
         case 2:
-            m_ptr = new MergeSortMethod<int>(vect, tam_sec);
+            sort_method_ptr = new MergeSortMethod<int>(vect);
             break;
         case 3: {
             float alfa = inputData<float>('c');
             std::cout << "alfa = " << alfa << std::endl;
-            m_ptr = new ShellShortMethod<int>(vect, tam_sec,alfa);            
+            sort_method_ptr = new ShellShortMethod<int>(vect,alfa);            
             break;
         }
         case 4:
-            m_ptr = new HeapSortMethod<int>(vect, tam_sec);
+            sort_method_ptr = new HeapSortMethod<int>(vect);
             break;
         case 5:
-            m_ptr = new RadixSortMethod<int>(vect, tam_sec);
+            sort_method_ptr = new RadixSortMethod<int>(vect);
             break;
         case 6:
-            m_ptr = new SelectionSortMethod<int>(vect, tam_sec);
+            sort_method_ptr = new SelectionSortMethod<int>(vect);
             break;
         case 7:
-            m_ptr = new QuickSortMethod<int>(vect, tam_sec);
+            sort_method_ptr = new QuickSortMethod<int>(vect);
             break; 
 
         default:
             break;
     }
     std::vector<int> nonOrderedVector = vect;
-    m_ptr->Sort();
+    sort_method_ptr->Sort();
     std::cout<< "Vector ordenado:\n";
     for (size_t i = 0; i < vect.size(); i++){
         std::cout << vect[i] << "\t";

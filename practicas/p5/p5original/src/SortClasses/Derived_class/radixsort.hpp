@@ -40,18 +40,18 @@ template<class Key>
 class RadixSortMethod : public SortMethod<Key>{
 
 public:
-    RadixSortMethod(std::vector<Key>&,long);
+    RadixSortMethod(std::vector<Key>&);
     ~RadixSortMethod() override;
     void Sort() override;
 
-private:
-    std::vector<Key>& vector_;
-    long size_;
+// private:
+//     std::vector<Key>& vector_;
+//     long size_;
 };
 
 template<class Key>
-RadixSortMethod<Key>::RadixSortMethod(std::vector<Key>& vct_p, long tam_p) : 
-                        vector_(vct_p) , size_(tam_p){}
+RadixSortMethod<Key>::RadixSortMethod(std::vector<Key>& vct_p) : 
+                        SortMethod<Key>(vct_p) {}
 
 template<class Key>
 RadixSortMethod<Key>::~RadixSortMethod(){}
@@ -59,5 +59,5 @@ RadixSortMethod<Key>::~RadixSortMethod(){}
 template <class Key>
 inline void RadixSortMethod<Key>::Sort()
 {
-    radixSortFunction(vector_,size_);
+    radixSortFunction(this->vector_,this->size_);
 }
