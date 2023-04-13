@@ -1,6 +1,9 @@
 #include "../Base_class/SortMethod.hpp"
 // Complejidad O(n²)
 // https://docs.google.com/presentation/d/1Hllv0bOMllv5sYFNPZ05NhISbtf6hGJE5BhZi0Fpq3g/edit#slide=id.g119bcdab500_1_185
+// El código 2, por otro lado, utiliza variables de instancia protegidas en la clase base, lo que permite que la clase derivada InsertionSortMethod tenga acceso a estas variables de instancia sin necesidad de almacenar una referencia en una variable miembro. Esto hace que el código sea más seguro y prevenido de posibles errores.
+
+// En general, se recomienda utilizar variables de instancia protegidas en la clase base en lugar de variables de instancia privadas en la clase derivada, ya que esto hace que el código sea más seguro y menos propenso a errores.
 
 template<typename Key>
 void insertionSortFunction(std::vector<Key>& seq, unsigned size) {
@@ -37,7 +40,6 @@ InsertionSortMethod<Key>::~InsertionSortMethod(){}
 
 template <class Key>
 inline void InsertionSortMethod<Key>::Sort()
-{
-    //std::cout << "Hola\n";   
+{  
     insertionSortFunction(vector_,size_);
 }
