@@ -1,7 +1,21 @@
-#include "../Base_class/SortMethod.hpp"
-// Complejidad O(nk)
-// https://docs.google.com/presentation/d/1Hllv0bOMllv5sYFNPZ05NhISbtf6hGJE5BhZi0Fpq3g/edit#slide=id.g119bcdab500_1_742
+/**
+ * @file main.cpp
+ * @author Rodrigo Garcia Jimenez (alu0101154473@ull.edu.es)
+ * Universidad de La Laguna
+ * Escuela Superior de Ingeniería y Tecnología
+ * Grado en Ingeniería Informática
+ * Asignatura: Algoritmos y Estructuras de Datos Avanzadas
+ * Curso: 2º
+ * Práctica 5: Implementación de métodos de ordenación
+ * @brief Cabecera de la clase MergeSortMethod, derivada de la clase SortMethod
+ * @version 1.0
+ * @date 17-04-2023
+ */
 
+// Complejidad O(nk)
+// https://docs.google.com/presentation/d/1Hllv0bOMllv5sYFNPZ05NhISbtf6hGJE5BhZi0Fpq3g/edit#slide=id.g119bcdab500_1_562
+
+#include "../Base_class/SortMethod.hpp"
 template<typename Key>
 void merge(std::vector<Key>& seq, unsigned left, unsigned mid, unsigned right) {
   unsigned n1 = mid - left + 1;
@@ -38,7 +52,8 @@ void merge(std::vector<Key>& seq, unsigned left, unsigned mid, unsigned right) {
 }
 
 template<typename Key>
-void mergeSortFunction(std::vector<Key>& seq, unsigned left, unsigned right) {
+void mergeSortFunction(std::vector<Key>& seq, unsigned left, unsigned right,
+                      bool printTrace = true) {
   if(left < right) {
     unsigned mid = left + (right - left) / 2;
     mergeSortFunction(seq, left, mid);
@@ -51,18 +66,16 @@ template<class Key>
 class MergeSortMethod : public SortMethod<Key>{
 
 public:
-    MergeSortMethod(std::vector<Key>&);
+    MergeSortMethod(std::vector<Key>&, bool = true);
     ~MergeSortMethod() override;
     void Sort() override;
-
-// private:
-    // std::vector<Key>& vector_;
-    // long size_;
 };
 
 template<class Key>
-MergeSortMethod<Key>::MergeSortMethod(std::vector<Key>& vct_p) : 
-                      SortMethod<Key>(vct_p) {}
+MergeSortMethod<Key>::MergeSortMethod(std::vector<Key>& vct_p, 
+	bool manualOption) : SortMethod<Key>(vct_p) {
+	this->manualValues = manualOption;
+}
 
 template<class Key>
 MergeSortMethod<Key>::~MergeSortMethod(){}
@@ -70,5 +83,5 @@ MergeSortMethod<Key>::~MergeSortMethod(){}
 template <class Key>
 inline void MergeSortMethod<Key>::Sort()
 {
-  mergeSortFunction(this->vector_,0,this->size_-1);
+  mergeSortFunction(this->vector_,0,this->size_-1, this->manualValues);
 }

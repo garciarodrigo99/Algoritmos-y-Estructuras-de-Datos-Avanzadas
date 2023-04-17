@@ -1,14 +1,16 @@
 /**
  * @file main.cpp
- * @author Rodrigo García Jiménez (alu0101154473@ull.edu.es)
- * @title Programa principal de la práctica 5 de Algoritmos y Estructuras de Datos Avanzadas
- * @brief 
+ * @author Rodrigo Garcia Jimenez (alu0101154473@ull.edu.es)
+ * Universidad de La Laguna
+ * Escuela Superior de Ingeniería y Tecnología
+ * Grado en Ingeniería Informática
+ * Asignatura: Algoritmos y Estructuras de Datos Avanzadas
+ * Curso: 2º
+ * Práctica 5: Implementación de métodos de ordenación
+ * @brief Programa principal
  * @version 1.0
- * @date 25-04-2022
- * g++ -std=c++14 -g -Wall -o main main.cpp 
+ * @date 17-04-2023
  */
-
-
 
 #include <thread>         // std::this_thread::sleep_for
 #include <chrono>         // std::chrono::seconds
@@ -110,10 +112,10 @@ int main(int argc, char* argv[]){
     // int alg = inputData<int>('a');//b)
     // long tam_sec = inputData<long>('t');//b)
     // char form = inputData<char>('f');
-    int alg = 2;
+    int alg = 1;
     int tam_sec = 10;
     char form = 'a';
-
+    // TODO Cambiar todas las funciones de ordenación a un solo fichero/librería 
     system("clear");
 
     //std::vector<int> vect = {44,55,12,42,94,18,6,67}; //a)
@@ -141,38 +143,40 @@ int main(int argc, char* argv[]){
             std::cout << "\n";
     }
     std::cout << "\n";
-    SortMethod<int>* sort_method_ptr;//a)
+    SortMethod<int>* sortMethodPtr;//a)
+    bool manualOption = (form == 'm');
+    std::cout << form << ", " << manualOption << std::endl;
     switch (alg){
         case 1:
-            sort_method_ptr = new InsertionSortMethod<int>(vect);
+            sortMethodPtr = new InsertionSortMethod<int>(vect,manualOption);
             break;
         case 2:
-            sort_method_ptr = new MergeSortMethod<int>(vect);
+            sortMethodPtr = new MergeSortMethod<int>(vect, manualOption);
             break;
         case 3: {
             float alfa = inputData<float>('c');
             std::cout << "alfa = " << alfa << std::endl;
-            sort_method_ptr = new ShellShortMethod<int>(vect,alfa);            
+            sortMethodPtr = new ShellShortMethod<int>(vect,alfa, manualOption);            
             break;
         }
         case 4:
-            sort_method_ptr = new HeapSortMethod<int>(vect);
+            sortMethodPtr = new HeapSortMethod<int>(vect, manualOption);
             break;
         case 5:
-            sort_method_ptr = new RadixSortMethod<int>(vect);
+            sortMethodPtr = new RadixSortMethod<int>(vect, manualOption);
             break;
         case 6:
-            sort_method_ptr = new SelectionSortMethod<int>(vect);
+            sortMethodPtr = new SelectionSortMethod<int>(vect, manualOption);
             break;
         case 7:
-            sort_method_ptr = new QuickSortMethod<int>(vect);
+            sortMethodPtr = new QuickSortMethod<int>(vect, manualOption);
             break; 
 
         default:
             break;
     }
     std::vector<int> nonOrderedVector = vect;
-    sort_method_ptr->Sort();
+    sortMethodPtr->Sort();
     std::cout<< "Vector ordenado:\n";
     for (size_t i = 0; i < vect.size(); i++){
         std::cout << vect[i] << "\t";

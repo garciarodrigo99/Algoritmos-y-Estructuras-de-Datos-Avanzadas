@@ -1,7 +1,21 @@
-#include "../Base_class/SortMethod.hpp"
+/**
+ * @file main.cpp
+ * @author Rodrigo Garcia Jimenez (alu0101154473@ull.edu.es)
+ * Universidad de La Laguna
+ * Escuela Superior de Ingeniería y Tecnología
+ * Grado en Ingeniería Informática
+ * Asignatura: Algoritmos y Estructuras de Datos Avanzadas
+ * Curso: 2º
+ * Práctica 5: Implementación de métodos de ordenación
+ * @brief Cabecera de la clase RadixSortMethod, derivada de la clase SortMethod
+ * @version 1.0
+ * @date 17-04-2023
+ */
+
 // Complejidad O(nk)
 // https://docs.google.com/presentation/d/1Hllv0bOMllv5sYFNPZ05NhISbtf6hGJE5BhZi0Fpq3g/edit#slide=id.g119bcdab500_1_742
 
+#include "../Base_class/SortMethod.hpp"
 #include "../Base_class/SortMethod.hpp"
 
 template<typename Key>
@@ -24,7 +38,8 @@ void countingSort(std::vector<Key>& seq, unsigned exp) {
 }
 
 template<typename Key>
-void radixSortFunction(std::vector<Key>& seq, unsigned size) {
+void radixSortFunction(std::vector<Key>& seq, unsigned size, 
+											bool printTrace = true) {
     Key max = seq[0];
     for(unsigned i = 1; i < size; ++i) {
         if(seq[i] > max) {
@@ -40,18 +55,16 @@ template<class Key>
 class RadixSortMethod : public SortMethod<Key>{
 
 public:
-    RadixSortMethod(std::vector<Key>&);
+    RadixSortMethod(std::vector<Key>&, bool = true);
     ~RadixSortMethod() override;
     void Sort() override;
-
-// private:
-//     std::vector<Key>& vector_;
-//     long size_;
 };
 
 template<class Key>
-RadixSortMethod<Key>::RadixSortMethod(std::vector<Key>& vct_p) : 
-                        SortMethod<Key>(vct_p) {}
+RadixSortMethod<Key>::RadixSortMethod(std::vector<Key>& vct_p, 
+					bool manualOption) : SortMethod<Key>(vct_p) {
+	this->manualValues = manualOption;
+}
 
 template<class Key>
 RadixSortMethod<Key>::~RadixSortMethod(){}
@@ -59,5 +72,5 @@ RadixSortMethod<Key>::~RadixSortMethod(){}
 template <class Key>
 inline void RadixSortMethod<Key>::Sort()
 {
-    radixSortFunction(this->vector_,this->size_);
+    radixSortFunction(this->vector_,this->size_, this->manualValues);
 }
