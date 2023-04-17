@@ -16,32 +16,7 @@
 // Complejidad O(n^(alfa))
 // https://docs.google.com/presentation/d/1Hllv0bOMllv5sYFNPZ05NhISbtf6hGJE5BhZi0Fpq3g/edit#slide=id.g119bcdab500_1_600
 #include "../Base_class/SortMethod.hpp"
-
-template<typename Key>
-void deltaSort(std::vector<Key>& seq, unsigned size, float delta) {
-    for (unsigned i = delta; i < size; i++){
-        Key x = seq[i];
-        int j = i;
-        while ((j >= delta) && (x<seq[j-delta])){
-            seq[j]=seq[j-delta];
-            j=j-delta;
-        }
-        seq[j]=x;
-    }
-}
-
-template<typename Key>
-void shellSortFunction(std::vector<Key>& seq, unsigned size, float alfa = 0.5,
-											bool printTrace = true) {
-	// float delta = size * alfa;
-	float delta = size;
-	int contador = 0;
-	while (delta > 1.0){
-			delta *= alfa;
-			deltaSort(seq,size,delta);
-			contador++;
-	}
-}
+#include "../../../lib/sortFunctions.hpp"
 
 template<class Key>
 class ShellShortMethod : public SortMethod<Key>{

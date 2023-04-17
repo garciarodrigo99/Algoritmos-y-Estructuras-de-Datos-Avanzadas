@@ -18,29 +18,7 @@
 // https://docs.google.com/presentation/d/1Hllv0bOMllv5sYFNPZ05NhISbtf6hGJE5BhZi0Fpq3g/edit#slide=id.g119bcdab500_1_504
 
 #include "../Base_class/SortMethod.hpp"
-template<typename Key>
-void quick(std::vector<Key>& seq, long start, long end) {
-    long i = start;
-    long f = end;
-    Key p = seq[(i+f)/2];
-    while (i <= f){
-        while (seq[i] < p) i++;
-        while (seq[f] > p) f--;
-        if (i <= f) {
-            std::swap(seq[i],seq[f]) ;
-            i++; 
-            f--;
-        }
-    }
-    if (start < f) quick(seq, start, f); 
-    if (i < end) quick(seq, i, end);
-}
-
-template<typename Key>
-void quickSortFunction(std::vector<Key>& seq, long start, long end, 
-											bool printTrace = true) {
-	quick(seq,start,end);
-}
+#include "../../../lib/sortFunctions.hpp"
 
 template<class Key>
 class QuickSortMethod : public SortMethod<Key>{

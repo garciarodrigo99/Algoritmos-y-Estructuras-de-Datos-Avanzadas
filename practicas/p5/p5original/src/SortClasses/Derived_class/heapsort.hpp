@@ -15,40 +15,7 @@
 // Complejidad O(n log n)
 // https://docs.google.com/presentation/d/1Hllv0bOMllv5sYFNPZ05NhISbtf6hGJE5BhZi0Fpq3g/edit#slide=id.g119bcdab500_1_322
 #include "../Base_class/SortMethod.hpp"
-
-template<class Key>
-void baja(std::vector<Key>& vector,long size,int iteracion){
-    //std::cout << "Estás en baja()\n";
-    int h = iteracion;
-    int h1 = (2*iteracion); 
-    int h2 = h1 + 1;
-    if((h1 < size) && (vector[h1] > vector[h]))
-        //std::cout << "Baja\n";
-        h = h1;
-
-    if((h2 < size) && (vector[h2] > vector[h]))
-        //std::cout << "Sube\n";
-        h = h2;
-    
-    if(h != iteracion) {
-        //std::cout << "Colocado\n";
-        std::swap(vector[iteracion],vector[h]);
-        baja(vector,size,h);
-    }
-}
-
-template<typename Key>
-void heapSortFunction(std::vector<Key>& seq, unsigned size, 
-                    	bool printTrace = true ) {
-    //Algoritmo HeapSort
-    for(int i = (size/2)-1; i >= 0; i--){
-        baja(seq, size,i);
-    }
-    for(int i = size-1; i >= 0; i--){
-        std::swap(seq[0],seq[i]);
-        baja(seq,i,0);
-    }
-}
+#include "../../../lib/sortFunctions.hpp"
 
 template<class Key>
 class HeapSortMethod : public SortMethod<Key>{

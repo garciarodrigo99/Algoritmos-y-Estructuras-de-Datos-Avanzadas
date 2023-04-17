@@ -17,21 +17,7 @@
 // https://docs.google.com/presentation/d/1Hllv0bOMllv5sYFNPZ05NhISbtf6hGJE5BhZi0Fpq3g/edit#slide=id.g119bcdab500_1_185
 
 #include "../Base_class/SortMethod.hpp"
-template<typename Key>
-void selectionSortFunction(std::vector<Key>& seq, unsigned size,
-													bool printTrace = true) {
-    for (size_t i = 0; i < seq.size() - 1; i++){
-        int indice_menor = i;
-        Key valor_menor = seq[i];
-        for (size_t j = i + 1; j < seq.size(); j++){
-            if (seq[j] < valor_menor){
-                valor_menor = seq[j];
-                indice_menor = j;
-            }
-        }
-        std::swap(seq[i],seq[indice_menor]);
-    }
-};
+#include "../../../lib/sortFunctions.hpp"
 
 template<class Key>
 class SelectionSortMethod : public SortMethod<Key>{
@@ -47,7 +33,6 @@ SelectionSortMethod<Key>::SelectionSortMethod(std::vector<Key>& vct_p,
 													bool manualOption) : SortMethod<Key>(vct_p) {
 	this->manualValues = manualOption;
 }
-
 
 template<class Key>
 SelectionSortMethod<Key>::~SelectionSortMethod(){}
