@@ -112,9 +112,9 @@ int main(int argc, char* argv[]){
     // int alg = inputData<int>('a');//b)
     // long tam_sec = inputData<long>('t');//b)
     // char form = inputData<char>('f');
-    int alg = 7;
+    int alg = 1;
     int tam_sec = 10;
-    char form = 'a';
+    char form = 'm';
     // TODO Cambiar todas las funciones de ordenación a un solo fichero/librería 
     system("clear");
 

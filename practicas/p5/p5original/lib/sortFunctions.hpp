@@ -2,6 +2,14 @@
 #include <vector>
 #pragma once
 
+template<typename Key>
+void printVector(std::vector<Key>& seq) {
+	for (size_t i = 0; i < seq.size(); i++) {
+		std::cout << seq[i] << " ";
+	}
+	std::endl(std::cout);
+}
+
 // Insertion sort
 template<typename Key>
 void insertionSortFunction(std::vector<Key>& seq, unsigned size, 
@@ -14,6 +22,7 @@ void insertionSortFunction(std::vector<Key>& seq, unsigned size,
 				--j;
 		}
 		seq[j] = key;
+		if (printTrace) printVector(seq);
 	}
 };
 // ----------------------------------------------------------------------------
@@ -68,15 +77,18 @@ void mergeSortFunction(std::vector<Key>& seq, unsigned left, unsigned right,
 
 // ShellSort
 template<typename Key>
-void deltaSort(std::vector<Key>& seq, unsigned size, float delta) {
+void deltaSort(std::vector<Key>& seq, unsigned size, float delta, 
+							bool printTrace = true) {
     for (unsigned i = delta; i < size; i++){
         Key x = seq[i];
         int j = i;
         while ((j >= delta) && (x<seq[j-delta])){
             seq[j]=seq[j-delta];
             j=j-delta;
+						if (printTrace) printVector(seq);
         }
         seq[j]=x;
+				if (printTrace) printVector(seq);
     }
 }
 
@@ -88,7 +100,7 @@ void shellSortFunction(std::vector<Key>& seq, unsigned size, float alfa = 0.5,
 	int contador = 0;
 	while (delta > 1.0){
 			delta *= alfa;
-			deltaSort(seq,size,delta);
+			deltaSort(seq,size,delta,printTrace);
 			contador++;
 	}
 }
@@ -96,22 +108,20 @@ void shellSortFunction(std::vector<Key>& seq, unsigned size, float alfa = 0.5,
 
 // HeapSort
 template<class Key>
-void baja(std::vector<Key>& vector,long size,int iteracion){
-    //std::cout << "Estás en baja()\n";
+void baja(std::vector<Key>& vector,long size,int iteracion,
+					bool printTrace = true){
     int h = iteracion;
     int h1 = (2*iteracion); 
     int h2 = h1 + 1;
     if((h1 < size) && (vector[h1] > vector[h]))
-        //std::cout << "Baja\n";
         h = h1;
 
     if((h2 < size) && (vector[h2] > vector[h]))
-        //std::cout << "Sube\n";
         h = h2;
     
     if(h != iteracion) {
-        //std::cout << "Colocado\n";
         std::swap(vector[iteracion],vector[h]);
+				if (printTrace) printVector(vector);
         baja(vector,size,h);
     }
 }
@@ -121,11 +131,12 @@ void heapSortFunction(std::vector<Key>& seq, unsigned size,
                     	bool printTrace = true ) {
     //Algoritmo HeapSort
     for(int i = (size/2)-1; i >= 0; i--){
-        baja(seq, size,i);
+        baja(seq, size,i,printTrace);
     }
     for(int i = size-1; i >= 0; i--){
-        std::swap(seq[0],seq[i]);
-        baja(seq,i,0);
+			std::swap(seq[0],seq[i]);
+			if (printTrace) printVector(seq);
+			baja(seq,i,0,printTrace);
     }
 }
 // ----------------------------------------------------------------------------
@@ -179,13 +190,15 @@ void selectionSortFunction(std::vector<Key>& seq, unsigned size,
             }
         }
         std::swap(seq[i],seq[indice_menor]);
+				if (printTrace) printVector(seq);
     }
 };
 // ----------------------------------------------------------------------------
 
 // QuickSort
 template<typename Key>
-void quick(std::vector<Key>& seq, long start, long end) {
+void quick(std::vector<Key>& seq, long start, long end,
+					bool printTrace = true) {
     long i = start;
     long f = end;
     Key p = seq[(i+f)/2];
@@ -193,7 +206,8 @@ void quick(std::vector<Key>& seq, long start, long end) {
         while (seq[i] < p) i++;
         while (seq[f] > p) f--;
         if (i <= f) {
-            std::swap(seq[i],seq[f]) ;
+            std::swap(seq[i],seq[f]);
+						if (printTrace) printVector(seq);
             i++; 
             f--;
         }
@@ -205,6 +219,6 @@ void quick(std::vector<Key>& seq, long start, long end) {
 template<typename Key>
 void quickSortFunction(std::vector<Key>& seq, long start, long end, 
 											bool printTrace = true) {
-	quick(seq,start,end);
+	quick(seq,start,end,printTrace);
 }
 // ----------------------------------------------------------------------------
