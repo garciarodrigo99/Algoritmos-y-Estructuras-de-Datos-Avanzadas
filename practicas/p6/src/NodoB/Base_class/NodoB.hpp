@@ -24,10 +24,41 @@ class NodoB{
 
 	public:
 		NodoB(Key, NodoB<Key>* = nullptr,NodoB<Key>* = nullptr);
-		virtual ~NodoB(){}
+		~NodoB(){}
+
+		NodoB<Key>* getIzdo() const;
+		NodoB<Key>*& getIzdo();
+		NodoB<Key>* getDcho() const;
+		NodoB<Key>*& getDcho();
+		Key getDato();
+		Key getDato() const;
 };
 
 template<class Key>
 NodoB<Key>::NodoB(Key value, NodoB<Key>* lhs,
 									NodoB<Key>* rhs) : 
 									dato_(value), izdo_(lhs), dcho_(rhs) {}
+
+template<class Key>
+NodoB<Key>* NodoB<Key>::getIzdo() const {return izdo_;}
+
+template<class Key>
+NodoB<Key>*& NodoB<Key>::getIzdo() {return izdo_;}
+
+template<class Key>
+NodoB<Key>* NodoB<Key>::getDcho() const {return dcho_;}
+
+template<class Key>
+NodoB<Key>*& NodoB<Key>::getDcho() {return dcho_;}
+
+template <class Key>
+inline Key NodoB<Key>::getDato()
+{
+    return dato_;
+}
+
+template <class Key>
+inline Key NodoB<Key>::getDato() const
+{
+    return dato_;
+}

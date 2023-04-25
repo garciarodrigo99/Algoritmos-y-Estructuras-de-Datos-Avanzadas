@@ -17,12 +17,14 @@
 
 #include "../../NodoB/Base_class/NodoB.hpp"
 #include <vector>
+#include <iostream>
+#include <queue>
 #pragma once
 
 template<class Key>
 class AB{
 	protected:
-		NodoB<Key>* raiz = nullptr;
+		NodoB<Key>* raiz_ = nullptr;
 
 	public:
 		virtual ~AB(){}
@@ -32,6 +34,7 @@ class AB{
 		// d. Sobrecarga del operador de inserción en flujo para mostrar el AB<Key>
 		// utilizando el recorrido por niveles: En cada nivel se muestran los nodos de
 		// izquierda a derecha. El subárbol vacío se visualiza con [.].
+		NodoB<Key>* getRaiz() const;
 };
 
 // #include "../Derived_class/heapsort.hpp"
@@ -40,4 +43,37 @@ class AB{
 template <class Key>
 inline void AB<Key>::inorden() const
 {
+}
+
+template <class Key>
+inline NodoB<Key> *AB<Key>::getRaiz() const
+{
+    return raiz_;
+}
+
+template <class Key>
+std::ostream& operator<<(std::ostream& os, const AB<Key>& tree) {
+	int nivel = 0;
+	std::queue<NodoB<Key>*> cola;
+	cola.push(tree.getRaiz());
+
+	while (!cola.empty()){
+		int nodosNivel = cola.size();
+		os << "Nivel " << nivel << ": ";
+		for (size_t i = 0; i < nodosNivel; i++) {
+			NodoB<Key>* nodoActual = cola.front();
+			cola.pop();
+			if (nodoActual == nullptr){
+				os << "[.] ";
+			} else {
+				os << "[" << nodoActual->getDato() << "] ";
+				cola.push(nodoActual->getIzdo());
+				cola.push(nodoActual->getDcho());
+			}
+		}
+		os << "\n";
+		nivel++;
+	}
+	
+	return os;
 }

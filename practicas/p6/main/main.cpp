@@ -23,17 +23,12 @@
 #include "../src/AB/Derived_class/ABB/Derived_class/AVL.hpp"
 
 
-#define rango_inferior 1000
-#define rango_superior 9999
-
-
-
 int main() {
 
 	AB<long>* treePtr = nullptr; // Inicializamos el puntero en nullptr
-	NodoB<int> ejemplo(1);
-
-	return 0;
+	// NodoB<int> ejemplo(1);
+	// std::cout << ejemplo.getDato() << std::endl;
+	// return 0;
 	int treeType = -1;
 	while ((treeType < 1) || (treeType > 2)){   
 		
@@ -63,17 +58,19 @@ int main() {
 			long clave;
 			std::cout << "Introduzca la clave que desea insertar:" << std::endl;
 			std::cin >> clave;
-			treePtr->insertar(clave); // Usamos el puntero para llamar a la función insertar del objeto correspondiente
+			if (treePtr->insertar(clave))
+				std::cout << "La clave " << clave << " ha sido insertada." << std::endl;
+			else
+				std::cout << "La clave " << clave << " NO ha sido insertada." << std::endl;
+			std::cout << *treePtr;
 		} else if (opcion == 2) {
 			long clave;
 			std::cout << "Introduzca la clave que desea buscar:" << std::endl;
 			std::cin >> clave;
-			bool encontrado = treePtr->buscar(clave); // Usamos el puntero para llamar a la función buscar del objeto correspondiente
-			if (encontrado) {
+			if (treePtr->buscar(clave))
 				std::cout << "La clave " << clave << " ha sido encontrada." << std::endl;
-			} else {
-				std::cout << "La clave " << clave << " no ha sido encontrada." << std::endl;
-			}
+			else
+				std::cout << "La clave " << clave << " NO ha sido encontrada." << std::endl;
 		} else if (opcion == 3) {
 			std::cout << "Árbol en orden:" << std::endl;
 			treePtr->inorden(); // Usamos el puntero para llamar a la función mostrar_inorden del objeto correspondiente
