@@ -18,16 +18,15 @@
 
 template<class Key>
 class ABB : public AB<Key>{
-	protected:
 
 	public:
 		ABB();
 		~ABB();
-		bool insertar(const Key&) override;
+		virtual bool insertar(const Key&) override;
 		bool buscar(const Key&) const override;
 		void inorden() const;
 
-	private:
+	protected:
 		bool BuscarRama(NodoB<Key>*, const Key&) const;
 		bool InsertarRama(NodoB<Key>*&, const Key&);
 };
@@ -43,15 +42,15 @@ inline ABB<Key>::~ABB()
 template <class Key>
 inline bool ABB<Key>::insertar(const Key& k)
 {	
-	if (BuscarRama(this->raiz_,k))
+	if (BuscarRama(AB<Key>::raiz_,k))
 		return false;
-	return InsertarRama(this->raiz_,k);
+	return InsertarRama(AB<Key>::raiz_,k);
 }
 
 template <class Key>
 inline bool ABB<Key>::buscar(const Key & k) const
 {
-  return BuscarRama(this->raiz_,k);
+  return BuscarRama(AB<Key>::raiz_,k);
 }
 
 template <class Key>

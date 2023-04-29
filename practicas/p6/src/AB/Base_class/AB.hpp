@@ -43,6 +43,7 @@ class AB{
 template <class Key>
 inline void AB<Key>::inorden() const
 {
+
 }
 
 template <class Key>
@@ -60,7 +61,7 @@ std::ostream& operator<<(std::ostream& os, const AB<Key>& tree) {
 	while (!cola.empty()){
 		int nodosNivel = cola.size();
 		os << "Nivel " << nivel << ": ";
-		for (size_t i = 0; i < nodosNivel; i++) {
+		for (int i = 0; i < nodosNivel; i++) {
 			NodoB<Key>* nodoActual = cola.front();
 			cola.pop();
 			if (nodoActual == nullptr){

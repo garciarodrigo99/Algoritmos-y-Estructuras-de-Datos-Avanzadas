@@ -25,9 +25,14 @@
 
 int main() {
 
+	// #ifdef TRAZA
+	// 	std::cout << "traza\n";
+	// #endif
+
 	AB<long>* treePtr = nullptr; // Inicializamos el puntero en nullptr
 	// NodoB<int> ejemplo(1);
 	// std::cout << ejemplo.getDato() << std::endl;
+	// NodoB<int>* aux = new NodoAVL<int>(5);
 	// return 0;
 	int treeType = -1;
 	while ((treeType < 1) || (treeType > 2)){   
