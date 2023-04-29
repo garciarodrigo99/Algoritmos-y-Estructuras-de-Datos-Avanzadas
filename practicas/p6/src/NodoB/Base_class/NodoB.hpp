@@ -55,9 +55,9 @@ template<class Key>
 NodoB<Key>*& NodoB<Key>::getDcho() {return dcho_;}
 
 template <class Key>
-inline Key NodoB<Key>::getDato()
+Key NodoB<Key>::getDato()
 {
-    return dato_;
+  return dato_;
 }
 
 template <class Key>

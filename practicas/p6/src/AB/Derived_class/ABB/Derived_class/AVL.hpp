@@ -18,9 +18,9 @@ class AVL : public ABB<Key>{
   private:
     const bool EquilibrioRama(NodoB<Key>*);
     const int TamRama(NodoB<Key>*);
-    void inserta_bal(NodoAVL<Key>*&,NodoAVL<Key>*&,bool&);
-		void insert_re_balancea_izda(NodoAVL<Key>*&);
-    void insert_re_balancea_dcha(NodoAVL<Key>*&);
+    bool inserta_bal(NodoAVL<Key>*&,NodoAVL<Key>*&,bool&);
+		void insert_re_balancea_izda(NodoAVL<Key>*&, bool&);
+    void insert_re_balancea_dcha(NodoAVL<Key>*&, bool&);
     void rotacion_II (NodoAVL<Key>* &);
     void rotacion_ID (NodoAVL<Key>* &);
     void rotacion_DD (NodoAVL<Key>* &);
@@ -52,8 +52,9 @@ bool AVL<Key>::insertar(const Key& k)
   NodoAVL<Key>* nuevo = new NodoAVL<Key>(k);
   bool crece = false;
   NodoAVL<Key>* nodo_raiz = dynamic_cast<NodoAVL<Key>*>(this->raiz_);
-  inserta_bal(nodo_raiz,nuevo,crece);
-  return false;
+  bool toReturn = inserta_bal(nodo_raiz,nuevo,crece);
+  this->raiz_ = dynamic_cast<NodoB<Key>*>(nodo_raiz); // Actualizar raiz_
+  return toReturn;
 }
 
 template<class Key> const bool AVL<Key>::EquilibrioRama(NodoB<Key> *nodo)
@@ -80,61 +81,99 @@ const int AVL<Key>::TamRama(NodoB<Key>* nodo) {
 }
 
 template <class Key>
-void AVL<Key>::inserta_bal(NodoAVL<Key>*& nodo, NodoAVL<Key>*& nuevo, bool& crece)
-{
+bool AVL<Key>::inserta_bal(NodoAVL<Key>*& nodo, NodoAVL<Key>*& nuevo, bool& crece)
+{ 
   if (nodo == nullptr) {
     nodo = nuevo;
     crece = true;
+    return true;
   }
-  else if (nuevo->getDato() < nodo->getDato()) {
+  if (nuevo->getDato() == nodo->getDato()){
+    return false;
+  } 
+  if (nuevo->getDato() < nodo->getDato()) {
     NodoAVL<Key>* nodoIzdoCast = dynamic_cast<NodoAVL<Key>*>(nodo->getIzdo());
-    inserta_bal(nodoIzdoCast,nuevo,crece);
-    if (crece) insert_re_balancea_izda(nodo);
-  }
-  else {
+    bool insertado = inserta_bal(nodoIzdoCast,nuevo,crece);
+    if (insertado) {
+      nodo->getIzdo() = dynamic_cast<NodoB<Key>*>(nodoIzdoCast); // Actualizar raiz_
+      if (crece) insert_re_balancea_izda(nodo,crece);
+      return true;
+    } else {
+      return false;
+    }
+  } else {
     NodoAVL<Key>* nodoDchoCast = dynamic_cast<NodoAVL<Key>*>(nodo->getDcho());
-    inserta_bal(nodoDchoCast,nuevo,crece);
-    if (crece)
-      insert_re_balancea_dcha(nodo);
+    bool insertado = inserta_bal(nodoDchoCast,nuevo,crece);
+    if (insertado){
+      nodo->getDcho() = dynamic_cast<NodoB<Key>*>(nodoDchoCast); // Actualizar raiz_
+      if (crece) insert_re_balancea_dcha(nodo,crece);
+      return true;
+    } else{
+      return false;
+    }
   }
 }
 
 template <class Key>
-void AVL<Key>::insert_re_balancea_izda(NodoAVL<Key>*& nodo)
+void AVL<Key>::insert_re_balancea_izda(NodoAVL<Key>*& nodo, bool& crece)
 {
   switch (nodo->getBal()) {
     case -1: nodo->getBal() = 0;
-              crece = false;
+              //crece = false;
               break; 
     case  0: nodo->getBal() = 1 ;
               break; 
     case  1: {
       NodoAVL<Key>* izdoCast = dynamic_cast<NodoAVL<Key>*>(nodo->getIzdo());
       NodoAVL<Key>* nodo1 = izdoCast;
-      if (nodo1->getBal() == 1)
+      if (nodo1->getBal() == 1){
+        #ifdef TRAZA
+          std::cout << "Desbalanceo:\n";
+          std::cout << *this;
+      	  std::cout << "Rotación en II en\n";
+        #endif
         rotacion_II(nodo);
-      else rotacion_ID(nodo);
-        crece = false;
+      } else {
+        #ifdef TRAZA
+          std::cout << "Desbalanceo:\n";
+          std::cout << *this;
+      	  std::cout << "Rotación en ID en\n";
+        #endif
+        rotacion_ID(nodo);
+        //crece = false;
+      }
     }
   }
 }
 
 template <class Key>
-void AVL<Key>::insert_re_balancea_dcha(NodoAVL<Key>*& nodo)
+void AVL<Key>::insert_re_balancea_dcha(NodoAVL<Key>*& nodo, bool& crece)
 {
   switch (nodo->getBal()) {
     case  1: nodo->getBal() = 0;
-            crece = false;
+            //crece = false;
             break; 
     case  0: nodo->getBal() = -1;
             break; 
     case -1: {
       NodoAVL<Key>* dchoCast = dynamic_cast<NodoAVL<Key>*>(nodo->getDcho());
       NodoAVL<Key>* nodo1 = dchoCast;
-      if (nodo1->getBal() == -1)
+      if (nodo1->getBal() == -1){
+        #ifdef TRAZA
+          std::cout << "Desbalanceo:\n";
+          std::cout << *this;
+      	  std::cout << "Rotación en DD en\n";
+        #endif
         rotacion_DD(nodo);
-      else rotacion_DI(nodo);
-        crece = false;
+      }else {
+        #ifdef TRAZA
+          std::cout << "Desbalanceo:\n";
+          std::cout << *this;
+      	  std::cout << "Rotación en DI en\n";
+        #endif
+        rotacion_DI(nodo);
+        //crece = false;
+      }
     }
   }
 }
