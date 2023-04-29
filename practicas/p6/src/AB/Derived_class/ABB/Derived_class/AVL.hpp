@@ -21,6 +21,10 @@ class AVL : public ABB<Key>{
     void inserta_bal(NodoAVL<Key>*&,NodoAVL<Key>*&,bool&);
 		void insert_re_balancea_izda(NodoAVL<Key>*&);
     void insert_re_balancea_dcha(NodoAVL<Key>*&);
+    void rotacion_II (NodoAVL<Key>* &);
+    void rotacion_ID (NodoAVL<Key>* &);
+    void rotacion_DD (NodoAVL<Key>* &);
+    void rotacion_DI (NodoAVL<Key>* &);
 };
 
 template <class Key>
@@ -90,7 +94,8 @@ void AVL<Key>::inserta_bal(NodoAVL<Key>*& nodo, NodoAVL<Key>*& nuevo, bool& crec
   else {
     NodoAVL<Key>* nodoDchoCast = dynamic_cast<NodoAVL<Key>*>(nodo->getDcho());
     inserta_bal(nodoDchoCast,nuevo,crece);
-    if (crece) insert_re_balancea_dcha(nodo);
+    if (crece)
+      insert_re_balancea_dcha(nodo);
   }
 }
 
@@ -104,7 +109,8 @@ void AVL<Key>::insert_re_balancea_izda(NodoAVL<Key>*& nodo)
     case  0: nodo->getBal() = 1 ;
               break; 
     case  1: {
-      NodoAVL<Key>* nodo1 = nodo->getIzdo();
+      NodoAVL<Key>* izdoCast = dynamic_cast<NodoAVL<Key>*>(nodo->getIzdo());
+      NodoAVL<Key>* nodo1 = izdoCast;
       if (nodo1->getBal() == 1)
         rotacion_II(nodo);
       else rotacion_ID(nodo);
@@ -123,11 +129,60 @@ void AVL<Key>::insert_re_balancea_dcha(NodoAVL<Key>*& nodo)
     case  0: nodo->getBal() = -1;
             break; 
     case -1: {
-      NodoAVL<Key>* nodo1 = nodo->getDcho();
+      NodoAVL<Key>* dchoCast = dynamic_cast<NodoAVL<Key>*>(nodo->getDcho());
+      NodoAVL<Key>* nodo1 = dchoCast;
       if (nodo1->getBal() == -1)
         rotacion_DD(nodo);
       else rotacion_DI(nodo);
-      crece = false;
+        crece = false;
     }
   }
 }
+
+template <class Key>
+void AVL<Key>::rotacion_II(NodoAVL<Key> *& nodo) {
+  NodoAVL<Key>* izdoCast = dynamic_cast<NodoAVL<Key>*>(nodo->getIzdo());
+  NodoAVL<Key>* nodo1 = izdoCast;
+
+  nodo->getIzdo() = nodo1->getDcho();
+
+  nodo1->getDcho() = nodo;
+
+  if (nodo1->getBal() == 1) {
+     nodo->getBal() = 0;
+     nodo1->getBal() = 0;
+  }
+  else { // nodo1->getBal() == 0
+    nodo->getBal() = 1;
+    nodo1->getBal() = -1;
+  }
+  nodo = nodo1;
+
+}
+
+template <class Key>
+inline void AVL<Key>::rotacion_ID(NodoAVL<Key> *& k) {}
+
+template <class Key>
+inline void AVL<Key>::rotacion_DD(NodoAVL<Key> *& nodo) {
+  NodoAVL<Key>* dchoCast = dynamic_cast<NodoAVL<Key>*>(nodo->getDcho());
+  NodoAVL<Key>* nodo1 = dchoCast;
+
+  nodo->getDcho() = nodo1->getIzdo();
+
+  nodo1->getIzdo() = nodo;
+
+  if (nodo1->getBal() == -1) {
+     nodo->getBal() = 0;
+     nodo1->getBal() = 0;
+  }
+  else { // nodo1->getBal() == 0
+    nodo->getBal() = -1;
+    nodo1->getBal() = 1;
+  }
+  nodo = nodo1;
+}
+
+template <class Key>
+inline void AVL<Key>::rotacion_DI(NodoAVL<Key> *& k) {}
+
