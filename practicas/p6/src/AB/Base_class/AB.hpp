@@ -35,6 +35,9 @@ class AB{
 		// utilizando el recorrido por niveles: En cada nivel se muestran los nodos de
 		// izquierda a derecha. El subárbol vacío se visualiza con [.].
 		NodoB<Key>* getRaiz() const;
+
+	private:
+		void inorden_rec(NodoB<Key>*) const;
 };
 
 // #include "../Derived_class/heapsort.hpp"
@@ -43,7 +46,16 @@ class AB{
 template <class Key>
 inline void AB<Key>::inorden() const
 {
+	inorden_rec(raiz_);
+}
 
+template <class Key>
+void AB<Key>::inorden_rec(NodoB<Key>* nodo) const {
+  if (nodo != nullptr) {
+    inorden_rec(nodo->getIzdo());
+    std::cout << nodo->getDato() << " ";
+    inorden_rec(nodo->getDcho());
+  }
 }
 
 template <class Key>

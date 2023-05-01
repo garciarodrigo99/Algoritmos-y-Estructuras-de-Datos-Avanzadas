@@ -30,23 +30,20 @@ int main() {
 	// #endif
 
 	AB<long>* treePtr = nullptr; // Inicializamos el puntero en nullptr
-	// NodoB<int> ejemplo(1);
-	// std::cout << ejemplo.getDato() << std::endl;
-	// NodoB<int>* aux = new NodoAVL<int>(5);
-	// return 0;
-	int treeType = -1;
-	while ((treeType < 1) || (treeType > 2)){   
+
+	// int treeType = -1;
+	// while ((treeType < 1) || (treeType > 2)){   
 		
-		std::cout << "¿Qué tipo de árbol quiere crear? (ABB o AVL)\n"
-		"[1] ABB\n"
-		"[2] AVL\n" << std::endl;
-		std::cin >> treeType;
+	// 	std::cout << "¿Qué tipo de árbol quiere crear? (ABB o AVL)\n"
+	// 	"[1] ABB\n"
+	// 	"[2] AVL\n" << std::endl;
+	// 	std::cin >> treeType;
 		
-		if (treeType == 1)
-			treePtr = new ABB<long>(); // Asignamos el puntero a un objeto ABB
-		if (treeType == 2)
+	// 	if (treeType == 1)
+	// 		treePtr = new ABB<long>(); // Asignamos el puntero a un objeto ABB
+	// 	if (treeType == 2)
 			treePtr = new AVL<long>(); // Asignamos el puntero a un objeto AVL
-	}
+	// }
 	
 	int opcion = -1;
 	while (opcion != 0) {
