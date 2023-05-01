@@ -152,9 +152,8 @@ void AVL<Key>::insert_re_balancea_izda(NodoAVL<Key>*& nodo, bool& crece)
           #endif
           rotacion_ID(nodo);
         }
-        crece = false;
       }
-
+      crece = false;
     }
   }
 }
@@ -189,8 +188,8 @@ void AVL<Key>::insert_re_balancea_dcha(NodoAVL<Key>*& nodo, bool& crece)
           #endif
           rotacion_DI(nodo);
         }
-        crece = false;
       }
+      crece = false;
     }
   }
 }

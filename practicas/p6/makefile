@@ -16,14 +16,14 @@ default:
 trace:
 	g++ -DTRAZA -std=c++14 -g -Wall $(MAIN_FILE) -o $(OUT_TRACE_FILE)
 
-#test:
-#	g++ -std=c++14 -g -Wall $(TEST_FILE) -o $(OUT_TEST_FILE)
+test:
+	g++ -DTRAZA -std=c++14 -g -Wall $(TEST_FILE) -o $(OUT_TEST_FILE)
 
 run:
 	$(OUT_FILE)
 
-#run-test:
-#	$(OUT_TEST_FILE)
+run-test:
+	$(OUT_TEST_FILE)
 
 run-trace:
 	$(OUT_TRACE_FILE)
