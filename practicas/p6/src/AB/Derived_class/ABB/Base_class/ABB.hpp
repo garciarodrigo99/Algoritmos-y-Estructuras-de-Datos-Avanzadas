@@ -1,15 +1,15 @@
 /**
- * @file SortMethod.hpp
+ * @file ABB.hpp
  * @author Rodrigo Garcia Jimenez (alu0101154473@ull.edu.es)
  * Universidad de La Laguna
  * Escuela Superior de Ingeniería y Tecnología
  * Grado en Ingeniería Informática
  * Asignatura: Algoritmos y Estructuras de Datos Avanzadas
  * Curso: 2º
- * Práctica 5: Implementación de métodos de ordenación
- * @brief Cabecera de la clase abstracta SortMethod
+ * Práctica 6: Implementación del TDA Árbol
+ * @brief Cabecera de la clase plantilla ABB(Árbol binario de búsqueda)
  * @version 1.0
- * @date 17-04-2023
+ * @date 08-05-2023
  */
 
 #include "../../../Base_class/AB.hpp"

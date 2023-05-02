@@ -6,17 +6,14 @@
  * Grado en Ingeniería Informática
  * Asignatura: Algoritmos y Estructuras de Datos Avanzadas
  * Curso: 2º
- * Práctica 5: Implementación de métodos de ordenación
+ * Práctica 6: Implementación del TDA Árbol
  * @brief Programa principal
  * @version 1.0
- * @date 17-04-2023
+ * @date 08-05-2023
  */
 
-#include <thread>         // std::this_thread::sleep_for
-#include <chrono>         // std::chrono::seconds
 #include <string>
 #include <iostream>
-#include <cassert>
 #include <utility>
 #include "../src/AB/Base_class/AB.hpp"
 #include "../src/AB/Derived_class/ABB/Base_class/ABB.hpp"
@@ -25,25 +22,21 @@
 
 int main() {
 
-	// #ifdef TRAZA
-	// 	std::cout << "traza\n";
-	// #endif
+	AB<long>* treePtr = nullptr;
 
-	AB<long>* treePtr = nullptr; // Inicializamos el puntero en nullptr
-
-	// int treeType = -1;
-	// while ((treeType < 1) || (treeType > 2)){   
+	int treeType = -1;
+	while ((treeType < 1) || (treeType > 2)){   
 		
-	// 	std::cout << "¿Qué tipo de árbol quiere crear? (ABB o AVL)\n"
-	// 	"[1] ABB\n"
-	// 	"[2] AVL\n" << std::endl;
-	// 	std::cin >> treeType;
+		std::cout << "¿Qué tipo de árbol quiere crear? (ABB o AVL)\n"
+		"[1] ABB\n"
+		"[2] AVL\n" << std::endl;
+		std::cin >> treeType;
 		
-	// 	if (treeType == 1)
-	// 		treePtr = new ABB<long>(); // Asignamos el puntero a un objeto ABB
-	// 	if (treeType == 2)
-			treePtr = new AVL<long>(); // Asignamos el puntero a un objeto AVL
-	// }
+		if (treeType == 1)
+			treePtr = new ABB<long>();
+		if (treeType == 2)
+			treePtr = new AVL<long>();
+	}
 	
 	int opcion = -1;
 	while (opcion != 0) {
@@ -74,11 +67,11 @@ int main() {
 			else
 				std::cout << "La clave " << clave << " NO ha sido encontrada." << std::endl;
 		} else if (opcion == 3) {
-			std::cout << "Árbol en orden:" << std::endl;
-			treePtr->inorden(); // Usamos el puntero para llamar a la función mostrar_inorden del objeto correspondiente
+			std::cout << "Árbol en inorden:" << std::endl;
+			treePtr->inorden();
 		}
 	}
 	
-	delete treePtr; // Liberamos la memoria al finalizar el programa
+	delete treePtr;
 	return 0;
 }

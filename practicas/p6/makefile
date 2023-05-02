@@ -2,10 +2,10 @@
 
 MAIN = main/
 MAIN_FILE = $(MAIN)main.cpp
-TEST_FILE = $(MAIN)test.cpp
+TESTAVL_FILE = $(MAIN)testAVL.cpp
 OUT = bin/
 OUT_FILE = $(OUT)p6
-OUT_TEST_FILE = $(OUT)test
+OUT_TESTAVL_FILE = $(OUT)testAVL
 OUT_TRACE_FILE = $(OUT)p6_trace
 
 # Reglas explícitas
@@ -16,13 +16,13 @@ default:
 trace:
 	g++ -DTRAZA -std=c++14 -g -Wall $(MAIN_FILE) -o $(OUT_TRACE_FILE)
 
-test:
-	g++ -DTRAZA -std=c++14 -g -Wall $(TEST_FILE) -o $(OUT_TEST_FILE)
+testAVL:
+	g++ -DTRAZA -std=c++14 -g -Wall $(TESTAVL_FILE) -o $(OUT_TESTAVL_FILE)
 
 run:
 	$(OUT_FILE)
 
-run-test:
+run-testAVL:
 	$(OUT_TEST_FILE)
 
 run-trace:

@@ -1,3 +1,17 @@
+/**
+ * @file AVL.hpp
+ * @author Rodrigo Garcia Jimenez (alu0101154473@ull.edu.es)
+ * Universidad de La Laguna
+ * Escuela Superior de Ingeniería y Tecnología
+ * Grado en Ingeniería Informática
+ * Asignatura: Algoritmos y Estructuras de Datos Avanzadas
+ * Curso: 2º
+ * Práctica 6: Implementación del TDA Árbol
+ * @brief Cabecera de la clase plantilla AVL(Árbol binario de búsqueda balanceado)
+ * @version 1.0
+ * @date 08-05-2023
+ */
+
 #include "../Base_class/ABB.hpp"
 #include "../../../../NodoB/Derived_class/NodoAVL.hpp"
 #include <vector>
@@ -5,19 +19,13 @@
 
 template<class Key>
 class AVL : public ABB<Key>{
-	private:
-    // int bal;
 
 	public:
 		AVL();
 		~AVL();
-    const bool Equilibrado();
-    const int Tam();
     bool insertar(const Key&) override;
 
   private:
-    const bool EquilibrioRama(NodoB<Key>*);
-    const int TamRama(NodoB<Key>*);
     bool inserta_bal(NodoAVL<Key>*&,NodoAVL<Key>*&,bool&);
 		void insert_re_balancea_izda(NodoAVL<Key>*&, bool&);
     void insert_re_balancea_dcha(NodoAVL<Key>*&, bool&);
@@ -38,14 +46,6 @@ AVL<Key>::~AVL()
 }
 
 template <class Key>
-const bool AVL<Key>::Equilibrado(){
-  return EquilibrioRama(this->raiz_);
-}
-
-template <class Key>
-const int AVL<Key>::Tam() { return TamRama(this->raiz_); }
-
-template <class Key>
 bool AVL<Key>::insertar(const Key& k)
 {
   NodoAVL<Key>* nuevo = new NodoAVL<Key>(k);
@@ -57,29 +57,6 @@ bool AVL<Key>::insertar(const Key& k)
     printBal();
   #endif
   return toReturn;
-}
-
-template<class Key> const bool AVL<Key>::EquilibrioRama(NodoB<Key> *nodo)
-{
-  if (nodo == nullptr) return true;
-  int ramI = TamRama(nodo->izdo);
-  int ramD = TamRama(nodo->dcho);
-  int eq = ramI - ramD;
-  switch (eq) {
-    case -1: 
-    case  0:
-    case  1:
-    return EquilibrioRama(nodo->izdo) && 
-           EquilibrioRama(nodo->dcho);
-    default: return false;
-  }
-}
-
-template <class Key>
-const int AVL<Key>::TamRama(NodoB<Key>* nodo) {
-  if (nodo == NULL) return 0 ;
-  return (1 + TamRama(nodo->izdo) + 
-              TamRama(nodo->dcho) );
 }
 
 template <class Key>
@@ -101,7 +78,6 @@ bool AVL<Key>::inserta_bal(NodoAVL<Key>*& nodo, NodoAVL<Key>*& nuevo, bool& crec
       nodo->getIzdo() = dynamic_cast<NodoB<Key>*>(nodoIzdoCast); // Actualizar raiz_
       if (crece) {
         insert_re_balancea_izda(nodo,crece);
-        //crece = false;  
       }
       return true;
     } else {
@@ -114,7 +90,6 @@ bool AVL<Key>::inserta_bal(NodoAVL<Key>*& nodo, NodoAVL<Key>*& nuevo, bool& crec
       nodo->getDcho() = dynamic_cast<NodoB<Key>*>(nodoDchoCast); // Actualizar raiz_
       if (crece) {
         insert_re_balancea_dcha(nodo,crece);
-        //crece = false;
       }
       return true;
     } else{
@@ -168,8 +143,7 @@ void AVL<Key>::insert_re_balancea_dcha(NodoAVL<Key>*& nodo, bool& crece)
     case  0: nodo->getBal() = -1;
             break; 
     case -1: {
-      NodoAVL<Key>* dchoCast = dynamic_cast<NodoAVL<Key>*>(nodo->getDcho());
-      NodoAVL<Key>* nodo1 = dchoCast;
+      NodoAVL<Key>* nodo1 = dynamic_cast<NodoAVL<Key>*>(nodo->getDcho());
       if (nodo1->getBal() == -1){
         #ifdef TRAZA
           std::cout << "Desbalanceo:\n";
@@ -216,9 +190,6 @@ void AVL<Key>::rotacion_II(NodoAVL<Key> *& nodo) {
 
 template <class Key>
 void AVL<Key>::rotacion_ID(NodoAVL<Key>*& nodo) {
-  // NodoAVL<Key>* nodo1 = nodo->getIzdo();
-  // NodoAVL<Key>* nodo2 = nodo1->getDcho();
-  //----------------------------------------------
   NodoAVL<Key>* nodo1 = dynamic_cast<NodoAVL<Key>*>(nodo->getIzdo());
   NodoAVL<Key>* nodo2 = dynamic_cast<NodoAVL<Key>*>(nodo1->getDcho());
   //----------------------------------------------
@@ -238,8 +209,7 @@ void AVL<Key>::rotacion_ID(NodoAVL<Key>*& nodo) {
 
 template <class Key>
 void AVL<Key>::rotacion_DD(NodoAVL<Key> *& nodo) {
-  NodoAVL<Key>* dchoCast = dynamic_cast<NodoAVL<Key>*>(nodo->getDcho());
-  NodoAVL<Key>* nodo1 = dchoCast;
+  NodoAVL<Key>* nodo1 = dynamic_cast<NodoAVL<Key>*>(nodo->getDcho());
 
   nodo->getDcho() = nodo1->getIzdo();
 
